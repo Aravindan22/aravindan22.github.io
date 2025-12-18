@@ -2,237 +2,219 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aravindan Natesan — Software Engineer</title>
-  <meta name="description" content="Backend-focused full-stack engineer specializing in Python, Django, DRF, Celery, AWS, and scalable system design." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aravindan Natesan | Software Engineer</title>
   <style>
-    /* ===== Minimal, Auto-Theming CSS (inlined for perf) ===== */
     :root {
-      --bg: #ffffff;
-      --text: #1a1a1a;
-      --text-muted: #555;
-      --border: #eaeaea;
-      --accent: #0d47a1;
-      --card-bg: #fafafa;
-      --shadow: rgba(0,0,0,0.05);
-      --code-bg: #f5f5f5;
+      --bg: #0f172a;
+      --card: #020617;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
     }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #121212;
-        --text: #e6e6e6;
-        --text-muted: #aaa;
-        --border: #333;
-        --card-bg: #1e1e1e;
-        --shadow: rgba(0,0,0,0.2);
-        --code-bg: #2d2d2d;
-      }
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
-      line-height: 1.6;
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #020617, #0f172a);
       color: var(--text);
-      background-color: var(--bg);
-      padding: 2rem 1rem;
-      max-width: 800px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
       margin: 0 auto;
+      padding: 3rem 1.25rem;
     }
-
     header {
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
       margin-bottom: 2.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
     }
-
-    h1 {
-      font-weight: 700;
+    header h1 {
       font-size: 2.2rem;
-      margin-bottom: 0.3rem;
+      margin: 0;
+      letter-spacing: 0.5px;
     }
-
-    .title {
-      font-size: 1.2rem;
+    header h2 {
+      font-size: 1.1rem;
+      font-weight: 500;
       color: var(--accent);
-      margin-bottom: 1rem;
+      margin: 0;
     }
-
     .contact {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 1rem;
       font-size: 0.95rem;
+      color: var(--muted);
     }
-
     .contact a {
-      color: var(--text);
+      color: var(--muted);
       text-decoration: none;
-      border-bottom: 1px dotted;
     }
-    .contact a:hover {
-      border-bottom: 1px solid;
-    }
+    .contact a:hover { color: var(--accent); }
 
     section {
-      margin-bottom: 2.2rem;
+      background: rgba(2, 6, 23, 0.85);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
-
-    h2 {
-      font-size: 1.4rem;
-      font-weight: 600;
+    section h3 {
+      margin-top: 0;
       margin-bottom: 1rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 2px solid var(--accent);
-      color: var(--accent);
-    }
-
-    h3 {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin: 1.2rem 0 0.5rem;
-    }
-
-    h4 {
-      font-weight: 600;
-      margin: 0.8rem 0 0.3rem;
-      font-size: 1rem;
-    }
-
-    time {
-      display: block;
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-bottom: 0.5rem;
-    }
-
-    ul {
-      list-style: none;
-      padding-left: 1.2rem;
-    }
-
-    li {
-      margin-bottom: 0.6rem;
-      position: relative;
-    }
-
-    li::before {
-      content: '•';
-      color: var(--accent);
-      font-weight: bold;
-      position: absolute;
-      left: -1.2rem;
-    }
-
-    .btn {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      padding: 0.5rem 1.2rem;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: 500;
-      margin-top: 0.5rem;
-      transition: opacity 0.2s;
-    }
-    .btn:hover {
-      opacity: 0.9;
-    }
-
-    .summary {
-      background: var(--card-bg);
-      padding: 1.2rem;
-      border-radius: 6px;
+      font-size: 1.25rem;
       border-left: 4px solid var(--accent);
+      padding-left: 0.6rem;
     }
-
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      color: var(--text-muted);
+    .summary {
+      color: #cbd5f5;
+    }
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .skill {
+      background: rgba(56, 189, 248, 0.12);
+      color: #bae6fd;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .role {
+      margin-bottom: 1.5rem;
+    }
+    .role:last-child { margin-bottom: 0; }
+    .role-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .company {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    .title {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .duration {
+      color: var(--muted);
       font-size: 0.9rem;
     }
-
-    @media (max-width: 600px) {
-      body { padding: 1.2rem 0.8rem; }
-      h1 { font-size: 1.8rem; }
+    ul {
+      margin: 0.5rem 0 0 1.2rem;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 2.5rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Aravindan Natesan</h1>
-    <p class="title">Software Engineer</p>
-    <div class="contact">
-      <span>+91 9080767325</span>
-      <a href="mailto:aravindan7822@gmail.com">aravindan7822@gmail.com</a>
-      <a href="https://www.linkedin.com/in/aravindan-natesan/" target="_blank" rel="noopener">
-        linkedin.com/in/aravindan-natesan
-      </a>
-    </div>
-    <a href="resume.pdf" class="btn" download>📥 Download PDF</a>
-  </header>
+  <main class="container">
+    <header>
+      <h1>Aravindan Natesan</h1>
+      <h2>Software Engineer</h2>
+      <div class="contact">
+        <span>📞 +91 9080767325</span>
+        <a href="mailto:aravindan7822@gmail.com">✉️ aravindan7822@gmail.com</a>
+        <a href="https://www.linkedin.com/in/aravindan-natesan/" target="_blank" rel="noopener">🔗 LinkedIn</a>
+      </div>
+    </header>
 
-  <section id="summary">
-    <h2>About</h2>
-    <div class="summary">
-      A forward-looking Software Engineer with experience in creating, maintaining, and enhancing highly scalable, maintainable software. Experienced across the full software development lifecycle — from concept to delivery — in fast-paced, test-driven, cloud-driven environments. Proven ability to steer timely project completion within budgetary and technical constraints.
-    </div>
-  </section>
+    <section>
+      <h3>Professional Summary</h3>
+      <p class="summary">
+        Forward-looking Software Engineer with strong experience in designing,
+        building, and optimizing scalable backend systems. Proven ability to
+        deliver high-performance, maintainable solutions in fast-paced,
+        test-driven, cloud-native environments while owning critical production
+        workloads end to end.
+      </p>
+    </section>
 
-  <section id="skills">
-    <h2>Technical Skills</h2>
-    <ul>
-      <li>Backend: Python, Django, Django REST Framework, FastAPI, Celery</li>
-      <li>Frontend: React, JavaScript</li>
-      <li>Cloud & DevOps: AWS (S3, Lambda, EC2), Docker, Git, GitLab</li>
-      <li>Messaging & Async: RabbitMQ, Celery</li>
-    </ul>
-  </section>
+    <section>
+      <h3>Skills</h3>
+      <div class="skills">
+        <span class="skill">Python</span>
+        <span class="skill">Django</span>
+        <span class="skill">Django REST Framework</span>
+        <span class="skill">FastAPI</span>
+        <span class="skill">Celery</span>
+        <span class="skill">React</span>
+        <span class="skill">JavaScript</span>
+        <span class="skill">AWS S3</span>
+        <span class="skill">AWS Lambda</span>
+        <span class="skill">AWS EC2</span>
+        <span class="skill">RabbitMQ</span>
+        <span class="skill">Docker</span>
+        <span class="skill">Git</span>
+        <span class="skill">GitLab</span>
+      </div>
+    </section>
 
-  <section id="experience">
-    <h2>Experience</h2>
+    <section>
+      <h3>Experience</h3>
 
-    <article>
-      <h3>Senior Software Engineer — Hexnode (Mitsogo Technologies Pvt Ltd)</h3>
-      <time>April 2023 – Present</time>
-      <ul>
-        <li>Optimized backend services (Python/Django/DRF), cutting average endpoint response time by 85% (200s → 30s) via ORM query optimization and reduced table access — lowering server load and improving UX.</li>
-        <li>Integrated Celery for async task execution (notifications, data processing) and AWS Lambda for event-triggered workflows — enabling scalable background processing without extra servers.</li>
-        <li>Resolved 100% of urgent customer issues as part of rapid-response team; owned 80% of 10–30 weekly tickets with fixes deployed in ≤3 days, zero regressions.</li>
-        <li>Mentored junior engineers in performance-driven development, API design, debugging, and code quality practices.</li>
-      </ul>
-    </article>
+      <div class="role">
+        <div class="role-header">
+          <div>
+            <div class="company">Hexnode (Mitsogo Technologies Pvt Ltd)</div>
+            <div class="title">Senior Software Engineer</div>
+          </div>
+          <div class="duration">April 2023 – Present</div>
+        </div>
+        <ul>
+          <li>Optimized backend services using Python, Django, and DRF, reducing average API response times by <strong>85%</strong> by eliminating redundant ORM queries and minimizing repeated table access.</li>
+          <li>Implemented Celery for reliable asynchronous processing and AWS Lambda for event-driven workflows, enabling scalable background execution without additional server overhead.</li>
+          <li>Core member of a rapid-response team handling urgent customer issues; owned ~80% of weekly high-priority tickets and delivered production fixes within an average of 3 days with zero regressions.</li>
+          <li>Mentored junior engineers on API design, debugging strategies, and performance-oriented development practices.</li>
+        </ul>
+      </div>
 
-    <article>
-      <h3>Software Engineer — Checktronix India Pvt Ltd (A Lightcast Company)</h3>
-      <time>June 2021 – April 2023</time>
-      <ul>
-        <li><strong>Data Scraping Pipeline:</strong> Migrated legacy Python 2.7 → 3.7 web scraping system for 30,000+ Scrapy projects; shifted infrastructure from on-prem to AWS — boosting scalability and maintainability.</li>
-        <li><strong>DeleteFeed Pipeline:</strong> Enhanced validation pipeline to process 800+ URLs/sec; automated feed delivery to AWS S3 using Celery.</li>
-        <li><strong>DeleteFeed Dashboard:</strong> Led development of a web dashboard (React?) to monitor/visualize scraped datasets — improving transparency and operational efficiency.</li>
-      </ul>
-    </article>
-  </section>
+      <div class="role">
+        <div class="role-header">
+          <div>
+            <div class="company">Checktronix India Pvt Ltd (Lightcast)</div>
+            <div class="title">Software Engineer</div>
+          </div>
+          <div class="duration">June 2021 – April 2023</div>
+        </div>
+        <ul>
+          <li><strong>Data Scraping Pipeline:</strong> Migrated a 5+ year legacy system from Python 2.7 to Python 3.7, supporting 30,000+ Scrapy projects and moving infrastructure from on-premise to AWS.</li>
+          <li><strong>DeleteFeed Pipeline:</strong> Enhanced a high-performance validation system capable of processing 800+ URLs per second and automated scheduled feed delivery to AWS S3 using Celery.</li>
+          <li><strong>DeleteFeed Dashboard:</strong> Led development of a web-based dashboard to monitor and manage scraped and validated datasets, improving visibility and operational efficiency.</li>
+        </ul>
+      </div>
+    </section>
 
-  <section id="education">
-    <h2>Education</h2>
-    <h3>Sona College of Technology, India</h3>
-    <h4>B.E. in Computer Science and Engineering</h4>
-    <time>August 2017 – April 2021</time>
-    <p>CGPA: 8.40</p>
-  </section>
+    <section>
+      <h3>Education</h3>
+      <div class="role-header">
+        <div>
+          <div class="company">Sona College of Technology, India</div>
+          <div class="title">B.E. Computer Science and Engineering</div>
+        </div>
+        <div class="duration">August 2017 – April 2021</div>
+      </div>
+      <p>CGPA: <strong>8.40</strong></p>
+    </section>
 
-  <footer>
-    <p>Static resume hosted on GitHub Pages • Updated Dec 2025</p>
-  </footer>
+    <footer>
+      © 2025 Aravindan Natesan · Hosted on GitHub Pages
+    </footer>
+  </main>
 </body>
 </html>
