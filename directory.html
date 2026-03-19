@@ -213,10 +213,11 @@
                 fileList.innerHTML = visibleFiles.map(file => {
                     const isHtml = file.name.toLowerCase().endsWith('.html');
                     const downloadAttr = isHtml ? '' : 'download';
+                    const targetAttr = isHtml ? 'target="_blank"' : '';
                     return `
                     <li class="file-item">
                         <span class="file-icon">${getIcon(file.name)}</span>
-                        <a href="${file.name}" ${downloadAttr}>${file.name}</a>
+                        <a href="${file.name}" ${targetAttr} ${downloadAttr}>${file.name}</a>
                         <span class="file-type">${getFileType(file.name)}</span>
                     </li>
                 `;
