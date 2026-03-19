@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory Listing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .file-list {
+            list-style: none;
+        }
+        
+        .file-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            background: #f9fafb;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .file-item:hover {
+            background: #f3f4f6;
+            transform: translateX(4px);
+        }
+        
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        
+        .file-item a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            flex-grow: 1;
+            word-break: break-all;
+        }
+        
+        .file-item a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        .file-icon {
+            font-size: 20px;
+            min-width: 24px;
+        }
+        
+        .file-type {
+            font-size: 12px;
+            color: #6b7280;
+            background: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            white-space: nowrap;
+            margin-left: auto;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #6b7280;
+            padding: 40px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📁 Directory Listing</h1>
+            <p>Browse available files and resources</p>
+        </div>
+        
+        <div class="content">
+            <a href="/" class="back-link">← Back to Home</a>
+            
+            <ul class="file-list" id="fileList">
+                <li class="empty-state">Loading directory contents...</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        const REPO_OWNER = 'Aravindan22';
+        const REPO_NAME = 'aravindan22.github.io';
+        const API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/`;
+        
+        // File type detection
+        function getFileType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const types = {
+                'html': 'HTML',
+                'pdf': 'PDF',
+                'md': 'Markdown',
+                'txt': 'Text',
+                'js': 'JavaScript',
+                'css': 'CSS',
+                'json': 'JSON',
+                'jpg': 'Image',
+                'jpeg': 'Image',
+                'png': 'Image',
+                'gif': 'Image',
+                'svg': 'SVG',
+                'zip': 'Archive',
+                'tar': 'Archive'
+            };
+            return types[ext] || ext.toUpperCase();
+        }
+        
+        // Get appropriate icon
+        function getIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const icons = {
+                'html': '🌐',
+                'pdf': '📋',
+                'md': '📝',
+                'txt': '📄',
+                'js': '⚙️',
+                'css': '🎨',
+                'json': '⚙️',
+                'jpg': '🖼️',
+                'jpeg': '🖼️',
+                'png': '🖼️',
+                'gif': '🖼️',
+                'svg': '🖼️',
+                'zip': '📦',
+                'tar': '📦'
+            };
+            return icons[ext] || '📄';
+        }
+        
+        // Fetch and display directory contents
+        async function loadDirectory() {
+            const fileList = document.getElementById('fileList');
+            
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error('Failed to fetch directory');
+                
+                const files = await response.json();
+                
+                // Filter out hidden files and directories
+                const visibleFiles = files.filter(file => 
+                    !file.name.startsWith('.') && 
+                    file.type === 'file'
+                ).sort((a, b) => a.name.localeCompare(b.name));
+                
+                if (visibleFiles.length === 0) {
+                    fileList.innerHTML = '<li class="empty-state">No files found</li>';
+                    return;
+                }
+                
+                fileList.innerHTML = visibleFiles.map(file => `
+                    <li class="file-item">
+                        <span class="file-icon">${getIcon(file.name)}</span>
+                        <a href="${file.name}" download>${file.name}</a>
+                        <span class="file-type">${getFileType(file.name)}</span>
+                    </li>
+                `).join('');
+                
+            } catch (error) {
+                fileList.innerHTML = `<li class="empty-state">Error loading directory: ${error.message}</li>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        // Load directory on page load
+        document.addEventListener('DOMContentLoaded', loadDirectory);
+        
+        // Refresh every 30 seconds to auto-update
+        setInterval(loadDirectory, 30000);
+    </script>
+</body>
+</html>
