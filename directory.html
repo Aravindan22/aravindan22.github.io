@@ -210,13 +210,17 @@
                     return;
                 }
                 
-                fileList.innerHTML = visibleFiles.map(file => `
+                fileList.innerHTML = visibleFiles.map(file => {
+                    const isHtml = file.name.toLowerCase().endsWith('.html');
+                    const downloadAttr = isHtml ? '' : 'download';
+                    return `
                     <li class="file-item">
                         <span class="file-icon">${getIcon(file.name)}</span>
-                        <a href="${file.name}" download>${file.name}</a>
+                        <a href="${file.name}" ${downloadAttr}>${file.name}</a>
                         <span class="file-type">${getFileType(file.name)}</span>
                     </li>
-                `).join('');
+                `;
+                }).join('');
                 
             } catch (error) {
                 fileList.innerHTML = `<li class="empty-state">Error loading directory: ${error.message}</li>`;
