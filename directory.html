@@ -122,6 +122,62 @@
             color: #6b7280;
             padding: 40px 20px;
         }
+        
+        /* Dark mode */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            }
+            
+            .container {
+                background: #2d3748;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            }
+            
+            .header {
+                background: linear-gradient(135deg, #4c51bf 0%, #6b46c1 100%);
+                color: #f7fafc;
+            }
+            
+            .content {
+                color: #e2e8f0;
+            }
+            
+            .file-item {
+                background: #374151;
+                border-bottom: 1px solid #4b5563;
+                color: #e2e8f0;
+            }
+            
+            .file-item:hover {
+                background: #424f63;
+            }
+            
+            .file-item a {
+                color: #a5b4fc;
+            }
+            
+            .file-item a:hover {
+                color: #c4b5fd;
+            }
+            
+            .file-type {
+                background: #2d3748;
+                color: #cbd5e0;
+            }
+            
+            .back-link {
+                color: #a5b4fc;
+            }
+            
+            .back-link:hover {
+                color: #c4b5fd;
+            }
+            
+            .empty-state {
+                color: #a0aec0;
+            }
+        }
     </style>
 </head>
 <body>
