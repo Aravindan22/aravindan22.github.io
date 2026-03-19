@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senior Python Developer — Interview Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0e13;
+    --surface: #12161e;
+    --surface2: #1a1f2b;
+    --border: #232a38;
+    --accent: #00e5a0;
+    --accent2: #3d8eff;
+    --accent3: #ff6b35;
+    --gold: #f5c842;
+    --text: #e8eaf0;
+    --muted: #7a8299;
+    --tag-bg: #1a2535;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 60px 0 40px;
+    position: relative;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 8vw, 96px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    color: var(--text);
+    position: relative;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 20px;
+    font-weight: 300;
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .badge-green { border-color: var(--accent); color: var(--accent); background: rgba(0,229,160,0.05); }
+  .badge-blue { border-color: var(--accent2); color: var(--accent2); background: rgba(61,142,255,0.05); }
+  .badge-orange { border-color: var(--accent3); color: var(--accent3); background: rgba(255,107,53,0.05); }
+  .badge-gold { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,0.05); }
+
+  /* NAV TABS */
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin: 40px 0 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tab-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 22px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* SECTIONS */
+  .tab-panel { display: none; padding-top: 36px; }
+  .tab-panel.active { display: block; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  /* CHEAT SHEET GRID */
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .cheat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 22px;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .cheat-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .cheat-card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .cheat-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .cheat-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cheat-card ul li {
+    font-size: 13px;
+    color: var(--muted);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .cheat-card ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  .cheat-card .code-snippet {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    color: var(--accent);
+    margin-top: 10px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+
+  /* WIDE CARD */
+  .cheat-card.wide {
+    grid-column: 1 / -1;
+  }
+
+  .decision-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+
+  .decision-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .decision-table td {
+    padding: 10px 14px;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(35,42,56,0.5);
+    line-height: 1.5;
+  }
+
+  .decision-table td:first-child {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .hl-green { color: var(--accent) !important; }
+  .hl-blue { color: var(--accent2) !important; }
+  .hl-orange { color: var(--accent3) !important; }
+
+  /* MOCK INTERVIEW */
+  .mock-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mock-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .mock-card:hover { border-color: var(--border); }
+
+  .mock-q {
+    padding: 18px 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    user-select: none;
+  }
+
+  .mock-q-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--border);
+    line-height: 1;
+    min-width: 32px;
+    transition: color 0.2s;
+  }
+
+  .mock-card.open .mock-q-num { color: var(--accent); }
+
+  .mock-q-content { flex: 1; }
+
+  .mock-q-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .mock-q-text {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .mock-q-arrow {
+    font-size: 18px;
+    color: var(--muted);
+    transition: transform 0.3s;
+    margin-top: 2px;
+  }
+
+  .mock-card.open .mock-q-arrow { transform: rotate(180deg); color: var(--accent); }
+
+  .mock-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .mock-card.open .mock-answer { max-height: 800px; }
+
+  .mock-answer-inner {
+    padding: 0 22px 22px 70px;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+  }
+
+  .answer-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .mock-answer-inner p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 10px;
+  }
+
+  .mock-answer-inner p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .tip-box {
+    background: rgba(0,229,160,0.05);
+    border: 1px solid rgba(0,229,160,0.2);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--accent);
+    line-height: 1.6;
+  }
+
+  .tip-box::before {
+    content: '💡 PRO TIP: ';
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  /* TIPS SECTION */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 22px;
+  }
+
+  .tip-card-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .tip-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .tip-card p, .tip-card li {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .tip-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 8px;
+  }
+
+  .tip-card ul li {
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .tip-card ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  .star-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+
+  .star-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .star-row:last-child { margin-bottom: 0; }
+
+  .star-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-top: 2px;
+  }
+
+  .star-text { color: var(--muted); line-height: 1.5; }
+
+  /* QUESTIONS TO ASK */
+  .ask-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ask-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .ask-item strong { color: var(--text); font-weight: 500; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; color: #111; }
+    .tab-nav { display: none; }
+    .tab-panel { display: block !important; }
+    .mock-answer { max-height: none !important; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .tab-panel.active > * {
+    animation: fadeUp 0.3s ease forwards;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-label">Interview Kit</div>
+    <h1>SENIOR PYTHON<span>DEVELOPER</span></h1>
+    <p class="hero-sub">Complete prep guide — cheat sheet, mock Q&A, tips, and questions to ask. Click any section below.</p>
+    <div class="hero-badges">
+      <span class="badge badge-green">Python 7+yrs</span>
+      <span class="badge badge-blue">Django · FastAPI · Flask</span>
+      <span class="badge badge-orange">Docker · K8s · CI/CD</span>
+      <span class="badge badge-gold">Team Lead · Architecture</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('cheatsheet', this)">📋 Cheat Sheet</button>
+    <button class="tab-btn" onclick="switchTab('mock', this)">🎤 Mock Interview</button>
+    <button class="tab-btn" onclick="switchTab('tips', this)">💡 Tips & Strategy</button>
+    <button class="tab-btn" onclick="switchTab('ask', this)">❓ Questions to Ask</button>
+  </div>
+
+  <!-- ======================== CHEAT SHEET ======================== -->
+  <div id="cheatsheet" class="tab-panel active">
+    <p class="section-label">Quick Reference — Know This Cold</p>
+
+    <div class="cheat-grid">
+
+      <!-- Framework Choice -->
+      <div class="cheat-card wide">
+        <div class="cheat-card-tag">Framework Decision Matrix</div>
+        <h3>When to use which Python framework?</h3>
+        <table class="decision-table">
+          <thead>
+            <tr>
+              <th>Framework</th>
+              <th>Best For</th>
+              <th>Avoid When</th>
+              <th>Key Feature</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="hl-green">Django</td>
+              <td>Full-stack, data-heavy, admin panel needed</td>
+              <td>Lightweight microservices</td>
+              <td>ORM, DRF, built-in admin</td>
+            </tr>
+            <tr>
+              <td class="hl-blue">FastAPI</td>
+              <td>High-performance APIs, async, microservices</td>
+              <td>Full HTML rendering apps</td>
+              <td>Auto OpenAPI docs, Pydantic, async native</td>
+            </tr>
+            <tr>
+              <td class="hl-orange">Flask</td>
+              <td>Minimal APIs, prototyping, full control</td>
+              <td>Large teams needing conventions</td>
+              <td>Lightweight, extensible, simple</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Async -->
+      <div class="cheat-card">
+        <div class="cheat-card-tag">Async Programming</div>
+        <h3>asyncio vs Celery — when to use what</h3>
+        <ul>
+          <li><strong>asyncio</strong> — I/O-bound tasks in same process (HTTP calls, DB queries)</li>
+          <li><strong>Celery</strong> — Background jobs, queues, retries, scheduled tasks</li>
+          <li><strong>Broker</strong> — Redis (fast, simple) or RabbitMQ (robust, AMQP)</li>
+          <li><strong>Never</strong> use async for CPU-bound — use multiprocessing</li>
+        </ul>
+        <div class="code-snippet">async def fetch_data(url):
+    async with aiohttp.ClientSession() as s:
+        async with s.get(url) as r:
+            return await r.json()</div>
+      </div>
+
+      <!-- DB Choice -->
+      <div class="cheat-card">
+        <div class="cheat-card-tag">Database Strategy</div>
+        <h3>PostgreSQL vs MongoDB vs Redis</h3>
+        <ul>
+          <li><strong>PostgreSQL</strong> — Structured, ACID, joins, default choice</li>
+          <li><strong>MongoDB</strong> — Document store, dynamic schema, unstructured data</li>
+          <li><strong>Redis</strong> — Cache, sessions, rate limiting, pub/sub, leaderboards</li>
+          <li><strong>Read replicas</strong> — Scale read-heavy Postgres workloads</li>
+          <li><strong>Connection pooling</strong> — pgBouncer for Postgres at scale</li>
+        </ul>
+      </div>
+
+      <!-- API Design -->
+      <div class="cheat-card">
+        <div class="cheat-card-tag">API Design Principles</div>
+        <h3>REST API best practices</h3>
+        <ul>
+          <li>Version endpoints: <code>/v1/users</code></li>
+          <li>Proper HTTP verbs: GET/POST/PUT/PATCH/DELETE</li>
+          <li>Meaningful status codes: 200/201/400/401/403/404/422/500</li>
+          <li>Consistent error format: <code>{error, message, code}</code></li>
+          <li>Pagination: cursor-based for large datasets</li>
+          <li>Rate limiting + throttling on all public routes</li>
+          <li>OpenAPI spec first, then implement</li>
+        </ul>
+      </div>
+
+      <!-- Security -->
+      <div class="cheat-card">
+        <div class="cheat-card-tag">Security — OWASP</div>
+        <h3>Top security practices to mention</h3>
+        <ul>
+          <li>SQL injection → parameterized queries / ORM</li>
+          <li>Auth → JWT / OAuth2, short-lived tokens</li>
+          <li>HTTPS everywhere, HSTS headers</li>
+          <li>Input validation (Pydantic, serializers)</li>
+          <li>Rate limiting — prevent brute force</li>
+          <li>Secrets in env vars, never in code</li>
+          <li>Bandit — static analysis for Python</li>
+          <li>Least privilege — DB users, IAM roles</li>
+        </ul>
+      </div>
+
+      <!-- DevOps -->
+      <div class="cheat-card">
+        <div class="cheat-card-tag">DevOps Workflow</div>
+        <h3>Docker → Kubernetes → CI/CD</h3>
+        <ul>
+          <li><strong>Dockerfile</strong> — multi-stage builds to reduce image size</li>
+          <li><strong>Docker Compose</strong> — local dev orchestration</li>
+          <li><strong>K8s</strong> — Deployments, Services, Ingress, ConfigMaps</li>
+          <li><strong>HPA</strong> — Horizontal Pod Autoscaler for traffic spikes</li>
+          <li><strong>Helm</strong> — reusable K8s chart templates</li>
+          <li><strong>CI/CD</strong> — lint → test → build → deploy (GitHub Actions / GitLab CI)</li>
+        </ul>
+      </div>
+
+      <!-- Architecture -->
+      <div class="cheat-card">
+        <div class="cheat-card-tag">Architecture Patterns</div>
+        <h3>Key patterns to know</h3>
+        <ul>
+          <li><strong>Repository Pattern</strong> — abstract DB access</li>
+          <li><strong>CQRS</strong> — separate read/write models</li>
+          <li><strong>Event-driven</strong> — decouple services via messages</li>
+          <li><strong>Circuit Breaker</strong> — resilience for microservices</li>
+          <li><strong>Strangler Fig</strong> — gradual monolith migration</li>
+          <li><strong>12-Factor App</strong> — cloud-native best practices</li>
+        </ul>
+      </div>
+
+      <!-- Jinja2 -->
+      <div class="cheat-card">
+        <div class="cheat-card-tag">Jinja2 (Preferred Skill)</div>
+        <h3>Jinja2 for config generation</h3>
+        <ul>
+          <li>Dynamic infra configs (Nginx, K8s manifests)</li>
+          <li>Conditionals: <code>{% if env == 'prod' %}</code></li>
+          <li>Loops: <code>{% for host in hosts %}</code></li>
+          <li>Filters: <code>{{ value | upper | default('N/A') }}</code></li>
+          <li>Template inheritance: <code>{% extends 'base.j2' %}</code></li>
+          <li>Render with context dict → environment-specific output</li>
+        </ul>
+        <div class="code-snippet">from jinja2 import Environment, FileSystemLoader
+env = Environment(loader=FileSystemLoader('templates'))
+tmpl = env.get_template('nginx.conf.j2')
+output = tmpl.render(server_name='api.prod.com')</div>
+      </div>
+
+      <!-- Cloud -->
+      <div class="cheat-card">
+        <div class="cheat-card-tag">Cloud Platforms</div>
+        <h3>AWS / GCP / Azure essentials</h3>
+        <ul>
+          <li><strong>Compute</strong> — EC2 / GCE / Azure VMs, or managed K8s (EKS/GKE/AKS)</li>
+          <li><strong>Storage</strong> — S3 / GCS / Blob Storage</li>
+          <li><strong>DB managed</strong> — RDS / Cloud SQL / Azure SQL</li>
+          <li><strong>Queues</strong> — SQS, Pub/Sub, Service Bus</li>
+          <li><strong>Secrets</strong> — AWS Secrets Manager / GCP Secret Manager</li>
+          <li><strong>IAM</strong> — Least privilege, roles over users</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================== MOCK INTERVIEW ======================== -->
+  <div id="mock" class="tab-panel">
+    <p class="section-label">Click any question to reveal the ideal answer</p>
+
+    <div class="mock-grid">
+
+      <!-- Q1 -->
+      <div class="mock-card" id="mc1">
+        <div class="mock-q" onclick="toggleMock('mc1')">
+          <div class="mock-q-num">01</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--accent)">Technical · Frameworks</div>
+            <div class="mock-q-text">How do you choose between Django, FastAPI, and Flask for a new project?</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">Model Answer</div>
+            <p>It depends on the use case and team context. <strong>Django</strong> is my default for data-heavy, feature-rich enterprise apps — the ORM, admin panel, and DRF save huge amounts of time when you need CRUD-heavy backends fast.</p>
+            <p><strong>FastAPI</strong> is my pick for high-performance async APIs, especially microservices. The auto-generated OpenAPI docs and Pydantic validation reduce errors significantly, and it handles async natively — great for I/O-heavy workloads.</p>
+            <p><strong>Flask</strong> fits when I need minimal overhead or full control — usually for smaller services or prototypes where I want to compose my own stack.</p>
+            <div class="tip-box">Always mention trade-offs. Say: "Django's magic can become a footgun at scale without discipline — things like N+1 queries in the ORM need active monitoring."</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="mock-card" id="mc2">
+        <div class="mock-q" onclick="toggleMock('mc2')">
+          <div class="mock-q-num">02</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--accent2)">Technical · Architecture</div>
+            <div class="mock-q-text">Walk me through a scalable architecture you've designed or contributed to.</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">Model Answer (Adapt to Your Experience)</div>
+            <p>At [Company], we had a Django monolith serving growing traffic — around 200k daily users. I led the architectural redesign over two phases.</p>
+            <p><strong>Phase 1:</strong> We introduced a stateless API layer behind a load balancer, added PostgreSQL read replicas for heavy report queries, and moved all async processing (emails, PDF generation) to Celery workers backed by Redis.</p>
+            <p><strong>Phase 2:</strong> We containerized everything with Docker and deployed to Kubernetes with Horizontal Pod Autoscaling. This reduced API p95 latency by roughly 60% and gave teams independent deployment cycles.</p>
+            <div class="tip-box">Always mention what metrics improved. Numbers make answers memorable — latency, throughput, uptime, team velocity.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="mock-card" id="mc3">
+        <div class="mock-q" onclick="toggleMock('mc3')">
+          <div class="mock-q-num">03</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--accent3)">Leadership · Mentoring</div>
+            <div class="mock-q-text">How do you mentor junior developers without impacting team velocity?</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">Model Answer</div>
+            <p>I treat mentoring as an investment, not overhead. The key is making it structured and time-boxed so it doesn't bleed into delivery time.</p>
+            <p>Practically, I do <strong>annotated code reviews</strong> — I don't just approve or reject PRs, I explain the 'why' in comments. I hold weekly 30-minute 1:1s focused on blockers and growth goals. I also involve juniors in architecture discussions as observers first, then contributors — they learn decision-making, not just implementation.</p>
+            <p>Within 2–3 sprints, juniors who get this kind of mentoring need significantly less hand-holding, which more than recovers the time invested.</p>
+            <div class="tip-box">Mention a specific outcome — "One junior I mentored became the team's go-to on API design within 3 months."</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="mock-card" id="mc4">
+        <div class="mock-q" onclick="toggleMock('mc4')">
+          <div class="mock-q-num">04</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--accent)">Technical · Security</div>
+            <div class="mock-q-text">How do you approach API security in enterprise projects?</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">Model Answer</div>
+            <p>I use OWASP Top 10 as a practical checklist. Starting with <strong>authentication</strong> — OAuth2 or JWT with short-lived access tokens and refresh token rotation. Never store secrets in code — environment variables or secrets managers only.</p>
+            <p>For the data layer: parameterized queries always (never raw string formatting into SQL), input validation with Pydantic or DRF serializers, and least-privilege DB roles. At the infrastructure level — HTTPS everywhere, HSTS headers, rate limiting on all public endpoints.</p>
+            <p>I also integrate <strong>Bandit</strong> into CI pipelines for static security analysis on every PR, so issues get caught before they reach staging.</p>
+            <div class="tip-box">Mentioning tooling (Bandit, SAST) shows you operationalize security, not just talk about it.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="mock-card" id="mc5">
+        <div class="mock-q" onclick="toggleMock('mc5')">
+          <div class="mock-q-num">05</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--accent2)">Technical · Async</div>
+            <div class="mock-q-text">Explain asynchronous programming in Python. When would you use asyncio vs Celery?</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">Model Answer</div>
+            <p><strong>asyncio</strong> handles concurrency within a single process using an event loop. It's ideal for I/O-bound tasks — like making 50 external API calls concurrently — where threads would waste memory and add complexity.</p>
+            <p><strong>Celery</strong> is for distributed background task processing — things that happen outside the request/response cycle: sending emails, generating reports, running scheduled jobs. It needs a broker (Redis or RabbitMQ) and supports retries, rate limiting, and task routing.</p>
+            <p>Important: neither helps with CPU-bound tasks. For those, I use <strong>multiprocessing</strong> or offload to a dedicated service.</p>
+            <div class="tip-box">A good follow-up answer: "In FastAPI I use async endpoints by default, but I still use Celery for jobs that need reliable queuing and retry semantics."</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="mock-card" id="mc6">
+        <div class="mock-q" onclick="toggleMock('mc6')">
+          <div class="mock-q-num">06</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--accent3)">Behavioral · Leadership</div>
+            <div class="mock-q-text">Tell me about a time you drove a major architectural or technical decision.</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">STAR Format Answer</div>
+            <div class="star-box">
+              <div class="star-row">
+                <div class="star-label">Situation</div>
+                <div class="star-text">Our monolith had deployment bottlenecks — any change required a 2-hour full deployment, slowing the whole team.</div>
+              </div>
+              <div class="star-row">
+                <div class="star-label">Task</div>
+                <div class="star-text">I was tasked with proposing a solution that could scale us to 3x traffic without rebuilding everything.</div>
+              </div>
+              <div class="star-row">
+                <div class="star-label">Action</div>
+                <div class="star-text">I analyzed the codebase, identified high-churn modules, and proposed a phased microservices extraction. I presented a risk/benefit analysis to stakeholders, defined service boundaries and API contracts, and led the team through the migration over 3 sprints.</div>
+              </div>
+              <div class="star-row">
+                <div class="star-label">Result</div>
+                <div class="star-text">Deployment time dropped from 2 hours to 15 minutes. Teams shipped independently. Latency improved by 40%.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="mock-card" id="mc7">
+        <div class="mock-q" onclick="toggleMock('mc7')">
+          <div class="mock-q-num">07</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--gold)">Preferred · Jinja2</div>
+            <div class="mock-q-text">How have you used Jinja2 for infrastructure or config generation?</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">Model Answer</div>
+            <p>I've used Jinja2 to generate environment-specific config files — Nginx configurations, Kubernetes manifests, and network device configs — all from a single parameterized template.</p>
+            <p>The approach: define a base template with conditionals (<code>{% if env == 'prod' %}</code>), loops for repeated blocks (<code>{% for server in upstreams %}</code>), and filters for transformation. Render it with an environment-specific context dictionary. This means one template, three environments — dev, staging, prod — with zero copy-paste drift.</p>
+            <p>I've also implemented validation logic within templates to catch missing required variables before rendering, preventing broken configs from reaching deployment.</p>
+            <div class="tip-box">If you haven't used it directly, say: "I've worked with similar template-based config systems and the Jinja2 docs are clear — I'd be productive with it quickly."</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="mock-card" id="mc8">
+        <div class="mock-q" onclick="toggleMock('mc8')">
+          <div class="mock-q-num">08</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--accent3)">Behavioral · Conflict</div>
+            <div class="mock-q-text">How do you handle a team member who consistently misses deadlines?</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">Model Answer</div>
+            <p>I first try to understand the root cause privately — never publicly. In a 1:1, I'll ask open questions: is it unclear requirements, technical blockers, scope creep, or something personal?</p>
+            <p>Based on that, my response varies: if it's a skills gap, I pair them up or restructure their tasks. If it's unclear scope, I work with PM to tighten definitions. If it's a pattern despite support, I document it, set clear expectations, and escalate to management with evidence.</p>
+            <p>The key principle: <strong>assume good intent first</strong>, investigate before judging, and solve the system problem before the person problem.</p>
+            <div class="tip-box">This shows empathy + accountability — exactly what a senior leader needs to demonstrate.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="mock-card" id="mc9">
+        <div class="mock-q" onclick="toggleMock('mc9')">
+          <div class="mock-q-num">09</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--accent2)">Technical · DevOps</div>
+            <div class="mock-q-text">Describe your experience with Docker and Kubernetes in production.</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">Model Answer</div>
+            <p>I write multi-stage Dockerfiles to keep production images lean — build stage installs dependencies, final stage copies only the artifact. For local development, Docker Compose orchestrates the app, DB, Redis, and worker together.</p>
+            <p>In production on Kubernetes, I define Deployments with resource requests/limits, Services for internal routing, and Ingress for external traffic. I configure Horizontal Pod Autoscaler to scale on CPU/memory thresholds. For secrets, I use K8s Secrets or integrate with AWS Secrets Manager. I've also worked with Helm charts for reusable, parameterized deployments across environments.</p>
+            <div class="tip-box">Mention liveness and readiness probes if asked deeper — they show you understand K8s health management, not just basic deployments.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="mock-card" id="mc10">
+        <div class="mock-q" onclick="toggleMock('mc10')">
+          <div class="mock-q-num">10</div>
+          <div class="mock-q-content">
+            <div class="mock-q-tag" style="color:var(--accent)">Behavioral · Client</div>
+            <div class="mock-q-text">Tell me about a challenging client situation and how you handled it.</div>
+          </div>
+          <div class="mock-q-arrow">▾</div>
+        </div>
+        <div class="mock-answer">
+          <div class="mock-answer-inner">
+            <div class="answer-label">STAR Format Answer</div>
+            <div class="star-box">
+              <div class="star-row">
+                <div class="star-label">Situation</div>
+                <div class="star-text">A client was changing requirements mid-sprint, causing constant rework and team frustration.</div>
+              </div>
+              <div class="star-row">
+                <div class="star-label">Task</div>
+                <div class="star-text">I needed to protect team velocity while keeping the client engaged and satisfied.</div>
+              </div>
+              <div class="star-row">
+                <div class="star-label">Action</div>
+                <div class="star-text">I introduced a formal change request process with a one-sprint lead time, and scheduled bi-weekly demo calls so they could course-correct before work began rather than after.</div>
+              </div>
+              <div class="star-row">
+                <div class="star-label">Result</div>
+                <div class="star-text">Mid-sprint changes dropped by ~70%. Client satisfaction actually improved because they felt heard earlier in the process.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================== TIPS ======================== -->
+  <div id="tips" class="tab-panel">
+    <p class="section-label">Strategy, Preparation & Execution</p>
+
+    <div class="tips-grid">
+
+      <div class="tip-card">
+        <span class="tip-card-icon">📅</span>
+        <h3>Before the Interview</h3>
+        <ul>
+          <li>Review OWASP Top 10 — it's in the JD, expect a question</li>
+          <li>Prepare 3 project stories in STAR format</li>
+          <li>Practice system design: design a notification service or URL shortener</li>
+          <li>Review the company's tech stack / recent blog posts</li>
+          <li>Prepare your "tell me about yourself" — keep it under 2 mins</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <span class="tip-card-icon">🧠</span>
+        <h3>During — Technical Round</h3>
+        <ul>
+          <li>Always mention trade-offs — not just "I used X" but "I chose X over Y because..."</li>
+          <li>Use numbers and metrics whenever possible</li>
+          <li>Think out loud on system design — they want your reasoning</li>
+          <li>Ask clarifying questions before diving into design problems</li>
+          <li>It's OK to say "I haven't done exactly that, but I've done X which is similar"</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <span class="tip-card-icon">🤝</span>
+        <h3>During — Leadership Round</h3>
+        <ul>
+          <li>Use STAR format consistently for behavioral questions</li>
+          <li>Emphasize cross-functional collaboration — this role touches DevOps, clients, and team</li>
+          <li>Show empathy in conflict stories — not just "I fixed it" but how you handled the person</li>
+          <li>Mention specific mentoring outcomes, not just the activity</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <span class="tip-card-icon">🎯</span>
+        <h3>Keywords to Drop Naturally</h3>
+        <ul>
+          <li>OWASP, least privilege, SAST</li>
+          <li>12-Factor App, strangler fig pattern</li>
+          <li>SLO/SLA, observability, distributed tracing</li>
+          <li>ADRs (Architecture Decision Records)</li>
+          <li>Trunk-based development, feature flags</li>
+          <li>DRY, SOLID, domain-driven design</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <span class="tip-card-icon">🚩</span>
+        <h3>Common Mistakes to Avoid</h3>
+        <ul>
+          <li>Don't say "we used microservices" without explaining why</li>
+          <li>Don't speak only technically in behavioral rounds — show leadership</li>
+          <li>Don't bad-mouth previous employers/clients</li>
+          <li>Don't over-engineer whiteboard designs — show pragmatism</li>
+          <li>Don't stay silent when stuck — narrate your thinking</li>
+        </ul>
+      </div>
+
+      <div class="tip-card">
+        <span class="tip-card-icon">💬</span>
+        <h3>Your Opening — "Tell me about yourself"</h3>
+        <p style="margin-top:8px">Structure it as: <strong>Who you are → What you've built → What you're best at → Why this role excites you.</strong></p>
+        <p style="margin-top:8px">Example: <em>"I'm a Python developer with [X] years of experience, primarily focused on building scalable backend systems. I've led teams of [N] engineers, owned architecture decisions, and worked across the full delivery lifecycle. I'm strongest in system design and mentoring. This role excites me because [specific reason]."</em></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================== QUESTIONS TO ASK ======================== -->
+  <div id="ask" class="tab-panel">
+    <p class="section-label">Smart Questions That Show Seniority</p>
+
+    <div class="divider"></div>
+    <p class="section-label">🏗️ About the Tech & Architecture</p>
+    <div class="ask-list">
+      <div class="ask-item"><strong>What does the current tech stack look like, and what are the biggest pain points you're hoping to solve?</strong> — Shows you're thinking about real problems, not just the job title.</div>
+      <div class="ask-item"><strong>How are services currently deployed — are you on Kubernetes, or is there a migration underway?</strong> — Demonstrates DevOps awareness, a core JD requirement.</div>
+      <div class="ask-item"><strong>How do you currently handle service-to-service communication — REST, gRPC, event-driven?</strong> — Signals architectural depth.</div>
+    </div>
+
+    <div class="divider"></div>
+    <p class="section-label">👥 About the Team & Culture</p>
+    <div class="ask-list">
+      <div class="ask-item"><strong>How is the engineering team structured — pod model, functional teams, or something else?</strong></div>
+      <div class="ask-item"><strong>What does the onboarding experience look like for a senior developer joining the team?</strong></div>
+      <div class="ask-item"><strong>How does the team currently approach code reviews and knowledge sharing?</strong></div>
+    </div>
+
+    <div class="divider"></div>
+    <p class="section-label">📈 About Impact & Success</p>
+    <div class="ask-list">
+      <div class="ask-item"><strong>What would success look like in the first 30, 60, and 90 days for this role?</strong> — Classic but powerful, shows you're thinking about delivering value fast.</div>
+      <div class="ask-item"><strong>What's the biggest technical challenge the team is facing right now?</strong> — Opens a real conversation and shows genuine curiosity.</div>
+      <div class="ask-item"><strong>How does engineering interact with clients in this role — is it regular or occasional?</strong> — Relevant given the client interaction component in the JD.</div>
+    </div>
+
+    <div class="divider"></div>
+    <p class="section-label">🚀 The Power Closer</p>
+    <div class="ask-list">
+      <div class="ask-item" style="border-left-color: var(--accent); background: rgba(0,229,160,0.04)"><strong>"Based on our conversation today, is there anything about my background you'd like me to elaborate on or clarify?"</strong> — This gives you a chance to address any doubts before they form a decision.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleMock(id) {
+    const card = document.getElementById(id);
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.mock-card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+</script>
+</body>
+</html>
