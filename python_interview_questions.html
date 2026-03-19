@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Python Interview Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161920;
+    --surface2: #1e2330;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.14);
+    --text: #e8eaf0;
+    --muted: #7a8098;
+    --hint: #4a506a;
+    --accent: #5de4c7;
+    --accent2: #ffa657;
+    --accent3: #f47067;
+    --basic: #5de4c7;
+    --basic-bg: rgba(93,228,199,0.1);
+    --inter: #ffa657;
+    --inter-bg: rgba(255,166,87,0.1);
+    --adv: #f47067;
+    --adv-bg: rgba(244,112,103,0.1);
+    --code-bg: #0a0c10;
+    --radius: 12px;
+    --radius-sm: 6px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(93,228,199,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(93,228,199,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  /* HEADER */
+  .header { margin-bottom: 3rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block; width: 24px; height: 1px; background: var(--accent);
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  h1 span { color: var(--accent); }
+  .header-sub {
+    color: var(--muted); font-size: 15px; font-weight: 300; max-width: 480px;
+  }
+  .header-stats {
+    display: flex; gap: 2rem; margin-top: 1.75rem;
+  }
+  .stat { display: flex; flex-direction: column; }
+  .stat-num {
+    font-size: 22px; font-weight: 700; color: var(--text);
+    font-family: 'DM Mono', monospace;
+  }
+  .stat-num.green { color: var(--basic); }
+  .stat-num.amber { color: var(--inter); }
+  .stat-num.red { color: var(--adv); }
+  .stat-label { font-size: 11px; color: var(--hint); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'DM Mono', monospace; }
+
+  /* CONTROLS */
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill {
+    padding: 7px 16px; border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    cursor: pointer; color: var(--muted);
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .pill:hover { border-color: var(--border-hover); color: var(--text); }
+  .pill.active-all { border-color: var(--accent); color: var(--accent); background: var(--basic-bg); }
+  .pill.active-basic { border-color: var(--basic); color: var(--basic); background: var(--basic-bg); }
+  .pill.active-intermediate { border-color: var(--inter); color: var(--inter); background: var(--inter-bg); }
+  .pill.active-advanced { border-color: var(--adv); color: var(--adv); background: var(--adv-bg); }
+
+  .search-wrap { flex: 1; min-width: 200px; position: relative; }
+  .search-wrap::before {
+    content: '⌕'; position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--hint); font-size: 17px; pointer-events: none;
+  }
+  .search {
+    width: 100%; padding: 8px 12px 8px 36px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text); font-family: 'Sora', sans-serif; font-size: 13px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .search::placeholder { color: var(--hint); }
+  .search:focus { border-color: var(--accent); }
+
+  .count-label { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--hint); margin-bottom: 1rem; }
+
+  /* QUESTION LIST */
+  .q-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+    animation: fadeUp 0.3s both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .q-card:hover { border-color: var(--border-hover); }
+  .q-card.open { border-color: rgba(93,228,199,0.2); }
+
+  .q-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 18px; cursor: pointer;
+    user-select: none;
+  }
+  .q-num {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--hint); min-width: 26px;
+  }
+  .q-text {
+    flex: 1; font-size: 14px; font-weight: 400; color: var(--text); line-height: 1.5;
+  }
+  .q-cat {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--hint); padding: 3px 7px;
+    border: 1px solid var(--border);
+    border-radius: 4px; white-space: nowrap;
+  }
+  .badge {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .badge-basic { color: var(--basic); background: var(--basic-bg); border: 1px solid rgba(93,228,199,0.2); }
+  .badge-intermediate { color: var(--inter); background: var(--inter-bg); border: 1px solid rgba(255,166,87,0.2); }
+  .badge-advanced { color: var(--adv); background: var(--adv-bg); border: 1px solid rgba(244,112,103,0.2); }
+
+  .chevron {
+    color: var(--hint); font-size: 12px; transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+  .q-card.open .chevron { transform: rotate(180deg); color: var(--accent); }
+
+  .q-body {
+    display: none; padding: 0 18px 16px 54px;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+  .q-card.open .q-body { display: block; }
+  .q-body p {
+    font-size: 13px; color: #a8b0c8; line-height: 1.75; margin-bottom: 10px;
+  }
+  .q-body code {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    background: rgba(93,228,199,0.08); color: var(--accent);
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .q-body pre {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    background: var(--code-bg); color: #cdd6f4;
+    padding: 14px 16px; border-radius: var(--radius-sm);
+    overflow-x: auto; margin-top: 10px; line-height: 1.7;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center; padding: 3rem;
+    color: var(--hint); font-family: 'DM Mono', monospace; font-size: 13px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    height: 2px; background: var(--border); border-radius: 1px;
+    margin-bottom: 2rem; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--basic), var(--inter), var(--adv));
+    border-radius: 1px; transition: width 0.4s ease;
+  }
+
+  /* FOOTER */
+  .footer { margin-top: 3rem; text-align: center; color: var(--hint); font-size: 12px; font-family: 'DM Mono', monospace; }
+
+  @media (max-width: 600px) {
+    .q-cat { display: none; }
+    .header-stats { gap: 1.25rem; }
+    .q-body { padding-left: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <header class="header">
+    <div class="eyebrow">Interview Prep</div>
+    <h1>Python <span>Questions</span></h1>
+    <p class="header-sub">50 curated questions from fundamentals to expert-level internals. Click any question to reveal the answer.</p>
+    <div class="header-stats">
+      <div class="stat"><span class="stat-num">50</span><span class="stat-label">Total</span></div>
+      <div class="stat"><span class="stat-num green">18</span><span class="stat-label">Basic</span></div>
+      <div class="stat"><span class="stat-num amber">18</span><span class="stat-label">Intermediate</span></div>
+      <div class="stat"><span class="stat-num red">14</span><span class="stat-label">Advanced</span></div>
+    </div>
+  </header>
+
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:100%"></div></div>
+
+  <div class="controls">
+    <div class="filter-pills">
+      <button class="pill active-all" onclick="filter('all',this)">All</button>
+      <button class="pill" onclick="filter('basic',this)">Basic</button>
+      <button class="pill" onclick="filter('intermediate',this)">Intermediate</button>
+      <button class="pill" onclick="filter('advanced',this)">Advanced</button>
+    </div>
+    <div class="search-wrap">
+      <input class="search" type="text" placeholder="Search questions or topics..." oninput="search(this.value)" />
+    </div>
+  </div>
+
+  <div class="count-label" id="count-label">Showing 50 questions</div>
+  <div class="q-list" id="qlist"></div>
+  <div class="footer">Built for Python interview preparation &mdash; 2025</div>
+</div>
+
+<script>
+const qs = [
+  {level:"basic",cat:"Basics",q:"What is Python? What are its key features?",a:"Python is a high-level, interpreted, dynamically-typed programming language. Key features: simple and readable syntax, garbage collection, extensive standard library, cross-platform, supports multiple paradigms (OOP, functional, procedural), large community."},
+  {level:"basic",cat:"Basics",q:"What is the difference between a list and a tuple?",a:"Lists are mutable (can be modified after creation) and use square brackets []. Tuples are immutable (cannot be modified) and use parentheses (). Tuples are slightly faster and can be used as dictionary keys.",code:"lst = [1,2,3]   # mutable\ntup = (1,2,3)   # immutable"},
+  {level:"basic",cat:"Basics",q:"What is PEP 8?",a:"PEP 8 is Python's official style guide. It defines conventions for code layout, indentation (4 spaces), naming conventions (snake_case for variables/functions, PascalCase for classes), line length (79 chars), and more to improve code readability."},
+  {level:"basic",cat:"Data Types",q:"What are Python's built-in data types?",a:"Numeric: int, float, complex. Sequence: str, list, tuple, range. Mapping: dict. Set: set, frozenset. Boolean: bool. Binary: bytes, bytearray. None: NoneType."},
+  {level:"basic",cat:"Basics",q:"What is the difference between == and is?",a:"== compares values (equality), while is compares identity (same object in memory). Two objects can be equal (== True) but not the same object (is False).",code:"a = [1,2]\nb = [1,2]\na == b  # True\na is b  # False"},
+  {level:"basic",cat:"Functions",q:"What is a lambda function?",a:"A lambda is an anonymous, single-expression function defined with the lambda keyword. It can take any number of arguments but contains only a single expression.",code:"square = lambda x: x ** 2\nsquare(5)  # 25\nsorted(data, key=lambda x: x[1])"},
+  {level:"basic",cat:"Basics",q:"What is the difference between mutable and immutable objects?",a:"Mutable objects can be changed after creation (list, dict, set, bytearray). Immutable objects cannot be changed (int, float, str, tuple, frozenset, bytes). Immutable objects are hashable and can be used as dict keys."},
+  {level:"basic",cat:"OOP",q:"What is the difference between a class and an object?",a:"A class is a blueprint/template that defines attributes and methods. An object (instance) is a concrete instantiation of a class. Classes define the structure; objects are the actual entities in memory.",code:"class Dog:  # class\n    def __init__(self, name):\n        self.name = name\nfido = Dog('Fido')  # object"},
+  {level:"basic",cat:"Basics",q:"How does Python manage memory?",a:"Python uses reference counting and a cyclic garbage collector. Every object has a reference count; when it reaches zero, memory is freed. The gc module handles cyclic references. Python also uses memory pools (pymalloc) for small objects."},
+  {level:"basic",cat:"Functions",q:"What is *args and **kwargs?",a:"*args allows a function to accept any number of positional arguments as a tuple. **kwargs allows any number of keyword arguments as a dictionary.",code:"def f(*args, **kwargs):\n    print(args)   # tuple\n    print(kwargs) # dict\nf(1, 2, name='Alice')"},
+  {level:"basic",cat:"Control Flow",q:"What is the difference between break, continue, and pass?",a:"break exits the loop entirely. continue skips the rest of the current iteration and moves to the next. pass is a no-op placeholder that does nothing — used where code is syntactically required."},
+  {level:"basic",cat:"Basics",q:"What are Python's comparison operators?",a:"== (equal), != (not equal), >, <, >=, <= (numeric/string comparisons), is (identity), is not, in (membership), not in."},
+  {level:"basic",cat:"Data Types",q:"How do you reverse a string or list in Python?",a:"Using slicing with step -1: s[::-1] for strings. For lists: lst[::-1] returns a new list, lst.reverse() reverses in-place, and list(reversed(lst)) also works.",code:"s = 'hello'\nprint(s[::-1])  # 'olleh'"},
+  {level:"basic",cat:"Modules",q:"What is the difference between 'import module' and 'from module import'?",a:"import module loads the module and requires module.name for access. from module import name imports the specific name into the current namespace — shorter to use but can cause naming conflicts."},
+  {level:"basic",cat:"Error Handling",q:"What is exception handling in Python?",a:"Exception handling uses try/except/else/finally blocks to handle runtime errors gracefully. try contains code that may raise, except catches errors, else runs if no error, finally always runs.",code:"try:\n    x = 1 / 0\nexcept ZeroDivisionError as e:\n    print(e)\nfinally:\n    print('done')"},
+  {level:"basic",cat:"Data Types",q:"What is a dictionary comprehension?",a:"A concise way to create dictionaries using a single expression, similar to list comprehensions.",code:"{k: v for k, v in items.items() if v > 0}\n# squares:\n{x: x**2 for x in range(5)}"},
+  {level:"basic",cat:"Functions",q:"What is the difference between append() and extend()?",a:"append() adds its argument as a single element to the end of the list (even if it's a list, it adds the whole list as one item). extend() iterates over its argument and adds each element individually.",code:"a = [1,2]\na.append([3,4])  # [1,2,[3,4]]\na = [1,2]\na.extend([3,4]) # [1,2,3,4]"},
+  {level:"basic",cat:"Basics",q:"What are Python's logical operators?",a:"and returns the first falsy value or the last value. or returns the first truthy value or the last. not returns the boolean inverse. Python uses short-circuit evaluation — stops as soon as the result is known."},
+  {level:"intermediate",cat:"Functions",q:"What is a decorator in Python?",a:"A decorator is a function that takes another function and extends or modifies its behavior without changing its source code. Implemented using closures and the @ syntax.",code:"def timer(func):\n    def wrapper(*args, **kwargs):\n        import time\n        start = time.time()\n        result = func(*args, **kwargs)\n        print(time.time()-start)\n        return result\n    return wrapper\n\n@timer\ndef slow(): time.sleep(1)"},
+  {level:"intermediate",cat:"Functions",q:"What is a generator in Python?",a:"A generator is a function that uses yield to produce a sequence of values lazily — one at a time. Generators are memory-efficient as they don't store all values at once. They return a generator object.",code:"def count_up(n):\n    i = 0\n    while i < n:\n        yield i\n        i += 1\nfor x in count_up(5):\n    print(x)"},
+  {level:"intermediate",cat:"OOP",q:"What is the difference between @staticmethod and @classmethod?",a:"@staticmethod doesn't receive any implicit first argument — it's a plain function in a class namespace. @classmethod receives the class (cls) as the first argument and can access/modify class state. Instance methods receive self."},
+  {level:"intermediate",cat:"OOP",q:"What are dunder/magic methods?",a:"Special methods with double underscores on both sides (like __init__, __str__, __repr__, __len__, __eq__). They allow classes to implement operator overloading and integrate with built-in Python behaviors.",code:"class Vector:\n    def __add__(self, other):\n        return Vector(self.x+other.x, self.y+other.y)\n    def __repr__(self):\n        return f'Vector({self.x},{self.y})'"},
+  {level:"intermediate",cat:"Functions",q:"What is a closure in Python?",a:"A closure is a function that remembers the variables from its enclosing scope even after that scope has exited. The inner function has access to variables from the outer function's scope.",code:"def make_adder(n):\n    def adder(x):\n        return x + n  # n is captured\n    return adder\nadd5 = make_adder(5)\nadd5(3)  # 8"},
+  {level:"intermediate",cat:"Data Types",q:"What is the difference between shallow copy and deep copy?",a:"A shallow copy creates a new object but populates it with references to the same nested objects. A deep copy creates a new object and recursively copies all nested objects. Use copy.copy() vs copy.deepcopy().",code:"import copy\noriginal = [[1,2],[3,4]]\nshallow = copy.copy(original)\ndeep = copy.deepcopy(original)"},
+  {level:"intermediate",cat:"Modules",q:"What is the difference between __init__.py and __main__.py?",a:"__init__.py marks a directory as a Python package and is executed on import. __main__.py is run when the package is executed directly with python -m package. if __name__ == '__main__' guards code for direct execution."},
+  {level:"intermediate",cat:"Data Types",q:"How does Python's list comprehension work and when should you use generators instead?",a:"List comprehensions create the full list in memory: [x*2 for x in range(100)]. Use generators when working with large datasets that don't all fit in memory — they lazily produce one item at a time: (x*2 for x in range(100))."},
+  {level:"intermediate",cat:"Concurrency",q:"What is the GIL (Global Interpreter Lock)?",a:"The GIL is a mutex in CPython that allows only one thread to execute Python bytecode at a time. This means multi-threading doesn't provide true parallelism for CPU-bound tasks. For CPU-bound work, use multiprocessing. The GIL doesn't affect I/O-bound tasks."},
+  {level:"intermediate",cat:"Error Handling",q:"What is the difference between Exception and BaseException?",a:"BaseException is the root of all exceptions. Exception is a subclass of BaseException and is the base for most regular errors. SystemExit, KeyboardInterrupt, GeneratorExit inherit from BaseException but NOT from Exception."},
+  {level:"intermediate",cat:"OOP",q:"What is multiple inheritance and MRO in Python?",a:"Python supports multiple inheritance (a class can inherit from multiple parents). Method Resolution Order (MRO) defines the order in which parent classes are searched. Python uses the C3 linearization algorithm. Use ClassName.__mro__ to inspect it.",code:"class C(A, B): pass\nC.__mro__  # (C, A, B, object)"},
+  {level:"intermediate",cat:"Functional",q:"What are map(), filter(), and reduce()?",a:"map(func, iter) applies func to every element. filter(func, iter) keeps elements where func returns True. reduce(func, iter) from functools applies func cumulatively. Modern Python often prefers comprehensions over these.",code:"from functools import reduce\nlist(map(str, [1,2,3]))      # ['1','2','3']\nlist(filter(bool, [0,1,2]))  # [1, 2]\nreduce(lambda a,b: a+b, [1,2,3])  # 6"},
+  {level:"intermediate",cat:"Data Types",q:"What is the difference between a set and a frozenset?",a:"A set is mutable — you can add/remove elements. A frozenset is immutable and hashable. Frozensets can be used as dictionary keys or elements of other sets. Both support set operations (union, intersection, difference)."},
+  {level:"intermediate",cat:"Data Types",q:"How do Python dictionaries maintain insertion order?",a:"Since Python 3.7+, dictionaries are guaranteed to maintain insertion order as part of the language specification. In CPython 3.6+ it was an implementation detail. Internally, dicts use a hash table with a separate compact list to track insertion order."},
+  {level:"intermediate",cat:"Context Managers",q:"What is a context manager and how does it work?",a:"A context manager defines runtime context for a block of code using with statements. It implements __enter__ (setup) and __exit__ (cleanup). Common for resource management like files, database connections, locks.",code:"with open('file.txt') as f:\n    data = f.read()\n# file automatically closed\n\nclass CM:\n    def __enter__(self): return self\n    def __exit__(self, *args): pass"},
+  {level:"intermediate",cat:"Functions",q:"What is functools.wraps and why is it important?",a:"When writing decorators, @functools.wraps(func) copies the wrapped function's metadata (name, docstring, module, etc.) to the wrapper function. Without it, the wrapper would lose the original function's identity, breaking introspection tools.",code:"from functools import wraps\ndef decorator(func):\n    @wraps(func)\n    def wrapper(*args, **kwargs):\n        return func(*args, **kwargs)\n    return wrapper"},
+  {level:"intermediate",cat:"Data Types",q:"What is the difference between str.format() and f-strings?",a:"Both format strings, but f-strings (Python 3.6+) are faster, more concise, and evaluate expressions at runtime inline. str.format() is older and slightly slower. f-strings support arbitrary Python expressions inside {}.",code:"name = 'Alice'\nf'Hello {name}'          # f-string\n'Hello {}'.format(name)  # .format()"},
+  {level:"intermediate",cat:"OOP",q:"What is method overriding vs method overloading?",a:"Python doesn't support traditional overloading (same name, different args). Instead, use default args or *args. Overriding means a subclass provides its own version of an inherited method. Use super() to call the parent's version."},
+  {level:"advanced",cat:"Internals",q:"How does Python's garbage collection work in detail?",a:"Python uses two mechanisms: (1) Reference counting — every object tracks how many references point to it; when count hits 0, memory is freed immediately. (2) Cyclic GC — the gc module detects and collects reference cycles that reference counting can't handle. It uses generational collection (3 generations) based on object age."},
+  {level:"advanced",cat:"Internals",q:"What are metaclasses in Python?",a:"A metaclass is the class of a class — it controls class creation and behavior. The default metaclass is type. Metaclasses allow you to intercept class creation, add/modify methods automatically, enforce constraints on classes, and implement ORMs and frameworks.",code:"class Meta(type):\n    def __new__(mcs, name, bases, attrs):\n        attrs['greet'] = lambda self: 'hello'\n        return super().__new__(mcs, name, bases, attrs)\n\nclass MyClass(metaclass=Meta): pass\nMyClass().greet()  # 'hello'"},
+  {level:"advanced",cat:"Internals",q:"What are descriptors in Python?",a:"A descriptor is any object that implements __get__, __set__, or __delete__. Descriptors power Python's attribute access protocol. Properties, class methods, static methods, and slots are all implemented as descriptors.",code:"class Validator:\n    def __set_name__(self, owner, name):\n        self.name = name\n    def __set__(self, obj, value):\n        if not isinstance(value, int):\n            raise TypeError('int required')\n        obj.__dict__[self.name] = value"},
+  {level:"advanced",cat:"Concurrency",q:"What is asyncio and how does async/await work?",a:"asyncio provides an event loop for running coroutines concurrently in a single thread. async def defines a coroutine. await suspends the coroutine until the awaited task completes, allowing other coroutines to run. Best for I/O-bound concurrency.",code:"async def fetch(url):\n    async with aiohttp.ClientSession() as s:\n        async with s.get(url) as r:\n            return await r.text()\n\nasyncio.run(fetch('https://example.com'))"},
+  {level:"advanced",cat:"Internals",q:"What is __slots__ and when should you use it?",a:"__slots__ restricts a class to a fixed set of attributes, preventing the creation of __dict__ per instance. This reduces memory usage significantly for classes with many instances and provides slightly faster attribute access.",code:"class Point:\n    __slots__ = ('x', 'y')\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y"},
+  {level:"advanced",cat:"Functional",q:"What are Python's functools tools and when to use them?",a:"Key functools tools: lru_cache/cache for memoization, partial for partial function application, reduce for fold operations, wraps for decorators, total_ordering to fill in comparison methods, singledispatch for function overloading.",code:"from functools import lru_cache\n@lru_cache(maxsize=128)\ndef fib(n):\n    if n < 2: return n\n    return fib(n-1) + fib(n-2)"},
+  {level:"advanced",cat:"Internals",q:"How does Python's import system work internally?",a:"When importing, Python: (1) checks sys.modules cache, (2) finds the module using finders in sys.meta_path, (3) loads it using loaders, (4) executes the module code, (5) caches it in sys.modules. Custom importers can be added via sys.meta_path."},
+  {level:"advanced",cat:"Concurrency",q:"What is the difference between threading, multiprocessing, and asyncio?",a:"threading: concurrent threads, shared memory, GIL-limited for CPU tasks, good for I/O. multiprocessing: separate processes, true parallelism for CPU-bound tasks, higher overhead. asyncio: single-threaded event loop, cooperative multitasking, best for high-concurrency I/O."},
+  {level:"advanced",cat:"OOP",q:"What is the difference between __repr__ and __str__?",a:"__repr__ returns an unambiguous, developer-facing string — ideally one that could recreate the object. __str__ returns a human-readable string. str() tries __str__ first; repr() always uses __repr__. In interactive sessions, __repr__ is shown.",code:"class Pt:\n    def __repr__(self): return f'Pt({self.x},{self.y})'\n    def __str__(self): return f'({self.x}, {self.y})'"},
+  {level:"advanced",cat:"Internals",q:"What are Python's data model and the concept of protocols?",a:"Python's data model defines interfaces via special methods (dunder methods) that integrate objects with built-in operations. Protocols are informal interfaces — if an object implements the right dunder methods (__iter__, __len__, etc.), it 'is' an iterator, sequence, etc. No formal interface declaration needed."},
+  {level:"advanced",cat:"Type System",q:"What are type hints and how does Python's typing module work?",a:"Type hints (PEP 484) add optional static type annotations. They don't affect runtime but enable static type checkers (mypy, pyright). The typing module provides List, Dict, Optional, Union, Generic, Protocol, etc. Python 3.10+ supports X | Y union syntax.",code:"from typing import Optional, List\ndef greet(name: str) -> Optional[str]:\n    if name:\n        return f'Hi {name}'\n    return None"},
+  {level:"advanced",cat:"Internals",q:"What is Python bytecode and how does CPython work?",a:"CPython compiles Python source to bytecode (.pyc files) which is then interpreted by the CPython VM (a stack-based interpreter). You can inspect bytecode with the dis module. The VM executes opcodes in a main evaluation loop (ceval.c).",code:"import dis\ndis.dis(lambda x: x+1)\n# LOAD_FAST 0 (x)\n# LOAD_CONST 1\n# BINARY_ADD\n# RETURN_VALUE"},
+  {level:"advanced",cat:"Design Patterns",q:"How would you implement the Singleton pattern in Python?",a:"Several approaches: (1) module-level variable (simplest — modules are singletons by nature), (2) using __new__ to control instance creation, (3) using a metaclass, (4) using a decorator.",code:"class Singleton:\n    _instance = None\n    def __new__(cls, *args, **kwargs):\n        if not cls._instance:\n            cls._instance = super().__new__(cls)\n        return cls._instance"},
+  {level:"advanced",cat:"Performance",q:"What are common Python performance optimization techniques?",a:"Use built-in functions/types (implemented in C), list comprehensions over loops, generators for large data, lru_cache for memoization, __slots__ for memory-heavy classes, numpy for numerical work, avoid global lookups (assign to local var), profile first with cProfile before optimizing."},
+  {level:"advanced",cat:"Testing",q:"What is the difference between unittest, pytest, and mock?",a:"unittest is Python's built-in testing framework (class-based, verbose). pytest is a popular third-party framework with simpler syntax, fixtures, parametrize, and plugins. unittest.mock (or pytest-mock) allows replacing objects with mock objects to isolate units during testing.",code:"# pytest style\ndef test_add():\n    assert add(2, 3) == 5\n\n# with mock\nfrom unittest.mock import patch\nwith patch('module.func') as m:\n    m.return_value = 42"}
+];
+
+let activeLevel = 'all', searchTerm = '';
+
+function filter(level, btn) {
+  activeLevel = level;
+  document.querySelectorAll('.pill').forEach(b => {
+    b.className = 'pill';
+  });
+  btn.classList.add('active-' + (level === 'all' ? 'all' : level));
+  render();
+}
+
+function search(val) {
+  searchTerm = val.toLowerCase();
+  render();
+}
+
+function toggle(idx) {
+  const card = document.getElementById('card-' + idx);
+  card.classList.toggle('open');
+}
+
+function render() {
+  const filtered = qs.map((q, i) => ({...q, origIdx: i})).filter(q => {
+    const levelMatch = activeLevel === 'all' || q.level === activeLevel;
+    const sm = searchTerm;
+    const searchMatch = !sm || q.q.toLowerCase().includes(sm) || q.a.toLowerCase().includes(sm) || q.cat.toLowerCase().includes(sm);
+    return levelMatch && searchMatch;
+  });
+
+  document.getElementById('count-label').textContent = `Showing ${filtered.length} of ${qs.length} questions`;
+  const pct = (filtered.length / qs.length) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+
+  const list = document.getElementById('qlist');
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty">// no results found</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map((q, i) => {
+    const codeBlock = q.code ? `<pre>${escHtml(q.code)}</pre>` : '';
+    const answerHtml = q.a.replace(/`([^`]+)`/g, '<code>$1</code>');
+    return `
+    <div class="q-card" id="card-${q.origIdx}" style="animation-delay:${Math.min(i*0.03,0.5)}s">
+      <div class="q-header" onclick="toggle(${q.origIdx})">
+        <span class="q-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="q-text">${escHtml(q.q)}</span>
+        <span class="q-cat">${q.cat}</span>
+        <span class="badge badge-${q.level}">${q.level}</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="q-body">
+        <p>${answerHtml}</p>
+        ${codeBlock}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+render();
+</script>
+</body>
+</html>
