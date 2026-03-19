@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FastAPI Interview Q&A — Senior SWE</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080810;
+    --bg2: #0d0d1a;
+    --bg3: #111120;
+    --border: #1e1e35;
+    --border2: #252540;
+    --text: #c8d0e8;
+    --text2: #6b7499;
+    --text3: #3d4268;
+    --accent: #5eead4;
+    --accent2: #f97316;
+    --accent3: #a78bfa;
+    --accent4: #34d399;
+    --accent5: #fb923c;
+    --accent6: #60a5fa;
+    --accent7: #f472b6;
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: #2a2a4a; border-radius: 3px; }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,8,16,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+  .header-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; gap: 16px;
+  }
+  .logo {
+    font-family: var(--display);
+    font-size: 16px; font-weight: 800;
+    color: #fff; letter-spacing: -0.3px;
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .header-meta { font-size: 11px; color: var(--text3); letter-spacing: 0.1em; flex-shrink: 0; }
+  .progress-wrap { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .progress-bar { width: 100px; height: 3px; background: var(--border2); border-radius: 2px; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+  .progress-label { font-size: 11px; color: var(--accent); white-space: nowrap; }
+  .search-box {
+    flex: 1; max-width: 340px;
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: 6px; padding: 6px 12px;
+    color: var(--text); font-family: var(--mono); font-size: 12px;
+  }
+  .search-box:focus { outline: none; border-color: var(--accent); }
+  .search-box::placeholder { color: var(--text3); }
+
+  /* LAYOUT */
+  .layout { max-width: 1200px; margin: 0 auto; display: flex; }
+
+  /* SIDEBAR */
+  nav {
+    width: 210px; flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    padding: 20px 0; position: sticky; top: 56px;
+    height: calc(100vh - 56px); overflow-y: auto;
+  }
+  .nav-label {
+    font-size: 9px; letter-spacing: 0.2em; color: var(--text3);
+    padding: 0 16px 8px; text-transform: uppercase;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 9px 16px; cursor: pointer; border: none;
+    background: transparent; width: 100%; text-align: left;
+    border-left: 2px solid transparent;
+    transition: all 0.15s; font-family: var(--mono);
+    color: var(--text3); font-size: 12px;
+  }
+  .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.02); }
+  .nav-item.active { color: #fff; border-left-color: var(--cat-color, var(--accent)); background: rgba(255,255,255,0.03); }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cat-color, #555); flex-shrink: 0; }
+  .nav-count { margin-left: auto; font-size: 10px; color: var(--text3); }
+
+  /* MAIN */
+  main { flex: 1; padding: 24px 28px; min-width: 0; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: 18px; font-weight: 700; color: #fff;
+  }
+  .section-count { font-size: 11px; color: var(--text3); }
+
+  /* QUESTION CARD */
+  .q-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: var(--bg2);
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .q-card:hover { border-color: var(--border2); }
+  .q-card.done { border-color: var(--cat-color-alpha, rgba(94,234,212,0.25)); background: rgba(94,234,212,0.03); }
+
+  .q-header {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px; cursor: pointer; user-select: none;
+  }
+  .q-num { font-size: 10px; color: var(--text3); flex-shrink: 0; margin-top: 2px; width: 22px; }
+  .q-check {
+    width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; margin-top: 1px;
+    border: 1px solid var(--border2); background: transparent; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; transition: all 0.15s; color: transparent;
+  }
+  .q-card.done .q-check { background: rgba(94,234,212,0.15); border-color: var(--accent); color: var(--accent); }
+  .q-text { flex: 1; font-size: 13px; line-height: 1.65; color: var(--text); }
+  .q-card.done .q-text { color: var(--text2); text-decoration: line-through; }
+  .q-chevron { flex-shrink: 0; font-size: 11px; color: var(--text3); margin-top: 3px; transition: transform 0.2s; }
+  .q-card.open .q-chevron { transform: rotate(180deg); }
+
+  /* TAGS */
+  .q-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+  .tag {
+    font-size: 10px; padding: 2px 7px; border-radius: 3px;
+    border: 1px solid; letter-spacing: 0.04em; cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .tag:hover { opacity: 0.7; }
+
+  /* ANSWER */
+  .q-answer {
+    display: none; padding: 0 16px 16px 52px;
+    border-top: 1px solid var(--border);
+    animation: slideDown 0.2s ease;
+  }
+  .q-card.open .q-answer { display: block; }
+  @keyframes slideDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
+  .answer-label {
+    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin: 14px 0 8px;
+  }
+  .answer-body {
+    font-size: 13px; line-height: 1.75; color: #a8b4d0;
+  }
+  .answer-body p { margin-bottom: 10px; }
+  .answer-body p:last-child { margin-bottom: 0; }
+  .answer-body code {
+    background: #0a0a18; border: 1px solid var(--border2);
+    border-radius: 4px; padding: 2px 6px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--accent3);
+  }
+  .answer-body pre {
+    background: #07070f; border: 1px solid var(--border);
+    border-radius: 6px; padding: 14px 16px; margin: 10px 0;
+    overflow-x: auto; font-size: 12px; color: #8b9ec8;
+    line-height: 1.6;
+  }
+  .answer-body pre .kw { color: #a78bfa; }
+  .answer-body pre .fn { color: #5eead4; }
+  .answer-body pre .str { color: #86efac; }
+  .answer-body pre .cm { color: #3d4268; }
+  .answer-body ul { padding-left: 18px; margin-bottom: 10px; }
+  .answer-body li { margin-bottom: 5px; color: #a8b4d0; }
+  .answer-body strong { color: #dde3f5; font-weight: 600; }
+  .tip-box {
+    background: rgba(94,234,212,0.05); border: 1px solid rgba(94,234,212,0.15);
+    border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-size: 12px;
+    color: #7ed8cc;
+  }
+  .tip-box::before { content: "💡 "; }
+  .warn-box {
+    background: rgba(249,115,22,0.05); border: 1px solid rgba(249,115,22,0.2);
+    border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-size: 12px;
+    color: #fb923c;
+  }
+  .warn-box::before { content: "⚠ "; }
+
+  /* FILTER RESULTS */
+  #filter-view { display: none; }
+  #filter-view.active { display: block; }
+  .filter-info { font-size: 11px; color: var(--text3); margin-bottom: 16px; }
+  .filter-cat-label {
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    margin: 14px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+
+  /* SCROLLTOP */
+  #scrolltop {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--bg3); border: 1px solid var(--border2);
+    color: var(--text2); cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  #scrolltop.show { opacity: 1; pointer-events: auto; }
+
+  @media (max-width: 768px) {
+    nav { display: none; }
+    main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo"><div class="logo-dot"></div>FastAPI Q&A</div>
+    <input class="search-box" type="text" placeholder="Search questions..." id="searchInput" oninput="handleSearch(this.value)"/>
+    <div class="header-meta">All Levels · 120 Questions</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">0/120</div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+<nav id="sidebar">
+  <div class="nav-label">Categories</div>
+</nav>
+<main id="mainContent">
+  <div id="filter-view">
+    <div class="filter-info" id="filterInfo"></div>
+    <div id="filterResults"></div>
+  </div>
+</main>
+</div>
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const CATEGORIES = [
+  { id: "basics", label: "Basics", color: "#fde68a", qs: [
+    {
+      q: "What is FastAPI and what makes it different from other Python web frameworks?",
+      tags: ["basics","intro"],
+      a: `<p>FastAPI is a modern, high-performance Python web framework for building APIs. It is built on top of <strong>Starlette</strong> (for ASGI/async) and <strong>Pydantic</strong> (for data validation).</p>
+<p><strong>Key differences from Flask/Django:</strong></p>
+<ul>
+<li>Native <code>async/await</code> support (ASGI-based, not WSGI)</li>
+<li>Automatic request validation using Python type hints</li>
+<li>Auto-generated OpenAPI docs (Swagger UI + ReDoc) out of the box</li>
+<li>One of the fastest Python frameworks — comparable to NodeJS and Go in benchmarks</li>
+<li>Built-in dependency injection system</li>
+</ul>
+<div class="tip-box">FastAPI doesn't replace Django for full-stack apps — it's laser-focused on building APIs fast and correctly.</div>`
+    },
+    {
+      q: "How do you install FastAPI and run your first app?",
+      tags: ["basics","setup"],
+      a: `<pre><span class="cm"># Install FastAPI and ASGI server</span>
+pip install fastapi uvicorn
+
+<span class="cm"># main.py</span>
+<span class="kw">from</span> fastapi <span class="kw">import</span> FastAPI
+
+app = FastAPI()
+
+<span class="kw">@app</span>.get(<span class="str">"/"</span>)
+<span class="kw">def</span> <span class="fn">root</span>():
+    <span class="kw">return</span> {<span class="str">"message"</span>: <span class="str">"Hello, World!"</span>}
+
+<span class="cm"># Run the server</span>
+uvicorn main:app --reload</pre>
+<p><code>--reload</code> enables hot-reloading during development. Visit <code>http://127.0.0.1:8000/docs</code> to see the auto-generated Swagger UI.</p>`
+    },
+    {
+      q: "What is a path operation and how do you define one in FastAPI?",
+      tags: ["basics","routing"],
+      a: `<p>A <strong>path operation</strong> is a function that handles a specific HTTP method + URL path combination. You define them using decorators.</p>
+<pre><span class="kw">@app</span>.get(<span class="str">"/items"</span>)        <span class="cm"># GET /items</span>
+<span class="kw">@app</span>.post(<span class="str">"/items"</span>)       <span class="cm"># POST /items</span>
+<span class="kw">@app</span>.put(<span class="str">"/items/{id}"</span>)   <span class="cm"># PUT /items/42</span>
+<span class="kw">@app</span>.delete(<span class="str">"/items/{id}"</span>) <span class="cm"># DELETE /items/42</span>
+<span class="kw">@app</span>.patch(<span class="str">"/items/{id}"</span>)  <span class="cm"># PATCH /items/42</span>
+
+<span class="kw">@app</span>.get(<span class="str">"/items/{item_id}"</span>)
+<span class="kw">def</span> <span class="fn">read_item</span>(item_id: int):
+    <span class="kw">return</span> {<span class="str">"id"</span>: item_id}</pre>
+<div class="tip-box">FastAPI reads the function return value and converts it to JSON automatically using jsonable_encoder.</div>`
+    },
+    {
+      q: "What are path parameters and how do you declare them?",
+      tags: ["basics","routing"],
+      a: `<p>Path parameters are variable parts of the URL path, declared inside <code>{curly braces}</code> in the route and as function arguments.</p>
+<pre><span class="kw">@app</span>.get(<span class="str">"/users/{user_id}"</span>)
+<span class="kw">def</span> <span class="fn">get_user</span>(user_id: int):   <span class="cm"># int type → auto-validated</span>
+    <span class="kw">return</span> {<span class="str">"user_id"</span>: user_id}
+
+<span class="cm"># With Enum for fixed values</span>
+<span class="kw">from</span> enum <span class="kw">import</span> Enum
+<span class="kw">class</span> <span class="fn">ModelName</span>(str, Enum):
+    alexnet = <span class="str">"alexnet"</span>
+    resnet = <span class="str">"resnet"</span>
+
+<span class="kw">@app</span>.get(<span class="str">"/models/{model}"</span>)
+<span class="kw">def</span> <span class="fn">get_model</span>(model: ModelName):
+    <span class="kw">return</span> {<span class="str">"model"</span>: model}</pre>
+<p>If the type is <code>int</code> and the client sends a string, FastAPI returns a 422 validation error automatically.</p>`
+    },
+    {
+      q: "What are query parameters and how are they different from path parameters?",
+      tags: ["basics","routing"],
+      a: `<p>Query parameters appear after the <code>?</code> in the URL (e.g. <code>/items?skip=0&limit=10</code>). In FastAPI, any function argument not in the path is treated as a query parameter.</p>
+<pre><span class="kw">@app</span>.get(<span class="str">"/items"</span>)
+<span class="kw">def</span> <span class="fn">list_items</span>(skip: int = 0, limit: int = 10, q: str | <span class="kw">None</span> = <span class="kw">None</span>):
+    <span class="kw">return</span> {<span class="str">"skip"</span>: skip, <span class="str">"limit"</span>: limit, <span class="str">"q"</span>: q}
+
+<span class="cm"># GET /items?skip=5&limit=20&q=shoe</span></pre>
+<p><strong>Difference:</strong> path params are required and part of the URL structure; query params are optional by default and come after <code>?</code>.</p>`
+    },
+    {
+      q: "How do you define a request body in FastAPI?",
+      tags: ["basics","pydantic"],
+      a: `<p>Declare a Pydantic model and use it as a parameter type. FastAPI reads it from the request body (JSON).</p>
+<pre><span class="kw">from</span> pydantic <span class="kw">import</span> BaseModel
+
+<span class="kw">class</span> <span class="fn">Item</span>(BaseModel):
+    name: str
+    price: float
+    is_offer: bool = <span class="kw">False</span>   <span class="cm"># optional with default</span>
+
+<span class="kw">@app</span>.post(<span class="str">"/items"</span>)
+<span class="kw">def</span> <span class="fn">create_item</span>(item: Item):
+    <span class="kw">return</span> item</pre>
+<p>FastAPI automatically validates the JSON, converts types, and generates the request schema in OpenAPI docs. On validation failure, a 422 response is returned with field-level error details.</p>`
+    },
+    {
+      q: "What is Pydantic and why does FastAPI use it?",
+      tags: ["basics","pydantic"],
+      a: `<p>Pydantic is a Python data validation library that uses type annotations to define and validate data structures. FastAPI uses it because:</p>
+<ul>
+<li>Validates and parses request data automatically</li>
+<li>Provides clear error messages with field-level detail</li>
+<li>Generates JSON Schema for OpenAPI documentation</li>
+<li>Converts data types (e.g. string <code>"42"</code> → int <code>42</code>)</li>
+<li>Pydantic v2 is extremely fast (Rust-based core)</li>
+</ul>
+<pre><span class="kw">from</span> pydantic <span class="kw">import</span> BaseModel, Field, EmailStr
+
+<span class="kw">class</span> <span class="fn">User</span>(BaseModel):
+    name: str = Field(min_length=2, max_length=50)
+    email: EmailStr
+    age: int = Field(ge=0, le=150)</pre>`
+    },
+    {
+      q: "How do you return different HTTP status codes in FastAPI?",
+      tags: ["basics","http"],
+      a: `<pre><span class="cm"># Default status code in decorator</span>
+<span class="kw">@app</span>.post(<span class="str">"/items"</span>, status_code=201)
+<span class="kw">def</span> <span class="fn">create_item</span>(item: Item):
+    <span class="kw">return</span> item
+
+<span class="cm"># Use HTTP status constants for readability</span>
+<span class="kw">from</span> fastapi <span class="kw">import</span> status
+
+<span class="kw">@app</span>.delete(<span class="str">"/items/{id}"</span>, status_code=status.HTTP_204_NO_CONTENT)
+<span class="kw">def</span> <span class="fn">delete_item</span>(id: int):
+    <span class="kw">return None</span></pre>
+<p>Common codes: 200 (OK), 201 (Created), 204 (No Content), 400 (Bad Request), 401 (Unauthorized), 403 (Forbidden), 404 (Not Found), 422 (Validation Error), 500 (Server Error).</p>`
+    },
+    {
+      q: "How do you raise HTTP errors in FastAPI?",
+      tags: ["basics","error-handling"],
+      a: `<pre><span class="kw">from</span> fastapi <span class="kw">import</span> HTTPException
+
+<span class="kw">@app</span>.get(<span class="str">"/items/{item_id}"</span>)
+<span class="kw">def</span> <span class="fn">get_item</span>(item_id: int):
+    item = db.get(item_id)
+    <span class="kw">if not</span> item:
+        <span class="kw">raise</span> HTTPException(
+            status_code=404,
+            detail=<span class="str">"Item not found"</span>
+        )
+    <span class="kw">return</span> item
+
+<span class="cm"># With custom headers</span>
+<span class="kw">raise</span> HTTPException(
+    status_code=403,
+    detail=<span class="str">"Access denied"</span>,
+    headers={<span class="str">"X-Error"</span>: <span class="str">"insufficient-permissions"</span>}
+)</pre>
+<div class="tip-box">HTTPException is the standard way to return error responses. The detail field can be any JSON-serializable value — a string, dict, or list.</div>`
+    },
+    {
+      q: "What is the purpose of `response_model` in FastAPI?",
+      tags: ["basics","response"],
+      a: `<p><code>response_model</code> controls what data is returned to the client. It filters the output through a Pydantic model, stripping any fields not defined in it — useful for hiding internal fields like passwords.</p>
+<pre><span class="kw">class</span> <span class="fn">UserIn</span>(BaseModel):
+    username: str; password: str
+
+<span class="kw">class</span> <span class="fn">UserOut</span>(BaseModel):
+    username: str           <span class="cm"># no password field</span>
+
+<span class="kw">@app</span>.post(<span class="str">"/users"</span>, response_model=UserOut)
+<span class="kw">def</span> <span class="fn">create_user</span>(user: UserIn):
+    return user  <span class="cm"># password is stripped from response</span></pre>
+<div class="warn-box">Always use response_model when returning DB models that contain sensitive fields — don't rely on "not using" the field in your return value.</div>`
+    },
+    {
+      q: "How do you add metadata like title, description, and version to a FastAPI app?",
+      tags: ["basics","openapi"],
+      a: `<pre>app = FastAPI(
+    title=<span class="str">"My Awesome API"</span>,
+    description=<span class="str">"""
+## My API
+
+This API does **amazing things**.
+    """</span>,
+    version=<span class="str">"1.0.0"</span>,
+    contact={
+        <span class="str">"name"</span>: <span class="str">"Dev Team"</span>,
+        <span class="str">"email"</span>: <span class="str">"dev@example.com"</span>
+    },
+    license_info={<span class="str">"name"</span>: <span class="str">"MIT"</span>},
+    docs_url=<span class="str">"/docs"</span>,
+    redoc_url=<span class="str">"/redoc"</span>
+)</pre>
+<p>The description supports Markdown. This metadata appears in the Swagger UI header and in the OpenAPI JSON spec.</p>`
+    },
+    {
+      q: "What is a Pydantic `Field` and how do you use it for validation?",
+      tags: ["basics","pydantic"],
+      a: `<p><code>Field</code> adds extra validation rules and metadata to Pydantic model fields.</p>
+<pre><span class="kw">from</span> pydantic <span class="kw">import</span> BaseModel, Field
+
+<span class="kw">class</span> <span class="fn">Product</span>(BaseModel):
+    name: str = Field(
+        min_length=1,
+        max_length=100,
+        description=<span class="str">"Product name"</span>,
+        example=<span class="str">"Laptop"</span>
+    )
+    price: float = Field(gt=0, description=<span class="str">"Must be positive"</span>)
+    quantity: int = Field(ge=0, le=1000, default=0)
+    sku: str = Field(pattern=<span class="str">r"^[A-Z]{2}\d{4}$"</span>)</pre>
+<p>Common validators: <code>gt</code> (greater than), <code>ge</code> (≥), <code>lt</code> (less than), <code>le</code> (≤), <code>min_length</code>, <code>max_length</code>, <code>pattern</code>.</p>`
+    },
+    {
+      q: "How do you use query parameters with validation in FastAPI?",
+      tags: ["basics","validation"],
+      a: `<pre><span class="kw">from</span> fastapi <span class="kw">import</span> Query
+
+<span class="kw">@app</span>.get(<span class="str">"/search"</span>)
+<span class="kw">def</span> <span class="fn">search</span>(
+    q: str = Query(min_length=3, max_length=50),
+    limit: int = Query(default=10, ge=1, le=100),
+    tags: list[str] = Query(default=[])
+):
+    <span class="kw">return</span> {<span class="str">"q"</span>: q, <span class="str">"limit"</span>: limit, <span class="str">"tags"</span>: tags}
+
+<span class="cm"># GET /search?q=shoe&tags=red&tags=blue</span>
+<span class="cm"># tags = ["red", "blue"]  — multi-value query params</span></pre>
+<div class="tip-box">Use <code>Query(...)</code> with <code>...</code> (Ellipsis) as the default to make a query parameter required with no default value.</div>`
+    },
+    {
+      q: "What is the difference between `Query`, `Path`, `Body`, and `Header` in FastAPI?",
+      tags: ["basics","parameters"],
+      a: `<p>These are FastAPI's parameter declaration functions — they tell FastAPI where to read the value from and let you add validation metadata.</p>
+<ul>
+<li><code>Query()</code>: value comes from URL query string (<code>?key=val</code>)</li>
+<li><code>Path()</code>: value comes from URL path (<code>/items/{id}</code>)</li>
+<li><code>Body()</code>: value comes from the request body (JSON)</li>
+<li><code>Header()</code>: value comes from an HTTP header</li>
+<li><code>Cookie()</code>: value comes from a cookie</li>
+</ul>
+<pre><span class="kw">from</span> fastapi <span class="kw">import</span> Path, Query, Header
+
+<span class="kw">@app</span>.get(<span class="str">"/items/{id}"</span>)
+<span class="kw">def</span> <span class="fn">read</span>(
+    id: int = Path(ge=1),
+    q: str | <span class="kw">None</span> = Query(<span class="kw">None</span>),
+    x_token: str = Header(...)
+): ...</pre>`
+    },
+    {
+      q: "How do you read headers and cookies in FastAPI?",
+      tags: ["basics","http"],
+      a: `<pre><span class="kw">from</span> fastapi <span class="kw">import</span> Header, Cookie
+
+<span class="kw">@app</span>.get(<span class="str">"/items"</span>)
+<span class="kw">def</span> <span class="fn">read_items</span>(
+    user_agent: str | <span class="kw">None</span> = Header(<span class="kw">None</span>),
+    x_token: str = Header(...),           <span class="cm"># required header</span>
+    session_id: str | <span class="kw">None</span> = Cookie(<span class="kw">None</span>)
+):
+    <span class="kw">return</span> {<span class="str">"user_agent"</span>: user_agent, <span class="str">"session"</span>: session_id}</pre>
+<p>FastAPI automatically converts header names: <code>user_agent</code> → reads <code>User-Agent</code> header (underscores become hyphens, case-insensitive). Custom headers like <code>X-Token</code> are declared as <code>x_token</code>.</p>`
+    },
+    {
+      q: "How do you set response headers and cookies in FastAPI?",
+      tags: ["basics","response"],
+      a: `<pre><span class="kw">from</span> fastapi import Response
+<span class="kw">from</span> fastapi.responses <span class="kw">import</span> JSONResponse
+
+<span class="cm"># Method 1: inject Response object</span>
+<span class="kw">@app</span>.get(<span class="str">"/items"</span>)
+<span class="kw">def</span> <span class="fn">get_items</span>(response: Response):
+    response.headers[<span class="str">"X-Custom-Header"</span>] = <span class="str">"value"</span>
+    response.set_cookie(key=<span class="str">"session"</span>, value=<span class="str">"abc123"</span>, httponly=<span class="kw">True</span>)
+    <span class="kw">return</span> [<span class="str">"item1"</span>, <span class="str">"item2"</span>]
+
+<span class="cm"># Method 2: return JSONResponse directly</span>
+<span class="kw">@app</span>.get(<span class="str">"/login"</span>)
+<span class="kw">def</span> <span class="fn">login</span>():
+    r = JSONResponse(content={<span class="str">"ok"</span>: <span class="kw">True</span>})
+    r.set_cookie(key=<span class="str">"token"</span>, value=<span class="str">"xyz"</span>, httponly=<span class="kw">True</span>, secure=<span class="kw">True</span>)
+    <span class="kw">return</span> r</pre>`
+    },
+    {
+      q: "How does FastAPI handle automatic data type conversion?",
+      tags: ["basics","validation"],
+      a: `<p>FastAPI uses Pydantic to coerce and validate incoming data. String inputs are converted to the declared type when safe:</p>
+<ul>
+<li>URL path <code>/items/42</code> → <code>item_id: int</code> receives <code>42</code> (not <code>"42"</code>)</li>
+<li>Query <code>?active=true</code> → <code>active: bool</code> receives <code>True</code></li>
+<li>Body <code>{"price": "9.99"}</code> → <code>price: float</code> receives <code>9.99</code></li>
+</ul>
+<pre><span class="kw">@app</span>.get(<span class="str">"/items/{id}"</span>)
+<span class="kw">def</span> <span class="fn">get_item</span>(id: int, active: bool = <span class="kw">True</span>):
+    <span class="cm"># id is guaranteed to be an int</span>
+    <span class="cm"># active converts "1","true","on","yes" → True</span>
+    ...</pre>
+<div class="tip-box">If conversion fails (e.g. "/items/abc" with int type), FastAPI returns 422 Unprocessable Entity with a clear error message automatically.</div>`
+    },
+    {
+      q: "What is `uvicorn` and what is its role with FastAPI?",
+      tags: ["basics","setup"],
+      a: `<p>Uvicorn is an <strong>ASGI server</strong> — it's the runtime that serves your FastAPI application. FastAPI defines your routes and logic; Uvicorn listens for HTTP connections and invokes the ASGI app.</p>
+<pre><span class="cm"># Development</span>
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+<span class="cm"># Production (with Gunicorn managing workers)</span>
+gunicorn main:app -k uvicorn.workers.UvicornWorker -w 4</pre>
+<p><strong>Other ASGI servers:</strong> Hypercorn (HTTP/2 support), Daphne (Django Channels). Uvicorn is the most commonly used with FastAPI and is maintained by the same team as Starlette.</p>`
+    },
+    {
+      q: "How does FastAPI automatically generate API documentation?",
+      tags: ["basics","openapi"],
+      a: `<p>FastAPI inspects your route decorators, type hints, Pydantic models, and docstrings at app startup to build an OpenAPI 3.x specification automatically.</p>
+<ul>
+<li><strong>Swagger UI</strong> → <code>/docs</code> — interactive, lets you test endpoints directly from the browser</li>
+<li><strong>ReDoc</strong> → <code>/redoc</code> — cleaner read-only documentation</li>
+<li><strong>Raw JSON spec</strong> → <code>/openapi.json</code></li>
+</ul>
+<pre><span class="kw">@app</span>.get(<span class="str">"/items/{id}"</span>, summary=<span class="str">"Get an item"</span>, tags=[<span class="str">"items"</span>])
+<span class="kw">def</span> <span class="fn">get_item</span>(id: int):
+    <span class="str">"""
+    Retrieve a single item by ID.
+
+    - **id**: unique item identifier
+    """</span>
+    ...</pre>
+<div class="tip-box">The docstring is used as the description in Swagger UI and supports Markdown formatting.</div>`
+    },
+    {
+      q: "How do you use `startup` and `shutdown` events in FastAPI?",
+      tags: ["basics","lifecycle"],
+      a: `<pre><span class="cm"># Modern approach: lifespan context manager (recommended)</span>
+<span class="kw">from</span> contextlib <span class="kw">import</span> asynccontextmanager
+
+<span class="kw">@asynccontextmanager</span>
+<span class="kw">async def</span> <span class="fn">lifespan</span>(app: FastAPI):
+    <span class="cm"># Startup: runs before app starts</span>
+    <span class="kw">await</span> database.connect()
+    <span class="kw">yield</span>
+    <span class="cm"># Shutdown: runs when app stops</span>
+    <span class="kw">await</span> database.disconnect()
+
+app = FastAPI(lifespan=lifespan)
+
+<span class="cm"># Old approach (still works)</span>
+<span class="kw">@app</span>.on_event(<span class="str">"startup"</span>)
+<span class="kw">async def</span> <span class="fn">startup</span>(): <span class="kw">await</span> database.connect()
+
+<span class="kw">@app</span>.on_event(<span class="str">"shutdown"</span>)
+<span class="kw">async def</span> <span class="fn">shutdown</span>(): <span class="kw">await</span> database.disconnect()</pre>`
+    },
+    {
+      q: "What is middleware in FastAPI and how do you add it?",
+      tags: ["basics","middleware"],
+      a: `<p>Middleware is a function that runs on every request before it reaches a route handler, and on every response before it's sent. Used for logging, auth, CORS, compression, etc.</p>
+<pre><span class="kw">import</span> time
+<span class="kw">from</span> fastapi <span class="kw">import</span> Request
+
+<span class="kw">@app</span>.middleware(<span class="str">"http"</span>)
+<span class="kw">async def</span> <span class="fn">log_requests</span>(request: Request, call_next):
+    start = time.time()
+    response = <span class="kw">await</span> call_next(request)   <span class="cm"># call the route handler</span>
+    duration = time.time() - start
+    response.headers[<span class="str">"X-Process-Time"</span>] = str(duration)
+    <span class="kw">return</span> response
+
+<span class="cm"># Add pre-built middleware</span>
+<span class="kw">from</span> fastapi.middleware.cors <span class="kw">import</span> CORSMiddleware
+app.add_middleware(CORSMiddleware, allow_origins=[<span class="str">"*"</span>])</pre>`
+    },
+  ]},
+  { id: "core", label: "Core Fundamentals", color: "#5eead4", qs: [
+    {
+      q: "How does FastAPI leverage Python type hints, and what advantages does this provide over Flask or Django REST Framework?",
+      tags: ["architecture","typing"],
+      a: `FastAPI uses Python's type hint system (PEP 484) as first-class citizens — not just for IDE completion, but as the actual runtime contract for request validation, serialization, and OpenAPI generation.
+
+<p>When you annotate a path parameter as <code>user_id: int</code>, FastAPI uses Pydantic under the hood to coerce and validate it at runtime. Flask and DRF require explicit serializer/form classes separate from your function signature.</p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Single source of truth — types drive validation, docs, and editor support simultaneously</li>
+<li>Zero boilerplate validation code for common cases</li>
+<li>Automatic OpenAPI spec with accurate schema types</li>
+<li>Pydantic v2 uses Rust-compiled core, making validation extremely fast</li>
+</ul>
+<pre><span class="cm"># FastAPI — type hints ARE the contract</span>
+<span class="kw">async def</span> <span class="fn">get_user</span>(user_id: int, active: bool = <span class="kw">True</span>):
+    ...
+
+<span class="cm"># Flask — manual validation needed</span>
+<span class="kw">def</span> <span class="fn">get_user</span>():
+    user_id = request.args.get(<span class="str">'user_id'</span>, type=int)
+    <span class="kw">if</span> user_id <span class="kw">is None</span>: abort(422)</pre>
+<div class="tip-box">DRF's serializers are powerful but verbose — FastAPI collapses the serializer + view layers into one type-annotated function.</div>`
+    },
+    {
+      q: "Explain the ASGI vs WSGI distinction and why FastAPI is built on ASGI.",
+      tags: ["async","architecture"],
+      a: `<p><strong>WSGI</strong> (Web Server Gateway Interface) is synchronous — one request ties up one thread/process. Django and Flask use it. <strong>ASGI</strong> (Asynchronous Server Gateway Interface) is async-first: a single process can handle thousands of concurrent connections via an event loop.</p>
+<p>FastAPI is built on Starlette which is ASGI-native. This enables:</p>
+<ul>
+<li>Native <code>async/await</code> route handlers with no thread overhead</li>
+<li>WebSocket support as a first-class feature</li>
+<li>HTTP/2 and Server-Sent Events</li>
+<li>Long-lived connections (chat, streaming) without blocking</li>
+</ul>
+<pre><span class="cm"># ASGI app signature</span>
+<span class="kw">async def</span> <span class="fn">app</span>(scope, receive, send):
+    <span class="cm"># scope: request metadata</span>
+    <span class="cm"># receive: async callable to get body</span>
+    <span class="cm"># send: async callable to send response</span></pre>
+<div class="tip-box">Uvicorn is the ASGI server; Gunicorn manages worker processes. Together: gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app</div>`
+    },
+    {
+      q: "How does FastAPI's dependency injection system work? Walk me through the lifecycle of a dependency.",
+      tags: ["DI","design"],
+      a: `<p>FastAPI's DI resolves the dependency graph at startup and injects resolved values into your route handlers. Dependencies are declared using <code>Depends()</code>.</p>
+<p><strong>Lifecycle:</strong></p>
+<ul>
+<li>Request comes in → FastAPI inspects function signature</li>
+<li>Finds <code>Depends(get_db)</code> → calls <code>get_db()</code> (which may itself have dependencies)</li>
+<li>If generator (<code>yield</code>): runs pre-yield code, injects value, runs post-yield after response</li>
+<li>Result is cached per-request by default (<code>use_cache=True</code>)</li>
+</ul>
+<pre><span class="kw">async def</span> <span class="fn">get_db</span>():
+    db = SessionLocal()
+    <span class="kw">try</span>:
+        <span class="kw">yield</span> db      <span class="cm"># injected here</span>
+    <span class="kw">finally</span>:
+        db.close()   <span class="cm"># runs after response</span>
+
+<span class="kw">async def</span> <span class="fn">get_user</span>(db = Depends(get_db)):
+    ...</pre>
+<div class="tip-box">Dependencies can be nested — get_current_user can depend on get_db. FastAPI resolves them as a DAG.</div>`
+    },
+    {
+      q: "What is Starlette and what does FastAPI inherit from it?",
+      tags: ["internals"],
+      a: `<p>Starlette is a lightweight ASGI framework by Encode. FastAPI is literally a subclass of Starlette's <code>Starlette</code> app — it inherits routing, middleware, WebSockets, background tasks, static files, test client, and exception handling.</p>
+<p>FastAPI adds on top: Pydantic integration, automatic OpenAPI, the DI system, and type-driven request/response handling.</p>
+<p>You can use Starlette directly for a leaner API but lose all the type-driven machinery. In practice, Starlette is useful for non-HTTP handlers (WebSockets, raw ASGI mounts) within a FastAPI app.</p>`
+    },
+    {
+      q: "Explain the role of Pydantic in FastAPI. What happens internally when a request body is validated?",
+      tags: ["pydantic","validation"],
+      a: `<p>Pydantic models define the shape, types, and constraints of request/response data. FastAPI uses them for deserialization, validation, and OpenAPI schema generation.</p>
+<p><strong>Internal flow for request body:</strong></p>
+<ul>
+<li>FastAPI reads raw JSON bytes from the request</li>
+<li>Passes to <code>Model.model_validate()</code> (v2) or <code>Model.parse_obj()</code> (v1)</li>
+<li>Pydantic v2 compiles validators to a Rust core at class-definition time</li>
+<li>On validation error → 422 Unprocessable Entity with field-level error detail</li>
+<li>On success → typed Python object passed to your handler</li>
+</ul>
+<pre><span class="kw">class</span> <span class="fn">Item</span>(BaseModel):
+    name: str
+    price: float = Field(gt=0)
+    tags: list[str] = []
+
+<span class="kw">async def</span> <span class="fn">create_item</span>(item: Item):  <span class="cm"># body auto-validated</span>
+    ...</pre>
+<div class="tip-box">With Pydantic v2, model compilation is ~5-50x faster than v1 due to the pydantic-core Rust extension.</div>`
+    },
+    {
+      q: "How does FastAPI generate OpenAPI specs automatically?",
+      tags: ["openapi","docs"],
+      a: `<p>At startup, FastAPI iterates all registered routes, inspects their signature type hints, Pydantic models, response_model, status_code, tags, and docstrings to build a JSON Schema / OpenAPI 3.x document.</p>
+<ul>
+<li>Path/query/body parameters → inferred from signature annotations</li>
+<li>Request body schema → from Pydantic model's <code>.schema()</code></li>
+<li>Response schema → from <code>response_model</code></li>
+<li>Served at <code>/openapi.json</code>, visualized at <code>/docs</code> (Swagger) and <code>/redoc</code></li>
+</ul>
+<p>You can customize: <code>FastAPI(openapi_tags=[...], docs_url="/api/docs", openapi_url="/api/openapi.json")</code>, or override <code>app.openapi()</code> for full control.</p>`
+    },
+    {
+      q: "What is the difference between `response_model` and annotating the return type directly?",
+      tags: ["response","typing"],
+      a: `<p>Both control the output schema, but <code>response_model</code> is FastAPI's mechanism and takes precedence. Key differences:</p>
+<ul>
+<li><code>response_model=UserOut</code>: FastAPI filters/validates the actual return value through the model — sensitive fields not in UserOut are stripped</li>
+<li>Return type annotation <code>-> UserOut</code>: provides type hints for editors and mypy but FastAPI does NOT automatically filter through it (unless you set <code>response_model</code> explicitly)</li>
+</ul>
+<pre><span class="cm"># response_model actively filters output</span>
+<span class="kw">async def</span> <span class="fn">get_user</span>() -> UserDB:           <span class="cm"># returns hashed_password</span>
+    ...
+<span class="cm"># vs</span>
+<span class="kw">@app.get</span>(<span class="str">"/user"</span>, response_model=UserPublic): <span class="cm"># strips hashed_password</span></pre>
+<div class="warn-box">Never rely solely on return type annotation to prevent sensitive field leakage — always use response_model.</div>`
+    },
+    {
+      q: "Explain `APIRouter` — how do you structure a large application using routers?",
+      tags: ["routing","architecture"],
+      a: `<p><code>APIRouter</code> is FastAPI's modular routing system. You define routes in separate files/modules and include them in the main app.</p>
+<pre><span class="cm"># routers/users.py</span>
+router = APIRouter(prefix=<span class="str">"/users"</span>, tags=[<span class="str">"users"</span>])
+
+<span class="kw">@router</span>.get(<span class="str">"/{user_id}"</span>)
+<span class="kw">async def</span> <span class="fn">get_user</span>(user_id: int): ...
+
+<span class="cm"># main.py</span>
+app.include_router(router)
+app.include_router(admin_router, prefix=<span class="str">"/admin"</span>, dependencies=[Depends(require_admin)])</pre>
+<p><strong>Limitations:</strong> Dependencies on <code>include_router</code> run for all routes in that router — you can't conditionally exclude them per-route without moving the dependency to the individual route.</p>`
+    },
+    {
+      q: "What is `BackgroundTasks` in FastAPI and when should you use it vs Celery/ARQ?",
+      tags: ["async","tasks"],
+      a: `<p><code>BackgroundTasks</code> runs functions after the response is sent, in the same process/event loop. It's simple, no broker needed.</p>
+<pre><span class="kw">async def</span> <span class="fn">send_email</span>(bg: BackgroundTasks, email: str):
+    bg.add_task(send_email_task, email)
+    <span class="kw">return</span> {<span class="str">"status"</span>: <span class="str">"queued"</span>}</pre>
+<p><strong>Use BackgroundTasks for:</strong> fire-and-forget logging, sending a single email, lightweight non-critical tasks.</p>
+<p><strong>Use Celery/ARQ for:</strong> tasks that must survive server restarts, tasks needing retries/scheduling, high-volume distributed work, tasks > a few seconds, or tasks that need monitoring.</p>
+<div class="warn-box">BackgroundTasks does NOT persist across crashes. If the server restarts mid-task, it's lost.</div>`
+    },
+    {
+      q: "How do you handle file uploads in FastAPI? What's the difference between `File` and `UploadFile`?",
+      tags: ["files","forms"],
+      a: `<p><code>File</code> reads the entire file into memory as <code>bytes</code>. <code>UploadFile</code> wraps a SpooledTemporaryFile — small files stay in memory, large ones spool to disk.</p>
+<pre><span class="kw">async def</span> <span class="fn">upload</span>(file: UploadFile = File(...)):
+    contents = <span class="kw">await</span> file.read()
+    <span class="cm"># file.filename, file.content_type available</span>
+    <span class="cm"># for large files, use file.read(chunk_size)</span></pre>
+<p>For large file uploads, stream with <code>while chunk := await file.read(1024*64): ...</code> to avoid loading into memory. Use <code>aiofiles</code> for async disk writes.</p>`
+    },
+    {
+      q: "How does `Depends()` with `use_cache=True` vs `use_cache=False` work?",
+      tags: ["DI","caching"],
+      a: `<p>By default, <code>use_cache=True</code> means if the same dependency function is declared in multiple places within the same request, FastAPI only calls it once and reuses the result.</p>
+<pre><span class="kw">async def</span> <span class="fn">get_current_user</span>(token = Depends(decode_token)):
+    ...
+
+<span class="kw">async def</span> <span class="fn">endpoint</span>(
+    user1 = Depends(get_current_user),  <span class="cm"># called once</span>
+    user2 = Depends(get_current_user),  <span class="cm"># reuses cached result</span>
+): ...</pre>
+<p>Set <code>use_cache=False</code> when the dependency has side effects you need repeated (e.g., generating a unique request ID each time, or refreshing a non-deterministic token).</p>`
+    },
+    {
+      q: "How do you dynamically return different HTTP status codes in FastAPI?",
+      tags: ["http","response"],
+      a: `<p>The <code>status_code</code> in the decorator is the default for the OpenAPI spec. To return different codes dynamically, use <code>Response</code> or <code>JSONResponse</code>:</p>
+<pre><span class="kw">from</span> fastapi.responses <span class="kw">import</span> JSONResponse
+
+<span class="kw">async def</span> <span class="fn">create_or_update</span>(item: Item):
+    existing = db.get(item.id)
+    <span class="kw">if</span> existing:
+        db.update(item)
+        <span class="kw">return</span> JSONResponse(content=item.dict(), status_code=200)
+    db.insert(item)
+    <span class="kw">return</span> JSONResponse(content=item.dict(), status_code=201)</pre>
+<p>You can also inject <code>response: Response</code> as a parameter and set <code>response.status_code = 202</code> without changing the response body type.</p>`
+    },
+    {
+      q: "What is the Form data limitation when mixing with JSON body?",
+      tags: ["forms","http"],
+      a: `<p>HTTP does not allow a single request to have both <code>Content-Type: application/json</code> AND <code>Content-Type: multipart/form-data</code> or <code>application/x-www-form-urlencoded</code>. FastAPI enforces this.</p>
+<p>If you need a file upload + structured data, encode the structured data as a JSON string field within the form, or use a multipart request where the JSON is one of the parts.</p>
+<div class="warn-box">You cannot declare a Pydantic body model AND Form fields on the same endpoint — FastAPI will raise an error at startup.</div>`
+    },
+    {
+      q: "How does FastAPI handle Python's `Optional` type vs required fields in Pydantic models?",
+      tags: ["pydantic","typing"],
+      a: `<p>In Pydantic v2, <code>Optional[str]</code> means the field can be <code>None</code> but is still <strong>required</strong> unless you add a default. Common confusion:</p>
+<pre><span class="kw">class</span> <span class="fn">Model</span>(BaseModel):
+    a: Optional[str]          <span class="cm"># required, but can be None</span>
+    b: Optional[str] = None   <span class="cm"># optional, defaults to None</span>
+    c: str | None = None      <span class="cm"># same as b, v2 style</span>
+    d: str                    <span class="cm"># required, cannot be None</span></pre>
+<div class="tip-box">In Pydantic v2, prefer <code>str | None = None</code> over <code>Optional[str] = None</code> for clarity. The behavior is identical but the new union syntax is more explicit.</div>`
+    },
+    {
+      q: "How do you implement path operation ordering in FastAPI and why does it matter?",
+      tags: ["routing"],
+      a: `<p>FastAPI evaluates routes in the order they are defined. More specific routes must come before general/wildcard ones.</p>
+<pre><span class="cm"># WRONG — /users/me will be caught by /{user_id}</span>
+<span class="kw">@app</span>.get(<span class="str">"/users/{user_id}"</span>)
+<span class="kw">@app</span>.get(<span class="str">"/users/me"</span>)       <span class="cm"># never reached</span>
+
+<span class="cm"># CORRECT</span>
+<span class="kw">@app</span>.get(<span class="str">"/users/me"</span>)       <span class="cm"># specific first</span>
+<span class="kw">@app</span>.get(<span class="str">"/users/{user_id}"</span>)</pre>`
+    },
+    {
+      q: "How do you implement request/response serialization for complex nested Pydantic models?",
+      tags: ["pydantic","serialization"],
+      a: `<p>Pydantic handles nested models natively. For responses, use <code>model.model_dump()</code> (v2) or <code>model.dict()</code> (v1) with options like <code>exclude_none</code>, <code>by_alias</code>.</p>
+<pre><span class="kw">class</span> <span class="fn">Address</span>(BaseModel):
+    city: str
+    country: str
+
+<span class="kw">class</span> <span class="fn">User</span>(BaseModel):
+    name: str
+    address: Address          <span class="cm"># nested model</span>
+    friends: list[<span class="str">'User'</span>]    <span class="cm"># recursive — use model_rebuild()</span>
+
+User.model_rebuild()          <span class="cm"># resolve forward refs (v2)</span></pre>
+<p>For custom serialization logic, use <code>@field_serializer</code> (v2) or <code>@validator</code>/<code>json_encoders</code> (v1).</p>`
+    },
+    {
+      q: "What are `include_in_schema`, `deprecated`, and `tags` in route definitions?",
+      tags: ["openapi","docs"],
+      a: `<ul>
+<li><code>include_in_schema=False</code>: hides the route from OpenAPI docs (good for internal/health endpoints)</li>
+<li><code>deprecated=True</code>: marks the route as deprecated in Swagger UI with a visual indicator, without removing it</li>
+<li><code>tags=["users"]</code>: groups routes in Swagger UI; also used to organize tag descriptions in the top-level openapi spec</li>
+</ul>
+<pre><span class="kw">@app</span>.get(<span class="str">"/internal"</span>, include_in_schema=<span class="kw">False</span>)
+<span class="kw">@app</span>.get(<span class="str">"/old-endpoint"</span>, deprecated=<span class="kw">True</span>, tags=[<span class="str">"legacy"</span>])</pre>`
+    },
+    {
+      q: "How do you implement OAuth2 Password flow in FastAPI from login to protected endpoint?",
+      tags: ["auth","openapi"],
+      a: `<pre><span class="kw">from</span> fastapi.security <span class="kw">import</span> OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=<span class="str">"/token"</span>)
+
+<span class="kw">@app</span>.post(<span class="str">"/token"</span>)
+<span class="kw">async def</span> <span class="fn">login</span>(form: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate(form.username, form.password)
+    token = create_jwt(user.id)
+    <span class="kw">return</span> {<span class="str">"access_token"</span>: token, <span class="str">"token_type"</span>: <span class="str">"bearer"</span>}
+
+<span class="kw">async def</span> <span class="fn">get_current_user</span>(token: str = Depends(oauth2_scheme)):
+    payload = verify_jwt(token)  <span class="cm"># raises 401 on failure</span>
+    <span class="kw">return</span> get_user(payload[<span class="str">"sub"</span>])
+
+<span class="kw">@app</span>.get(<span class="str">"/me"</span>)
+<span class="kw">async def</span> <span class="fn">profile</span>(user = Depends(get_current_user)):
+    <span class="kw">return</span> user</pre>
+<p>This also wires up the "Authorize" button in Swagger UI automatically.</p>`
+    },
+  ]},
+  { id: "async", label: "Async & Concurrency", color: "#f97316", qs: [
+    {
+      q: "What is the difference between `async def` and `def` route handlers in FastAPI?",
+      tags: ["async","performance"],
+      a: `<p><code>async def</code> routes run directly on the event loop. <code>def</code> (sync) routes are automatically run in a thread pool executor by FastAPI to avoid blocking the event loop.</p>
+<pre><span class="kw">@app</span>.get(<span class="str">"/sync"</span>)
+<span class="kw">def</span> <span class="fn">sync_handler</span>():          <span class="cm"># runs in threadpool</span>
+    time.sleep(1)             <span class="cm"># blocking — OK here</span>
+
+<span class="kw">@app</span>.get(<span class="str">"/async"</span>)
+<span class="kw">async def</span> <span class="fn">async_handler</span>():   <span class="cm"># runs on event loop</span>
+    <span class="kw">await</span> asyncio.sleep(1)   <span class="cm"># non-blocking</span></pre>
+<div class="warn-box">Never call blocking code (time.sleep, sync DB calls) inside an async def handler — it will freeze the event loop and hurt all concurrent requests.</div>`
+    },
+    {
+      q: "What are the pitfalls of blocking the event loop in an async FastAPI handler?",
+      tags: ["async","pitfalls"],
+      a: `<p>The event loop is single-threaded. Any blocking call in an <code>async def</code> handler holds up ALL other requests until it completes.</p>
+<p><strong>Common blocking pitfalls:</strong></p>
+<ul>
+<li><code>requests.get()</code> — use <code>httpx.AsyncClient</code> instead</li>
+<li><code>time.sleep()</code> — use <code>await asyncio.sleep()</code></li>
+<li>Sync SQLAlchemy ORM calls — use async SQLAlchemy 2.0 or run in executor</li>
+<li>Heavy CPU computation — use <code>run_in_executor</code> or separate process pool</li>
+<li><code>open()</code> file I/O — use <code>aiofiles</code></li>
+</ul>
+<div class="tip-box">Use the <code>asyncio-mode=auto</code> with pytest and block-detector libraries in CI to catch accidental blocking calls.</div>`
+    },
+    {
+      q: "Explain how FastAPI handles concurrent requests.",
+      tags: ["async","concurrency"],
+      a: `<p>FastAPI uses Uvicorn (ASGI server) which runs an asyncio event loop per worker process. Each request is a coroutine. While one coroutine is awaiting I/O, the event loop runs other coroutines.</p>
+<ul>
+<li>Concurrency within one process: handled by asyncio (cooperative multitasking)</li>
+<li>Parallelism across CPU cores: handled by Gunicorn spawning multiple Uvicorn workers</li>
+<li>Sync routes: run in a thread pool (default 40 threads via <code>anyio.to_thread.run_sync</code>)</li>
+</ul>
+<p>For CPU-bound tasks, neither async nor threads help — use <code>ProcessPoolExecutor</code> or a task queue.</p>`
+    },
+    {
+      q: "What is `anyio` and why does FastAPI/Starlette use it?",
+      tags: ["async","internals"],
+      a: `<p><code>anyio</code> is an async compatibility layer that abstracts over <code>asyncio</code> and <code>trio</code>. Starlette uses it so applications are backend-agnostic.</p>
+<p>For FastAPI developers the practical implication: Starlette's <code>run_in_threadpool</code> uses <code>anyio.to_thread.run_sync</code>, which properly handles cancellation and doesn't leak threads. You get this for free when using <code>def</code> handlers.</p>
+<pre><span class="cm"># Equivalent to how FastAPI runs sync handlers</span>
+<span class="kw">import</span> anyio
+result = <span class="kw">await</span> anyio.to_thread.run_sync(sync_function, arg)</pre>`
+    },
+    {
+      q: "How do you implement async streaming responses in FastAPI?",
+      tags: ["async","streaming"],
+      a: `<pre><span class="kw">from</span> fastapi.responses <span class="kw">import</span> StreamingResponse
+<span class="kw">import</span> asyncio
+
+<span class="kw">async def</span> <span class="fn">event_stream</span>():
+    <span class="kw">for</span> i <span class="kw">in</span> range(100):
+        <span class="kw">yield</span> f<span class="str">"data: chunk {i}\n\n"</span>
+        <span class="kw">await</span> asyncio.sleep(0.1)
+
+<span class="kw">@app</span>.get(<span class="str">"/stream"</span>)
+<span class="kw">async def</span> <span class="fn">stream</span>():
+    <span class="kw">return</span> StreamingResponse(event_stream(), media_type=<span class="str">"text/event-stream"</span>)</pre>
+<p>Use cases: LLM token streaming, large file downloads, real-time dashboards, log tailing. Set <code>X-Accel-Buffering: no</code> header when behind nginx to prevent response buffering.</p>`
+    },
+    {
+      q: "How do you implement WebSockets in FastAPI?",
+      tags: ["websockets","async"],
+      a: `<pre><span class="kw">from</span> fastapi <span class="kw">import</span> WebSocket, WebSocketDisconnect
+
+<span class="kw">@app</span>.websocket(<span class="str">"/ws/{client_id}"</span>)
+<span class="kw">async def</span> <span class="fn">websocket_endpoint</span>(ws: WebSocket, client_id: int):
+    <span class="kw">await</span> ws.accept()
+    <span class="kw">try</span>:
+        <span class="kw">while True</span>:
+            data = <span class="kw">await</span> ws.receive_text()
+            <span class="kw">await</span> ws.send_text(f<span class="str">"Echo: {data}"</span>)
+    <span class="kw">except</span> WebSocketDisconnect:
+        manager.disconnect(client_id)</pre>
+<p>For multi-server WebSocket broadcasting, you need a pub/sub backend (Redis Pub/Sub) since connections are per-process. A <code>ConnectionManager</code> class handles local connection state.</p>`
+    },
+    {
+      q: "What is `run_in_executor` and when is it appropriate in FastAPI?",
+      tags: ["async","threadpool"],
+      a: `<p><code>loop.run_in_executor(executor, func, *args)</code> runs a synchronous function in a thread pool without blocking the event loop.</p>
+<pre><span class="kw">import</span> asyncio
+
+<span class="kw">async def</span> <span class="fn">handler</span>():
+    loop = asyncio.get_event_loop()
+    result = <span class="kw">await</span> loop.run_in_executor(
+        <span class="kw">None</span>,            <span class="cm"># None = default ThreadPoolExecutor</span>
+        sync_db_call,
+        user_id
+    )</pre>
+<p><strong>When to use:</strong> calling legacy sync libraries (old SQLAlchemy, some SDKs), CPU-light blocking I/O. Use <code>ProcessPoolExecutor</code> for CPU-heavy work. In FastAPI, simply using <code>def</code> instead of <code>async def</code> achieves the same thing automatically.</p>`
+    },
+    {
+      q: "How does connection pooling interact with async in FastAPI?",
+      tags: ["async","database"],
+      a: `<p>Each async DB library (asyncpg, aiomysql, databases) maintains its own connection pool. Key settings:</p>
+<ul>
+<li><code>min_size</code>/<code>max_size</code>: minimum/maximum connections in pool</li>
+<li>Pool is shared across all coroutines — no per-thread overhead</li>
+<li>Max connections should match your DB server's limit / num workers</li>
+</ul>
+<pre><span class="cm"># SQLAlchemy async engine</span>
+engine = create_async_engine(
+    DATABASE_URL,
+    pool_size=20,
+    max_overflow=10,
+    pool_pre_ping=<span class="kw">True</span>     <span class="cm"># validate connections on checkout</span>
+)</pre>
+<div class="tip-box">With 4 Uvicorn workers × pool_size=20, you can create 80 DB connections. Make sure your DB accepts this many.</div>`
+    },
+    {
+      q: "Explain `asyncio.gather` vs `asyncio.create_task` in a FastAPI endpoint.",
+      tags: ["async","patterns"],
+      a: `<p><code>asyncio.gather(*coros)</code> runs coroutines concurrently and waits for all. <code>asyncio.create_task(coro)</code> schedules a coroutine immediately but doesn't wait — it runs in the background.</p>
+<pre><span class="cm"># gather: concurrent fan-out, wait for all</span>
+user, orders = <span class="kw">await</span> asyncio.gather(
+    get_user(uid), get_orders(uid)
+)
+
+<span class="cm"># create_task: fire and manage lifecycle manually</span>
+task = asyncio.create_task(background_sync())
+<span class="cm"># task runs independently; must await or cancel</span></pre>
+<p>In FastAPI routes, prefer <code>gather</code> for parallel I/O fan-out. Use <code>create_task</code> + <code>BackgroundTasks</code> for true fire-and-forget, but ensure you handle task exceptions.</p>`
+    },
+    {
+      q: "How do you handle async context managers in FastAPI dependencies?",
+      tags: ["async","DI"],
+      a: `<pre><span class="cm"># Generator dependency — clean up after response</span>
+<span class="kw">async def</span> <span class="fn">get_db</span>():
+    <span class="kw">async with</span> AsyncSession(engine) <span class="kw">as</span> session:
+        <span class="kw">yield</span> session
+        <span class="cm"># session.__aexit__ called after route finishes</span>
+
+<span class="cm"># Or manually</span>
+<span class="kw">async def</span> <span class="fn">get_redis</span>():
+    client = aioredis.from_url(<span class="str">"redis://localhost"</span>)
+    <span class="kw">try</span>:
+        <span class="kw">yield</span> client
+    <span class="kw">finally</span>:
+        <span class="kw">await</span> client.close()</pre>
+<p>For app-level (startup/shutdown) context managers, use lifespan:</p>
+<pre><span class="kw">@asynccontextmanager</span>
+<span class="kw">async def</span> <span class="fn">lifespan</span>(app):
+    <span class="kw">await</span> db.connect()
+    <span class="kw">yield</span>
+    <span class="kw">await</span> db.disconnect()
+app = FastAPI(lifespan=lifespan)</pre>`
+    },
+    {
+      q: "Describe how to implement Server-Sent Events (SSE) vs WebSockets.",
+      tags: ["streaming","async"],
+      a: `<p><strong>SSE:</strong> unidirectional (server→client), HTTP-based, auto-reconnect built-in, firewall-friendly, simpler.</p>
+<p><strong>WebSockets:</strong> bidirectional, requires upgrade handshake, more complex, needed when client sends frequent messages.</p>
+<pre><span class="cm"># SSE with FastAPI</span>
+<span class="kw">async def</span> <span class="fn">sse_generator</span>(request: Request):
+    <span class="kw">async for</span> event <span class="kw">in</span> event_source:
+        <span class="kw">if await</span> request.is_disconnected():
+            <span class="kw">break</span>
+        <span class="kw">yield</span> f<span class="str">"data: {json.dumps(event)}\n\n"</span>
+
+<span class="kw">return</span> StreamingResponse(sse_generator(request),
+    media_type=<span class="str">"text/event-stream"</span>,
+    headers={<span class="str">"Cache-Control"</span>: <span class="str">"no-cache"</span>})</pre>
+<div class="tip-box">For LLM APIs (like OpenAI streaming), SSE is ideal. For collaborative real-time apps (cursors, chat), WebSockets are necessary.</div>`
+    },
+    {
+      q: "How do you handle backpressure and rate limiting at the async level in FastAPI?",
+      tags: ["async","performance"],
+      a: `<p>Backpressure is when a slow consumer falls behind a fast producer. Strategies:</p>
+<ul>
+<li><strong>Semaphore limiting:</strong> cap concurrent DB/external calls with <code>asyncio.Semaphore</code></li>
+<li><strong>slowapi:</strong> rate limiting middleware using a token bucket per IP/API key</li>
+<li><strong>Queue-based:</strong> put work into <code>asyncio.Queue</code> and limit worker consumers</li>
+</ul>
+<pre><span class="kw">from</span> slowapi <span class="kw">import</span> Limiter
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+
+<span class="kw">@app</span>.get(<span class="str">"/api"</span>)
+<span class="kw">@limiter</span>.limit(<span class="str">"100/minute"</span>)
+<span class="kw">async def</span> <span class="fn">endpoint</span>(request: Request): ...</pre>`
+    },
+    {
+      q: "What happens when an unhandled exception occurs inside an async route handler?",
+      tags: ["async","error-handling"],
+      a: `<p>FastAPI catches unhandled exceptions in route handlers and returns a 500 Internal Server Error response. The exception is also passed to any registered <code>exception_handler</code>.</p>
+<pre><span class="kw">@app</span>.exception_handler(Exception)
+<span class="kw">async def</span> <span class="fn">global_handler</span>(request, exc):
+    logger.exception(<span class="str">"Unhandled error"</span>, exc_info=exc)
+    <span class="kw">return</span> JSONResponse(status_code=500,
+        content={<span class="str">"detail"</span>: <span class="str">"Internal error"</span>})</pre>
+<p>In <code>async def</code> handlers, exceptions propagate normally through <code>await</code> chains. In background tasks, exceptions are silently swallowed unless you add explicit try/except — always log in background tasks.</p>`
+    },
+    {
+      q: "How would you integrate a synchronous ORM with FastAPI without degrading performance?",
+      tags: ["async","database"],
+      a: `<p>Use FastAPI's built-in sync handler support (declare with <code>def</code> not <code>async def</code>) — FastAPI runs it in a threadpool automatically.</p>
+<pre><span class="cm"># Just use def — FastAPI handles the threadpool</span>
+<span class="kw">@app</span>.get(<span class="str">"/users/{id}"</span>)
+<span class="kw">def</span> <span class="fn">get_user</span>(id: int, db: Session = Depends(get_db)):
+    <span class="kw">return</span> db.query(User).filter(User.id == id).first()</pre>
+<p>Alternatively, use <code>run_in_executor</code> for more control, or migrate to SQLAlchemy 2.0 async. The threadpool approach works well up to moderate load; beyond that, async SQLAlchemy 2.0 with asyncpg eliminates thread overhead entirely.</p>`
+    },
+  ]},
+  { id: "security", label: "Security & Auth", color: "#a78bfa", qs: [
+    {
+      q: "How do you implement JWT authentication in FastAPI? Walk through the full flow.",
+      tags: ["jwt","auth"],
+      a: `<pre><span class="kw">import</span> jwt
+SECRET = <span class="str">"secret"</span>; ALGO = <span class="str">"HS256"</span>
+
+<span class="kw">def</span> <span class="fn">create_token</span>(user_id: int) -> str:
+    payload = {<span class="str">"sub"</span>: str(user_id),
+               <span class="str">"exp"</span>: datetime.utcnow() + timedelta(hours=1)}
+    <span class="kw">return</span> jwt.encode(payload, SECRET, algorithm=ALGO)
+
+<span class="kw">async def</span> <span class="fn">get_current_user</span>(token: str = Depends(oauth2_scheme)):
+    <span class="kw">try</span>:
+        payload = jwt.decode(token, SECRET, algorithms=[ALGO])
+        user_id = int(payload[<span class="str">"sub"</span>])
+    <span class="kw">except</span> jwt.ExpiredSignatureError:
+        <span class="kw">raise</span> HTTPException(401, <span class="str">"Token expired"</span>)
+    <span class="kw">except</span> jwt.InvalidTokenError:
+        <span class="kw">raise</span> HTTPException(401, <span class="str">"Invalid token"</span>)
+    <span class="kw">return</span> get_user(user_id)</pre>
+<div class="warn-box">Use RS256 (asymmetric) in production, not HS256 — allows services to verify tokens without sharing the signing key.</div>`
+    },
+    {
+      q: "How do you implement RBAC using FastAPI's dependency injection?",
+      tags: ["rbac","auth"],
+      a: `<pre><span class="kw">from</span> enum <span class="kw">import</span> Enum
+
+<span class="kw">class</span> <span class="fn">Role</span>(str, Enum):
+    admin = <span class="str">"admin"</span>
+    user = <span class="str">"user"</span>
+
+<span class="kw">def</span> <span class="fn">require_role</span>(*roles: Role):
+    <span class="kw">async def</span> <span class="fn">checker</span>(user = Depends(get_current_user)):
+        <span class="kw">if</span> user.role <span class="kw">not in</span> roles:
+            <span class="kw">raise</span> HTTPException(403, <span class="str">"Forbidden"</span>)
+        <span class="kw">return</span> user
+    <span class="kw">return</span> checker
+
+<span class="kw">@app</span>.delete(<span class="str">"/users/{id}"</span>)
+<span class="kw">async def</span> <span class="fn">delete_user</span>(
+    id: int,
+    _user = Depends(require_role(Role.admin))
+): ...</pre>
+<div class="tip-box">For attribute-based access control (ABAC), use a policy engine like Casbin or OPA integrated as a FastAPI dependency.</div>`
+    },
+    {
+      q: "How do you prevent timing attacks when comparing secrets/tokens?",
+      tags: ["security","cryptography"],
+      a: `<p>Standard string comparison (<code>==</code>) short-circuits on the first mismatch, leaking timing information to attackers. Use <code>hmac.compare_digest()</code> for constant-time comparison.</p>
+<pre><span class="kw">import</span> hmac, secrets
+
+<span class="kw">def</span> <span class="fn">verify_api_key</span>(provided: str, stored: str) -> bool:
+    <span class="kw">return</span> hmac.compare_digest(
+        provided.encode(), stored.encode()
+    )
+
+<span class="cm"># For password hashing, always use bcrypt/argon2</span>
+<span class="kw">from</span> passlib.context <span class="kw">import</span> CryptContext
+pwd = CryptContext(schemes=[<span class="str">"bcrypt"</span>], deprecated=<span class="str">"auto"</span>)
+pwd.verify(plain, hashed)  <span class="cm"># constant-time internally</span></pre>`
+    },
+    {
+      q: "How do you handle CORS in FastAPI? What are the security implications of `allow_origins=[\"*\"]`?",
+      tags: ["cors","security"],
+      a: `<pre><span class="kw">from</span> fastapi.middleware.cors <span class="kw">import</span> CORSMiddleware
+
+app.add_middleware(CORSMiddleware,
+    allow_origins=[<span class="str">"https://app.example.com"</span>],
+    allow_credentials=<span class="kw">True</span>,
+    allow_methods=[<span class="str">"GET"</span>, <span class="str">"POST"</span>],
+    allow_headers=[<span class="str">"Authorization"</span>]
+)</pre>
+<p><strong>Security risk of <code>allow_origins=["*"]</code>:</strong> any website can make credentialed requests to your API from a user's browser. This enables CSRF-like attacks where a malicious site reads your API responses using the user's cookies/tokens.</p>
+<div class="warn-box">You cannot use <code>allow_origins=["*"]</code> AND <code>allow_credentials=True</code> simultaneously — browsers block this. FastAPI will raise a ValueError.</div>`
+    },
+    {
+      q: "What is CSRF and is FastAPI vulnerable to it?",
+      tags: ["csrf","security"],
+      a: `<p>CSRF (Cross-Site Request Forgery) tricks a user's browser into sending requests to your API using their existing session. FastAPI APIs using JWT in <code>Authorization</code> headers are NOT vulnerable — browsers don't auto-attach custom headers cross-origin.</p>
+<p>FastAPI IS vulnerable if you use cookie-based sessions. Mitigations:</p>
+<ul>
+<li>Use <code>SameSite=Strict</code> or <code>SameSite=Lax</code> cookie attribute</li>
+<li>Implement double-submit cookie or synchronizer token pattern</li>
+<li>Validate <code>Origin</code>/<code>Referer</code> headers</li>
+</ul>
+<div class="tip-box">Prefer JWT in Authorization headers over cookies for stateless APIs — eliminates CSRF concern entirely.</div>`
+    },
+    {
+      q: "How would you implement refresh token rotation in FastAPI?",
+      tags: ["jwt","security"],
+      a: `<p>Refresh token rotation: each use of a refresh token issues a new one and invalidates the old. Detect token reuse (stolen token used after rotation) by invalidating the entire family.</p>
+<pre><span class="kw">@app</span>.post(<span class="str">"/refresh"</span>)
+<span class="kw">async def</span> <span class="fn">refresh</span>(refresh_token: str, db = Depends(get_db)):
+    stored = db.get_refresh_token(refresh_token)
+    <span class="kw">if not</span> stored <span class="kw">or</span> stored.used:
+        db.revoke_family(stored.family_id)  <span class="cm"># reuse detected</span>
+        <span class="kw">raise</span> HTTPException(401, <span class="str">"Refresh token reuse"</span>)
+    stored.used = <span class="kw">True</span>
+    new_refresh = db.create_refresh_token(family=stored.family_id)
+    new_access = create_access_token(stored.user_id)
+    <span class="kw">return</span> {<span class="str">"access"</span>: new_access, <span class="str">"refresh"</span>: new_refresh}</pre>`
+    },
+    {
+      q: "Explain how to use `HTTPSRedirectMiddleware` and `TrustedHostMiddleware`.",
+      tags: ["middleware","security"],
+      a: `<pre><span class="kw">from</span> starlette.middleware.httpsredirect <span class="kw">import</span> HTTPSRedirectMiddleware
+<span class="kw">from</span> starlette.middleware.trustedhost <span class="kw">import</span> TrustedHostMiddleware
+
+<span class="cm"># Redirect HTTP → HTTPS (production only)</span>
+app.add_middleware(HTTPSRedirectMiddleware)
+
+<span class="cm"># Prevent Host header injection attacks</span>
+app.add_middleware(TrustedHostMiddleware,
+    allowed_hosts=[<span class="str">"api.example.com"</span>, <span class="str">"*.example.com"</span>])</pre>
+<p><code>TrustedHostMiddleware</code> is critical — without it, Host header injection can bypass routing logic or forge URLs in emails/redirects. Returns 400 for untrusted hosts.</p>
+<div class="warn-box">Don't use HTTPSRedirectMiddleware behind a TLS-terminating load balancer that sends HTTP to your app — configure HTTPS redirect at the LB level instead.</div>`
+    },
+    {
+      q: "What security headers should every FastAPI response include?",
+      tags: ["headers","security"],
+      a: `<pre><span class="kw">@app</span>.middleware(<span class="str">"http"</span>)
+<span class="kw">async def</span> <span class="fn">security_headers</span>(request, call_next):
+    response = <span class="kw">await</span> call_next(request)
+    response.headers[<span class="str">"X-Content-Type-Options"</span>] = <span class="str">"nosniff"</span>
+    response.headers[<span class="str">"X-Frame-Options"</span>] = <span class="str">"DENY"</span>
+    response.headers[<span class="str">"X-XSS-Protection"</span>] = <span class="str">"1; mode=block"</span>
+    response.headers[<span class="str">"Strict-Transport-Security"</span>] = <span class="str">"max-age=31536000"</span>
+    response.headers[<span class="str">"Content-Security-Policy"</span>] = <span class="str">"default-src 'self'"</span>
+    response.headers[<span class="str">"Referrer-Policy"</span>] = <span class="str">"strict-origin-when-cross-origin"</span>
+    <span class="kw">return</span> response</pre>
+<p>Use the <code>secure</code> library for battle-tested header presets. Also consider <code>Permissions-Policy</code> to disable browser features your API doesn't use.</p>`
+    },
+    {
+      q: "How do you implement API key authentication with per-key rate limiting?",
+      tags: ["auth","rate-limiting"],
+      a: `<pre><span class="kw">async def</span> <span class="fn">get_api_key</span>(x_api_key: str = Header(...)):
+    key = <span class="kw">await</span> db.get_api_key(x_api_key)
+    <span class="kw">if not</span> key <span class="kw">or not</span> key.active:
+        <span class="kw">raise</span> HTTPException(401, <span class="str">"Invalid API key"</span>)
+    <span class="cm"># Per-key rate limit using Redis sliding window</span>
+    count = <span class="kw">await</span> redis.incr(f<span class="str">"rl:{key.id}:{minute()}"</span>)
+    <span class="kw">await</span> redis.expire(f<span class="str">"rl:{key.id}:{minute()}"</span>, 60)
+    <span class="kw">if</span> count > key.rate_limit:
+        <span class="kw">raise</span> HTTPException(429, <span class="str">"Rate limit exceeded"</span>)
+    <span class="kw">return</span> key</pre>
+<div class="tip-box">Store hashed API keys in DB (SHA-256), never plaintext. Only show the key once at creation time.</div>`
+    },
+    {
+      q: "Describe a strategy for handling secrets in a FastAPI production deployment.",
+      tags: ["secrets","devops"],
+      a: `<ul>
+<li><strong>Never hardcode</strong> secrets in source code or Dockerfiles</li>
+<li><strong>Env variables:</strong> use <code>pydantic-settings</code> with <code>BaseSettings</code> to parse and validate from env at startup</li>
+<li><strong>Secret managers:</strong> AWS Secrets Manager, HashiCorp Vault, GCP Secret Manager — fetch at app startup or use sidecar injection</li>
+<li><strong>Kubernetes:</strong> use Secrets (base64, not encrypted by default) + enable etcd encryption at rest + use ExternalSecrets operator</li>
+</ul>
+<pre><span class="kw">from</span> pydantic_settings <span class="kw">import</span> BaseSettings
+
+<span class="kw">class</span> <span class="fn">Settings</span>(BaseSettings):
+    database_url: str
+    jwt_secret: str
+    <span class="kw">class</span> Config:
+        env_file = <span class="str">".env"</span>
+
+settings = Settings()  <span class="cm"># validates all required secrets at startup</span></pre>`
+    },
+    {
+      q: "How do you implement mutual TLS (mTLS) for service-to-service calls?",
+      tags: ["tls","security"],
+      a: `<p>mTLS means both the server AND the client present X.509 certificates, enabling mutual authentication without API keys.</p>
+<p>FastAPI itself doesn't handle TLS — that's the ASGI server (Uvicorn) or a reverse proxy (nginx, Envoy) job:</p>
+<pre><span class="cm"># Uvicorn with mTLS</span>
+uvicorn main:app \
+  --ssl-keyfile=./server.key \
+  --ssl-certfile=./server.crt \
+  --ssl-ca-certs=./ca.crt \
+  --ssl-cert-reqs=2  <span class="cm"># CERT_REQUIRED</span></pre>
+<p>In service mesh architectures (Istio, Linkerd), mTLS is handled transparently by the sidecar proxy — your FastAPI app doesn't need to know about it.</p>`
+    },
+    {
+      q: "How do you validate and sanitize user inputs beyond Pydantic validation?",
+      tags: ["validation","security"],
+      a: `<p>Pydantic handles type/format validation. Additional security validation:</p>
+<ul>
+<li><strong>SQL injection:</strong> use parameterized queries — never f-string SQL. ORMs do this by default.</li>
+<li><strong>XSS:</strong> sanitize HTML input with <code>bleach</code> library if you accept/render HTML</li>
+<li><strong>Path traversal:</strong> validate file paths with <code>pathlib.Path().resolve()</code> and check against allowed base dirs</li>
+<li><strong>Size limits:</strong> set <code>max_length</code> on Pydantic fields; configure Starlette's max body size</li>
+<li><strong>Business logic validation:</strong> use Pydantic <code>@model_validator</code> for cross-field rules</li>
+</ul>
+<pre><span class="kw">class</span> <span class="fn">SearchQuery</span>(BaseModel):
+    q: str = Field(min_length=1, max_length=200,
+                   pattern=<span class="str">r"^[a-zA-Z0-9\s\-_]+$"</span>)</pre>`
+    },
+    {
+      q: "How do you implement `HTTPBearer` vs `OAuth2PasswordBearer`?",
+      tags: ["auth","security"],
+      a: `<p>Both extract Bearer tokens from the <code>Authorization</code> header, but differ in OpenAPI behavior:</p>
+<ul>
+<li><code>OAuth2PasswordBearer(tokenUrl="/token")</code>: adds the OAuth2 flow to OpenAPI with a "Authorize" button in Swagger UI that POST to <code>/token</code></li>
+<li><code>HTTPBearer()</code>: simply validates the <code>Authorization: Bearer ...</code> header format; no special Swagger UI integration</li>
+</ul>
+<pre><span class="cm"># Use OAuth2PasswordBearer for full OAuth2 UX</span>
+oauth2 = OAuth2PasswordBearer(tokenUrl=<span class="str">"/auth/token"</span>)
+
+<span class="cm"># Use HTTPBearer for simple token auth without OAuth2 semantics</span>
+bearer = HTTPBearer()
+<span class="kw">async def</span> <span class="fn">get_token</span>(creds = Depends(bearer)):
+    <span class="kw">return</span> creds.credentials  <span class="cm"># just the token string</span></pre>`
+    },
+    {
+      q: "How would you implement refresh token rotation in FastAPI?",
+      tags: ["jwt","security"],
+      a: `<p>Already covered above — the key addition is <strong>token family tracking</strong> to detect stolen refresh token reuse. Store (token_hash, family_id, used, user_id) in a tokens table. On reuse, revoke all tokens in the family and force re-login.</p>`
+    },
+  ]},
+  { id: "database", label: "Database & ORM", color: "#34d399", qs: [
+    {
+      q: "How do you manage SQLAlchemy sessions with FastAPI's dependency injection?",
+      tags: ["sqlalchemy","DI"],
+      a: `<pre><span class="kw">from</span> sqlalchemy.orm <span class="kw">import</span> Session
+<span class="kw">from</span> sqlalchemy <span class="kw">import</span> create_engine
+
+engine = create_engine(DATABASE_URL,
+    pool_size=10, max_overflow=20, pool_pre_ping=<span class="kw">True</span>)
+SessionLocal = sessionmaker(autocommit=<span class="kw">False</span>, bind=engine)
+
+<span class="kw">def</span> <span class="fn">get_db</span>():
+    db = SessionLocal()
+    <span class="kw">try</span>:
+        <span class="kw">yield</span> db
+        db.commit()   <span class="cm"># commit on success</span>
+    <span class="kw">except</span>:
+        db.rollback() <span class="cm"># rollback on any exception</span>
+        <span class="kw">raise</span>
+    <span class="kw">finally</span>:
+        db.close()    <span class="cm"># always release connection</span>
+
+<span class="kw">def</span> <span class="fn">get_user</span>(db: Session = Depends(get_db)):
+    ...</pre>
+<div class="tip-box">One session per request is the standard pattern. Never share sessions across requests or store them globally.</div>`
+    },
+    {
+      q: "Explain the N+1 problem and how to solve it in FastAPI + SQLAlchemy.",
+      tags: ["sqlalchemy","performance"],
+      a: `<p>N+1: fetching 1 list of N items, then issuing N separate queries for related data. Classic example: loading users then their addresses one by one.</p>
+<pre><span class="cm"># N+1 problem</span>
+users = db.query(User).all()
+<span class="kw">for</span> u <span class="kw">in</span> users:
+    print(u.address.city)  <span class="cm"># SELECT for each user!</span>
+
+<span class="cm"># Fix: eager load with joinedload or selectinload</span>
+<span class="kw">from</span> sqlalchemy.orm <span class="kw">import</span> selectinload
+users = db.query(User).options(
+    selectinload(User.address)   <span class="cm"># 2 queries total</span>
+).all()</pre>
+<p><code>joinedload</code> uses a JOIN (1 query, may duplicate rows), <code>selectinload</code> uses a secondary SELECT with IN clause (2 queries, cleaner for collections). Use <code>sqlalchemy.event</code> + query counting in tests to catch N+1 regressions.</p>`
+    },
+    {
+      q: "How do you handle database migrations in a FastAPI project using Alembic?",
+      tags: ["alembic","migrations"],
+      a: `<pre><span class="cm"># Initial setup</span>
+alembic init alembic
+<span class="cm"># Set sqlalchemy.url in alembic.ini or env.py</span>
+
+<span class="cm"># Create migration</span>
+alembic revision --autogenerate -m <span class="str">"add users table"</span>
+
+<span class="cm"># Run migrations</span>
+alembic upgrade head
+
+<span class="cm"># In production: run on startup or as separate job</span>
+<span class="kw">@asynccontextmanager</span>
+<span class="kw">async def</span> <span class="fn">lifespan</span>(app):
+    <span class="kw">from</span> alembic <span class="kw">import</span> command, config
+    cfg = config.Config(<span class="str">"alembic.ini"</span>)
+    command.upgrade(cfg, <span class="str">"head"</span>)
+    <span class="kw">yield</span></pre>
+<div class="warn-box">Never run autogenerate in production blindly — always review generated migrations for destructive changes.</div>`
+    },
+    {
+      q: "What are the tradeoffs between SQLAlchemy sync+threadpool vs SQLAlchemy async 2.0?",
+      tags: ["sqlalchemy","async"],
+      a: `<p><strong>Sync + threadpool (def handlers):</strong></p>
+<ul>
+<li>Simpler code, all sync SQLAlchemy patterns work</li>
+<li>FastAPI automatically runs in thread pool</li>
+<li>Thread overhead at high concurrency (default 40 threads)</li>
+</ul>
+<p><strong>SQLAlchemy 2.0 async:</strong></p>
+<ul>
+<li>True async I/O, no thread overhead</li>
+<li>Requires <code>AsyncSession</code>, <code>AsyncEngine</code>, async-compatible driver (asyncpg, aiomysql)</li>
+<li>More complex code — lazy loading is disabled, must use <code>await session.refresh(obj)</code></li>
+</ul>
+<p>At < 1000 concurrent requests, both perform similarly. Beyond that, async wins significantly. Migrate when profiling shows thread pool saturation.</p>`
+    },
+    {
+      q: "How do you implement multi-tenancy in a FastAPI application at the database level?",
+      tags: ["architecture","database"],
+      a: `<p><strong>Three strategies:</strong></p>
+<ul>
+<li><strong>Row-level (shared schema):</strong> add <code>tenant_id</code> to every table + query filtering. Fast, but risk of data leakage if filter is missed. Use SQLAlchemy events or Row-Level Security in PostgreSQL.</li>
+<li><strong>Schema-per-tenant:</strong> separate PostgreSQL schemas per tenant. Decent isolation, complex migrations.</li>
+<li><strong>Database-per-tenant:</strong> best isolation, highest cost and operational overhead.</li>
+</ul>
+<pre><span class="cm"># Row-level: inject tenant_id from JWT into all queries</span>
+<span class="kw">async def</span> <span class="fn">get_scoped_db</span>(tenant = Depends(get_tenant)):
+    <span class="kw">yield</span> db.with_filter(tenant_id=tenant.id)</pre>
+<div class="tip-box">PostgreSQL Row-Level Security (RLS) enforces tenant isolation at DB level, preventing app-layer filter bypass bugs.</div>`
+    },
+    {
+      q: "Describe connection pool configuration for high-throughput FastAPI APIs.",
+      tags: ["database","performance"],
+      a: `<pre>engine = create_async_engine(
+    DATABASE_URL,
+    pool_size=20,        <span class="cm"># base connections kept open</span>
+    max_overflow=10,     <span class="cm"># extra connections allowed under load</span>
+    pool_timeout=30,     <span class="cm"># wait time for available connection</span>
+    pool_recycle=1800,   <span class="cm"># recycle after 30min (avoids stale conn)</span>
+    pool_pre_ping=<span class="kw">True</span>  <span class="cm"># test conn before use</span>
+)</pre>
+<p><strong>Sizing formula:</strong> <code>pool_size = (DB max connections) / (num workers)</code>. With 4 workers and PostgreSQL max_connections=100: pool_size=20, max_overflow=5. Always leave headroom for admin connections.</p>`
+    },
+    {
+      q: "How do you implement optimistic locking in SQLAlchemy for concurrent updates?",
+      tags: ["concurrency","database"],
+      a: `<pre><span class="kw">class</span> <span class="fn">Item</span>(Base):
+    id = Column(Integer, primary_key=<span class="kw">True</span>)
+    value = Column(Integer)
+    version = Column(Integer, default=0)
+    __mapper_args__ = {
+        <span class="str">"version_id_col"</span>: version,  <span class="cm"># SQLAlchemy built-in</span>
+        <span class="str">"version_id_generator"</span>: <span class="kw">False</span>
+    }
+
+<span class="cm"># SQLAlchemy raises StaleDataError if version mismatch</span>
+<span class="kw">try</span>:
+    item.value += 1
+    db.commit()
+<span class="kw">except</span> StaleDataError:
+    db.rollback()
+    <span class="kw">raise</span> HTTPException(409, <span class="str">"Conflict: item was modified"</span>)</pre>
+<p>Use for high-contention resources. For low-contention, pessimistic locking (<code>SELECT FOR UPDATE</code>) is simpler.</p>`
+    },
+    {
+      q: "How would you integrate Redis with FastAPI for caching?",
+      tags: ["redis","caching"],
+      a: `<pre><span class="kw">import</span> redis.asyncio <span class="kw">as</span> aioredis
+<span class="kw">import</span> json, functools
+
+<span class="kw">@asynccontextmanager</span>
+<span class="kw">async def</span> <span class="fn">lifespan</span>(app):
+    app.state.redis = aioredis.from_url(<span class="str">"redis://localhost"</span>)
+    <span class="kw">yield</span>
+    <span class="kw">await</span> app.state.redis.close()
+
+<span class="kw">async def</span> <span class="fn">get_user_cached</span>(user_id: int, redis = Depends(get_redis)):
+    cached = <span class="kw">await</span> redis.get(f<span class="str">"user:{user_id}"</span>)
+    <span class="kw">if</span> cached:
+        <span class="kw">return</span> json.loads(cached)
+    user = <span class="kw">await</span> db.get_user(user_id)
+    <span class="kw">await</span> redis.setex(f<span class="str">"user:{user_id}"</span>, 300, json.dumps(user))
+    <span class="kw">return</span> user</pre>
+<p>Cache invalidation: use event-driven invalidation (invalidate on write) over TTL-only for consistency-sensitive data.</p>`
+    },
+    {
+      q: "How do you implement database-level pagination efficiently (cursor vs offset)?",
+      tags: ["pagination","performance"],
+      a: `<p><strong>Offset pagination:</strong> simple but slow for large offsets — DB must scan all skipped rows.</p>
+<p><strong>Cursor pagination:</strong> uses a stable sort key (e.g., <code>id</code> or <code>created_at</code>) to encode position. O(log n) regardless of page depth.</p>
+<pre><span class="cm"># Cursor-based</span>
+<span class="kw">@app</span>.get(<span class="str">"/items"</span>)
+<span class="kw">async def</span> <span class="fn">list_items</span>(cursor: int | <span class="kw">None</span> = None, limit: int = 20):
+    q = db.query(Item).order_by(Item.id)
+    <span class="kw">if</span> cursor:
+        q = q.filter(Item.id > cursor)
+    items = q.limit(limit + 1).all()
+    next_cursor = items[-1].id <span class="kw">if</span> len(items) > limit <span class="kw">else None</span>
+    <span class="kw">return</span> {<span class="str">"items"</span>: items[:limit], <span class="str">"next_cursor"</span>: next_cursor}</pre>`
+    },
+    {
+      q: "How do you implement the repository pattern in FastAPI with SQLAlchemy?",
+      tags: ["patterns","database"],
+      a: `<pre><span class="kw">class</span> <span class="fn">UserRepository</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, db: AsyncSession):
+        self.db = db
+
+    <span class="kw">async def</span> <span class="fn">get</span>(self, user_id: int) -> User | <span class="kw">None</span>:
+        <span class="kw">return await</span> self.db.get(User, user_id)
+
+    <span class="kw">async def</span> <span class="fn">create</span>(self, data: UserCreate) -> User:
+        user = User(**data.model_dump())
+        self.db.add(user)
+        <span class="kw">await</span> self.db.flush()
+        <span class="kw">return</span> user
+
+<span class="kw">def</span> <span class="fn">get_user_repo</span>(db = Depends(get_db)):
+    <span class="kw">return</span> UserRepository(db)
+
+<span class="kw">async def</span> <span class="fn">endpoint</span>(repo = Depends(get_user_repo)): ...</pre>
+<div class="tip-box">The repository pattern makes unit testing trivial — mock the repo interface without needing a real DB.</div>`
+    },
+    {
+      q: "How do you implement a read replica pattern in FastAPI?",
+      tags: ["scaling","database"],
+      a: `<pre><span class="kw">class</span> <span class="fn">DBEngines</span>:
+    write = create_engine(WRITE_DB_URL)
+    read  = create_engine(READ_REPLICA_URL)
+
+<span class="kw">def</span> <span class="fn">get_write_db</span>():
+    db = Session(DBEngines.write)
+    <span class="kw">try</span>: <span class="kw">yield</span> db
+    <span class="kw">finally</span>: db.close()
+
+<span class="kw">def</span> <span class="fn">get_read_db</span>():
+    db = Session(DBEngines.read)
+    <span class="kw">try</span>: <span class="kw">yield</span> db
+    <span class="kw">finally</span>: db.close()
+
+<span class="kw">@app</span>.get(<span class="str">"/users"</span>)
+<span class="kw">def</span> <span class="fn">list_users</span>(db = Depends(get_read_db)): ...
+
+<span class="kw">@app</span>.post(<span class="str">"/users"</span>)
+<span class="kw">def</span> <span class="fn">create_user</span>(db = Depends(get_write_db)): ...</pre>
+<p>For automatic routing, use SQLAlchemy's <code>Shard</code> or a proxy like PgBouncer / RDS Proxy.</p>`
+    },
+    {
+      q: "How do you handle database transactions spanning multiple operations?",
+      tags: ["transactions","database"],
+      a: `<pre><span class="kw">async def</span> <span class="fn">transfer_funds</span>(
+    from_id: int, to_id: int, amount: float,
+    db: AsyncSession = Depends(get_db)
+):
+    <span class="kw">async with</span> db.begin():  <span class="cm"># explicit transaction</span>
+        sender = <span class="kw">await</span> db.get(Account, from_id, with_for_update=<span class="kw">True</span>)
+        receiver = <span class="kw">await</span> db.get(Account, to_id, with_for_update=<span class="kw">True</span>)
+        <span class="kw">if</span> sender.balance < amount:
+            <span class="kw">raise</span> HTTPException(400, <span class="str">"Insufficient funds"</span>)
+        sender.balance -= amount
+        receiver.balance += amount
+        <span class="cm"># auto-commits on exit, rolls back on exception</span></pre>
+<p>The <code>get_db</code> generator with <code>yield</code> + try/finally handles the outer transaction for simple cases. Use explicit <code>begin()</code> for nested transactions or savepoints.</p>`
+    },
+  ]},
+  { id: "performance", label: "Performance & Scaling", color: "#fb923c", qs: [
+    {
+      q: "How do you benchmark a FastAPI application?",
+      tags: ["benchmarking","performance"],
+      a: `<p>Tools and metrics:</p>
+<ul>
+<li><strong>wrk / wrk2:</strong> HTTP load testing, measures RPS and latency percentiles</li>
+<li><strong>locust:</strong> Python-native, scenario-based, real-time dashboard</li>
+<li><strong>k6:</strong> JS-based, great CI integration, checks/thresholds</li>
+<li><strong>py-spy:</strong> sampling profiler — flame graphs showing where CPU time is spent</li>
+<li><strong>memray:</strong> memory profiler for Python</li>
+</ul>
+<pre>wrk -t 4 -c 100 -d 30s http://localhost:8000/api/users
+<span class="cm"># Key metrics: p99 latency, RPS, error rate, connection errors</span></pre>
+<p>Profile with py-spy before optimizing — never guess where the bottleneck is. Common bottlenecks: serialization (large Pydantic models), DB queries (N+1), missing indexes.</p>`
+    },
+    {
+      q: "What are the performance implications of Pydantic v1 vs v2?",
+      tags: ["pydantic","performance"],
+      a: `<p>Pydantic v2 rewrites the core validation engine in Rust (<code>pydantic-core</code>). Benchmarks show 5–50x speedup for validation and serialization vs v1.</p>
+<p><strong>Key v2 changes:</strong></p>
+<ul>
+<li><code>model.dict()</code> → <code>model.model_dump()</code></li>
+<li><code>@validator</code> → <code>@field_validator</code>, <code>@root_validator</code> → <code>@model_validator</code></li>
+<li>Strict mode available per-field: <code>Field(strict=True)</code></li>
+<li>Custom serializers: <code>@field_serializer</code></li>
+</ul>
+<p>FastAPI 0.100+ uses Pydantic v2 by default. V1 compat mode exists but loses the performance benefits.</p>
+<div class="tip-box">For hot paths with simple models, consider using <code>TypeAdapter</code> directly instead of a full model class for lower overhead.</div>`
+    },
+    {
+      q: "How do you implement response caching in FastAPI with HTTP cache headers?",
+      tags: ["caching","performance"],
+      a: `<pre><span class="kw">from</span> fastapi <span class="kw">import</span> Response
+
+<span class="kw">@app</span>.get(<span class="str">"/products/{id}"</span>)
+<span class="kw">async def</span> <span class="fn">get_product</span>(id: int, response: Response):
+    response.headers[<span class="str">"Cache-Control"</span>] = <span class="str">"public, max-age=300"</span>
+    response.headers[<span class="str">"ETag"</span>] = compute_etag(id)
+    <span class="kw">return</span> product
+
+<span class="cm"># Conditional GET support</span>
+<span class="kw">@app</span>.get(<span class="str">"/products/{id}"</span>)
+<span class="kw">async def</span> <span class="fn">get_product</span>(id: int, if_none_match: str | <span class="kw">None</span> = Header(<span class="kw">None</span>)):
+    etag = compute_etag(id)
+    <span class="kw">if</span> if_none_match == etag:
+        <span class="kw">return</span> Response(status_code=304)
+    ...</pre>
+<p>For server-side caching, combine with Redis (cache the serialized JSON bytes — avoid re-serializing Pydantic on every request).</p>`
+    },
+    {
+      q: "Explain Gunicorn + Uvicorn worker model for production deployment.",
+      tags: ["deployment","scaling"],
+      a: `<p>Uvicorn alone: single process, single event loop. Gunicorn manages multiple Uvicorn worker processes, enabling multi-core utilization.</p>
+<pre>gunicorn main:app \
+  -w 4 \                               <span class="cm"># workers = 2 * cores + 1</span>
+  -k uvicorn.workers.UvicornWorker \
+  --bind 0.0.0.0:8000 \
+  --timeout 120 \
+  --graceful-timeout 30 \
+  --keep-alive 5</pre>
+<p><strong>Worker count rule of thumb:</strong> <code>2 * CPU cores + 1</code> for I/O-bound apps. For CPU-bound, match core count exactly. In Kubernetes, use 1-2 workers per container and scale pods instead — simpler memory management.</p>
+<div class="tip-box">In K8s, single-worker containers + HPA scaling is preferred over multi-worker containers. Simpler to reason about resource limits and health checks.</div>`
+    },
+    {
+      q: "Describe a strategy for handling CPU-bound tasks in FastAPI.",
+      tags: ["cpu","async"],
+      a: `<p>The event loop and thread pools can't parallelize CPU work — Python's GIL prevents true multi-threading. Options:</p>
+<ul>
+<li><strong>ProcessPoolExecutor:</strong> run CPU work in separate processes</li>
+<li><strong>Celery workers:</strong> dedicated workers for heavy jobs, result backend for polling</li>
+<li><strong>ARQ:</strong> async-native Redis queue, lighter than Celery</li>
+</ul>
+<pre><span class="kw">from</span> concurrent.futures <span class="kw">import</span> ProcessPoolExecutor
+executor = ProcessPoolExecutor(max_workers=4)
+
+<span class="kw">@app</span>.post(<span class="str">"/analyze"</span>)
+<span class="kw">async def</span> <span class="fn">analyze_image</span>(file: UploadFile):
+    data = <span class="kw">await</span> file.read()
+    loop = asyncio.get_event_loop()
+    result = <span class="kw">await</span> loop.run_in_executor(executor, cpu_analyze, data)
+    <span class="kw">return</span> result</pre>`
+    },
+    {
+      q: "What are the overhead costs of middleware in FastAPI?",
+      tags: ["middleware","performance"],
+      a: `<p>Every middleware wraps every request. Costs add up in high-RPS scenarios. Audit middleware by:</p>
+<ul>
+<li>Profiling with py-spy to see % time in middleware vs handler</li>
+<li>Measuring p99 latency with vs without middleware stack</li>
+</ul>
+<p><strong>Common expensive middleware:</strong></p>
+<ul>
+<li>CORS (header inspection/injection — low cost)</li>
+<li>Request body logging (reads + buffers entire body — high cost)</li>
+<li>Synchronous middleware in async chain (causes thread pool use)</li>
+</ul>
+<pre><span class="cm"># Avoid: sync middleware blocks event loop</span>
+<span class="kw">class</span> <span class="fn">SyncMiddleware</span>(BaseHTTPMiddleware):
+    <span class="kw">def</span> <span class="fn">dispatch</span>(self, request, call_next):  <span class="cm"># should be async def</span>
+        ...</pre>`
+    },
+    {
+      q: "How do you implement graceful shutdown in FastAPI?",
+      tags: ["deployment","reliability"],
+      a: `<pre><span class="kw">@asynccontextmanager</span>
+<span class="kw">async def</span> <span class="fn">lifespan</span>(app: FastAPI):
+    <span class="cm"># Startup</span>
+    <span class="kw">await</span> db_pool.connect()
+    <span class="kw">await</span> redis.connect()
+    <span class="kw">yield</span>
+    <span class="cm"># Shutdown (graceful)</span>
+    <span class="kw">await</span> db_pool.disconnect()
+    <span class="kw">await</span> redis.close()
+
+app = FastAPI(lifespan=lifespan)</pre>
+<p>When Kubernetes sends SIGTERM, Uvicorn stops accepting new connections and finishes in-flight requests (controlled by <code>--timeout-graceful-shutdown</code>). Set K8s <code>terminationGracePeriodSeconds</code> &gt; Uvicorn's graceful timeout to avoid SIGKILL mid-request.</p>`
+    },
+    {
+      q: "How do you implement circuit breakers in FastAPI for resilience?",
+      tags: ["resilience","patterns"],
+      a: `<pre><span class="kw">from</span> circuitbreaker <span class="kw">import</span> circuit
+
+<span class="kw">@circuit</span>(failure_threshold=5, recovery_timeout=30)
+<span class="kw">async def</span> <span class="fn">call_payment_service</span>(data: dict):
+    <span class="kw">async with</span> httpx.AsyncClient() <span class="kw">as</span> client:
+        <span class="kw">return await</span> client.post(<span class="str">"https://payments/charge"</span>, json=data)
+
+<span class="kw">@app</span>.post(<span class="str">"/checkout"</span>)
+<span class="kw">async def</span> <span class="fn">checkout</span>(order: Order):
+    <span class="kw">try</span>:
+        <span class="kw">return await</span> call_payment_service(order.dict())
+    <span class="kw">except</span> CircuitBreakerError:
+        <span class="kw">raise</span> HTTPException(503, <span class="str">"Payment service unavailable"</span>)</pre>
+<p>States: Closed (normal) → Open (failing, reject fast) → Half-Open (testing recovery). Use with exponential backoff for retries.</p>`
+    },
+    {
+      q: "How do you use `response_model_exclude_unset` and `response_model_exclude_none`?",
+      tags: ["response","performance"],
+      a: `<pre><span class="kw">class</span> <span class="fn">UserProfile</span>(BaseModel):
+    name: str
+    email: str
+    bio: str | <span class="kw">None</span> = <span class="kw">None</span>
+    avatar_url: str | <span class="kw">None</span> = <span class="kw">None</span>
+
+<span class="kw">@app</span>.get(<span class="str">"/profile"</span>,
+    response_model=UserProfile,
+    response_model_exclude_none=<span class="kw">True</span>    <span class="cm"># drops null fields</span>
+)
+<span class="kw">async def</span> <span class="fn">profile</span>(): ...</pre>
+<p><code>exclude_unset</code>: only include fields explicitly set (useful for PATCH semantics — don't send unchanged defaults). <code>exclude_none</code>: strip null fields from JSON — reduces payload size for sparse objects. Can combine both.</p>`
+    },
+    {
+      q: "How would you scale a FastAPI service horizontally? What state issues arise?",
+      tags: ["scaling","architecture"],
+      a: `<p>Horizontal scaling = running multiple instances behind a load balancer. FastAPI apps should be stateless to scale cleanly.</p>
+<p><strong>State issues to address:</strong></p>
+<ul>
+<li><strong>Sessions:</strong> use Redis-backed sessions, not in-memory</li>
+<li><strong>WebSocket connections:</strong> per-process; use Redis Pub/Sub for broadcasting across instances</li>
+<li><strong>Background tasks:</strong> use a distributed queue (Celery/ARQ), not BackgroundTasks</li>
+<li><strong>Rate limiting:</strong> use Redis sliding window, not in-process counter</li>
+<li><strong>File uploads:</strong> store in S3/GCS, not local filesystem</li>
+</ul>
+<div class="tip-box">12-Factor App principle: store all state external to the process. If you can kill and restart any instance without data loss, you're stateless.</div>`
+    },
+    {
+      q: "How do you profile memory usage in a FastAPI application?",
+      tags: ["memory","performance"],
+      a: `<pre><span class="cm"># memray — best async-aware Python memory profiler</span>
+pip install memray
+memray run -o output.bin uvicorn main:app
+memray flamegraph output.bin
+
+<span class="cm"># In-process tracking with tracemalloc</span>
+<span class="kw">import</span> tracemalloc
+tracemalloc.start()
+<span class="cm"># ... run requests</span>
+snapshot = tracemalloc.take_snapshot()
+top = snapshot.statistics(<span class="str">'lineno"</span>)[:10]</pre>
+<p>Common memory issues: large Pydantic model instances not released, connection pool leaks, circular references preventing GC, unbounded caches. Use <code>objgraph</code> to visualize reference cycles.</p>`
+    },
+    {
+      q: "How do you implement request deduplication in a high-throughput FastAPI API?",
+      tags: ["performance","patterns"],
+      a: `<p>Use idempotency keys — client sends a unique key per logical request; server caches results by key.</p>
+<pre><span class="kw">@app</span>.post(<span class="str">"/payments"</span>)
+<span class="kw">async def</span> <span class="fn">create_payment</span>(
+    payment: PaymentRequest,
+    idempotency_key: str = Header(...),
+    redis = Depends(get_redis)
+):
+    cached = <span class="kw">await</span> redis.get(f<span class="str">"idem:{idempotency_key}"</span>)
+    <span class="kw">if</span> cached:
+        <span class="kw">return</span> json.loads(cached)  <span class="cm"># replay cached result</span>
+    
+    result = <span class="kw">await</span> process_payment(payment)
+    <span class="kw">await</span> redis.setex(f<span class="str">"idem:{idempotency_key}"</span>, 86400,
+                      json.dumps(result))
+    <span class="kw">return</span> result</pre>
+<div class="tip-box">Use SETNX (set if not exists) + TTL for atomic idempotency key reservation to handle concurrent duplicate requests.</div>`
+    },
+    {
+      q: "What is lazy loading vs eager loading and how does it affect API latency?",
+      tags: ["performance","database"],
+      a: `<p><strong>Lazy loading:</strong> related data loaded only when accessed. Results in N+1 queries if you access related data in a loop. SQLAlchemy does this by default for relationships.</p>
+<p><strong>Eager loading:</strong> related data fetched upfront in 1-2 queries. Higher single-query cost but predictable latency.</p>
+<p>For API endpoints: always use eager loading when you know you'll access relationships. Lazy loading is appropriate for CLI scripts or admin tools where you may conditionally access data.</p>
+<div class="warn-box">SQLAlchemy async mode disables lazy loading entirely — you must use selectinload/joinedload explicitly. This is actually a feature — forces you to be deliberate about data fetching.</div>`
+    },
+    {
+      q: "How do you benchmark and compare Pydantic model performance?",
+      tags: ["pydantic","benchmarking"],
+      a: `<pre><span class="kw">import</span> timeit, pydantic
+
+<span class="kw">class</span> <span class="fn">User</span>(pydantic.BaseModel):
+    name: str; age: int; email: str
+
+data = {<span class="str">"name"</span>: <span class="str">"Alice"</span>, <span class="str">"age"</span>: 30, <span class="str">"email"</span>: <span class="str">"a@b.com"</span>}
+
+<span class="cm"># Validation benchmark</span>
+t = timeit.timeit(<span class="kw">lambda</span>: User(**data), number=100_000)
+print(f<span class="str">"{t:.3f}s for 100k validations"</span>)
+
+<span class="cm"># TypeAdapter for repeated single-type validation</span>
+adapter = pydantic.TypeAdapter(User)
+adapter.validate_python(data)  <span class="cm"># ~2x faster than model</span></pre>
+<p>For hot paths, consider <code>model_config = ConfigDict(frozen=True)</code> for hashable models, or <code>TypeAdapter</code> for repeated validation of the same type without model instantiation overhead.</p>`
+    },
+  ]},
+  { id: "testing", label: "Testing & Quality", color: "#f472b6", qs: [
+    {
+      q: "How do you use `TestClient` in FastAPI and what are its limitations?",
+      tags: ["testing","testclient"],
+      a: `<pre><span class="kw">from</span> fastapi.testclient <span class="kw">import</span> TestClient
+
+client = TestClient(app)
+
+<span class="kw">def</span> <span class="fn">test_get_user</span>():
+    response = client.get(<span class="str">"/users/1"</span>)
+    assert response.status_code == 200
+    assert response.json()[<span class="str">"id"</span>] == 1</pre>
+<p><strong>Limitations of TestClient:</strong></p>
+<ul>
+<li>Uses <code>requests</code> synchronously — doesn't test real async behavior</li>
+<li>Runs the entire app in-process — not true integration testing</li>
+<li>WebSocket testing is limited</li>
+</ul>
+<p>For async testing, use <code>httpx.AsyncClient</code> with <code>ASGITransport</code>:</p>
+<pre><span class="kw">async with</span> AsyncClient(app=app, base_url=<span class="str">"http://test"</span>) <span class="kw">as</span> ac:
+    response = <span class="kw">await</span> ac.get(<span class="str">"/users/1"</span>)</pre>`
+    },
+    {
+      q: "How do you override dependencies in FastAPI tests?",
+      tags: ["testing","DI"],
+      a: `<pre><span class="cm"># The key: app.dependency_overrides</span>
+<span class="kw">def</span> <span class="fn">override_get_db</span>():
+    db = TestingSessionLocal()
+    <span class="kw">try</span>:
+        <span class="kw">yield</span> db
+    <span class="kw">finally</span>:
+        db.close()
+
+<span class="kw">def</span> <span class="fn">test_create_user</span>():
+    app.dependency_overrides[get_db] = override_get_db
+    response = client.post(<span class="str">"/users"</span>, json={...})
+    assert response.status_code == 201
+    app.dependency_overrides.clear()
+
+<span class="cm"># Better: use pytest fixtures</span>
+<span class="kw">@pytest.fixture(autouse=True)</span>
+<span class="kw">def</span> <span class="fn">override_db</span>():
+    app.dependency_overrides[get_db] = override_get_db
+    <span class="kw">yield</span>
+    app.dependency_overrides.clear()</pre>`
+    },
+    {
+      q: "How do you test WebSocket endpoints in FastAPI?",
+      tags: ["testing","websockets"],
+      a: `<pre><span class="kw">from</span> fastapi.testclient <span class="kw">import</span> TestClient
+
+<span class="kw">def</span> <span class="fn">test_websocket</span>():
+    client = TestClient(app)
+    <span class="kw">with</span> client.websocket_connect(<span class="str">"/ws/123"</span>) <span class="kw">as</span> ws:
+        ws.send_text(<span class="str">"hello"</span>)
+        data = ws.receive_text()
+        assert data == <span class="str">"Echo: hello"</span>
+
+<span class="cm"># Test disconnection handling</span>
+<span class="kw">def</span> <span class="fn">test_disconnect</span>():
+    <span class="kw">with</span> client.websocket_connect(<span class="str">"/ws/1"</span>) <span class="kw">as</span> ws:
+        ws.close()
+    <span class="cm"># verify cleanup happened</span></pre>`
+    },
+    {
+      q: "How do you write integration tests for FastAPI with a real test database?",
+      tags: ["testing","integration"],
+      a: `<pre><span class="kw">@pytest.fixture(scope="session")</span>
+<span class="kw">def</span> <span class="fn">test_db</span>():
+    <span class="cm"># Create test DB (or use SQLite for speed)</span>
+    engine = create_engine(<span class="str">"postgresql://localhost/test_db"</span>)
+    Base.metadata.create_all(engine)
+    <span class="kw">yield</span> engine
+    Base.metadata.drop_all(engine)
+
+<span class="kw">@pytest.fixture</span>
+<span class="kw">def</span> <span class="fn">db_session</span>(test_db):
+    <span class="kw">with</span> test_db.begin() <span class="kw">as</span> conn:
+        session = Session(bind=conn)
+        <span class="kw">yield</span> session
+        conn.rollback()  <span class="cm"># rollback after each test = clean state</span>
+
+<span class="kw">@pytest.fixture</span>
+<span class="kw">def</span> <span class="fn">client</span>(db_session):
+    app.dependency_overrides[get_db] = <span class="kw">lambda</span>: db_session
+    <span class="kw">yield</span> TestClient(app)
+    app.dependency_overrides.clear()</pre>
+<div class="tip-box">Wrapping each test in a transaction that rolls back is much faster than recreating tables between tests.</div>`
+    },
+    {
+      q: "How do you test async background tasks in FastAPI?",
+      tags: ["testing","async"],
+      a: `<pre><span class="kw">from</span> unittest.mock <span class="kw">import</span> patch, AsyncMock
+
+<span class="kw">def</span> <span class="fn">test_background_email</span>():
+    <span class="kw">with</span> patch(<span class="str">"app.tasks.send_email"</span>) <span class="kw">as</span> mock_email:
+        response = client.post(<span class="str">"/register"</span>, json={<span class="str">"email"</span>: <span class="str">"x@y.com"</span>})
+        assert response.status_code == 201
+        <span class="cm"># TestClient runs background tasks synchronously!</span>
+        mock_email.assert_called_once_with(<span class="str">"x@y.com"</span>)</pre>
+<p>Key insight: FastAPI's <code>TestClient</code> runs background tasks synchronously by default, making them easy to test. With <code>AsyncClient</code>, you may need to explicitly await tasks or mock them.</p>`
+    },
+    {
+      q: "What is `pytest-asyncio` and how do you configure it for FastAPI?",
+      tags: ["testing","async"],
+      a: `<pre><span class="cm"># pyproject.toml</span>
+[tool.pytest.ini_options]
+asyncio_mode = <span class="str">"auto"</span>  <span class="cm"># mark all async tests automatically</span>
+
+<span class="cm"># test file</span>
+<span class="kw">import pytest</span>
+
+<span class="kw">@pytest.mark.asyncio</span>  <span class="cm"># or auto if asyncio_mode=auto</span>
+<span class="kw">async def</span> <span class="fn">test_async_endpoint</span>():
+    <span class="kw">async with</span> AsyncClient(app=app, base_url=<span class="str">"http://test"</span>) <span class="kw">as</span> ac:
+        response = <span class="kw">await</span> ac.get(<span class="str">"/users"</span>)
+    assert response.status_code == 200
+
+<span class="cm"># Async fixture</span>
+<span class="kw">@pytest.fixture</span>
+<span class="kw">async def</span> <span class="fn">async_client</span>():
+    <span class="kw">async with</span> AsyncClient(app=app, base_url=<span class="str">"http://test"</span>) <span class="kw">as</span> ac:
+        <span class="kw">yield</span> ac</pre>`
+    },
+    {
+      q: "How do you mock external HTTP calls made inside FastAPI route handlers?",
+      tags: ["testing","mocking"],
+      a: `<pre><span class="kw">import</span> respx, httpx
+
+<span class="kw">@pytest.mark.asyncio</span>
+<span class="kw">async def</span> <span class="fn">test_external_call</span>():
+    <span class="kw">with</span> respx.mock:
+        respx.get(<span class="str">"https://api.stripe.com/charges"</span>).mock(
+            return_value=httpx.Response(200, json={<span class="str">"id"</span>: <span class="str">"ch_123"</span>})
+        )
+        response = <span class="kw">await</span> async_client.post(<span class="str">"/checkout"</span>, json={...})
+        assert response.status_code == 200
+
+<span class="cm"># Alternative: patch the httpx.AsyncClient in your module</span>
+<span class="kw">with</span> patch(<span class="str">"app.services.httpx.AsyncClient"</span>) <span class="kw">as</span> MockClient:
+    MockClient.return_value.__aenter__.return_value.post = AsyncMock(...)</pre>`
+    },
+    {
+      q: "How do you load test a FastAPI application?",
+      tags: ["testing","performance"],
+      a: `<pre><span class="cm"># k6 load test script</span>
+<span class="kw">import</span> http from <span class="str">'k6/http'</span>;
+
+export <span class="kw">let</span> options = {
+  stages: [
+    { duration: <span class="str">'30s'</span>, target: 100 },  <span class="cm">// ramp up</span>
+    { duration: <span class="str">'60s'</span>, target: 100 },  <span class="cm">// sustained</span>
+    { duration: <span class="str">'10s'</span>, target: 0 },    <span class="cm">// ramp down</span>
+  ],
+  thresholds: { <span class="str">'http_req_duration'</span>: [<span class="str">'p(99)&lt;500'</span>] }
+};
+
+export <span class="kw">default</span> <span class="kw">function</span>() {
+  http.get(<span class="str">'http://api/users'</span>);
+}</pre>
+<p>Monitor during load: DB connection pool saturation, CPU, memory, event loop lag (use <code>uvicorn --log-level debug</code> to see slow requests).</p>`
+    },
+    {
+      q: "What is your approach to contract testing a FastAPI service?",
+      tags: ["testing","contracts"],
+      a: `<p>Contract testing ensures your API matches what consumers expect. Tools: Pact, Schemathesis.</p>
+<p><strong>Schemathesis</strong> auto-generates test cases from your OpenAPI spec:</p>
+<pre>schemathesis run http://localhost:8000/openapi.json \
+  --checks all --stateful=links</pre>
+<p><strong>Pact</strong> is consumer-driven — consumers define expected interactions, providers verify against them. Useful in microservices where multiple teams consume your API.</p>
+<div class="tip-box">FastAPI's auto-generated OpenAPI spec makes schema-based contract testing with Schemathesis nearly effortless — it tests edge cases you'd never write manually.</div>`
+    },
+    {
+      q: "How do you test FastAPI middleware in isolation?",
+      tags: ["testing","middleware"],
+      a: `<pre><span class="cm"># Test middleware by creating a minimal app with only that middleware</span>
+<span class="kw">from</span> fastapi <span class="kw">import</span> FastAPI
+<span class="kw">from</span> fastapi.testclient <span class="kw">import</span> TestClient
+
+<span class="kw">def</span> <span class="fn">test_auth_middleware</span>():
+    test_app = FastAPI()
+    test_app.add_middleware(AuthMiddleware)
+
+    <span class="kw">@test_app</span>.get(<span class="str">"/"</span>)
+    <span class="kw">async def</span> <span class="fn">dummy</span>(): <span class="kw">return</span> {<span class="str">"ok"</span>: <span class="kw">True</span>}
+
+    c = TestClient(test_app, raise_server_exceptions=<span class="kw">False</span>)
+    assert c.get(<span class="str">"/"</span>).status_code == 401         <span class="cm"># no token</span>
+    assert c.get(<span class="str">"/"</span>, headers={<span class="str">"Auth"</span>: <span class="str">"Bearer valid"</span>}).status_code == 200</pre>`
+    },
+    {
+      q: "Describe property-based testing for FastAPI with Hypothesis.",
+      tags: ["testing","advanced"],
+      a: `<pre><span class="kw">from</span> hypothesis <span class="kw">import</span> given, strategies <span class="kw">as</span> st
+<span class="kw">from</span> hypothesis_jsonschema <span class="kw">import</span> from_schema
+
+schema = app.openapi()[<span class="str">"components"</span>][<span class="str">"schemas"</span>][<span class="str">"UserCreate"</span>]
+
+<span class="kw">@given</span>(from_schema(schema))
+<span class="kw">def</span> <span class="fn">test_user_create_never_500</span>(payload):
+    response = client.post(<span class="str">"/users"</span>, json=payload)
+    assert response.status_code != 500  <span class="cm"># never crash</span></pre>
+<p>Property-based testing finds edge cases your unit tests miss: empty strings, unicode, negative numbers, max-length values. The invariant to test: valid input → no 500; invalid input → 422 (never 500).</p>`
+    },
+    {
+      q: "How do you achieve high test coverage without testing implementation details?",
+      tags: ["testing","coverage"],
+      a: `<p>Test behaviors through the HTTP interface, not internal functions:</p>
+<ul>
+<li>Test via <code>TestClient</code>/<code>AsyncClient</code> — treat your app as a black box</li>
+<li>Assert on HTTP status codes, response bodies, and side effects (DB state, emails sent)</li>
+<li>Don't mock SQLAlchemy internals — use a real test DB with rollback</li>
+<li>Coverage target: 80%+ meaningful coverage, not 100% line coverage</li>
+</ul>
+<pre><span class="cm"># Good: tests behavior</span>
+<span class="kw">def</span> <span class="fn">test_duplicate_email_returns_409</span>():
+    client.post(<span class="str">"/users"</span>, json={<span class="str">"email"</span>: <span class="str">"x@y.com"</span>})
+    r = client.post(<span class="str">"/users"</span>, json={<span class="str">"email"</span>: <span class="str">"x@y.com"</span>})
+    assert r.status_code == 409</pre>`
+    },
+  ]},
+  { id: "architecture", label: "Architecture & Patterns", color: "#60a5fa", qs: [
+    {
+      q: "How do you structure a large FastAPI application?",
+      tags: ["architecture","design"],
+      a: `<pre>app/
+├── main.py              <span class="cm"># FastAPI instance, lifespan, routers</span>
+├── core/
+│   ├── config.py        <span class="cm"># Settings (pydantic-settings)</span>
+│   └── security.py      <span class="cm"># JWT, password utils</span>
+├── api/
+│   ├── v1/
+│   │   ├── users.py     <span class="cm"># APIRouter</span>
+│   │   └── orders.py
+│   └── deps.py          <span class="cm"># Shared dependencies</span>
+├── models/              <span class="cm"># SQLAlchemy ORM models</span>
+├── schemas/             <span class="cm"># Pydantic request/response models</span>
+├── repositories/        <span class="cm"># DB access layer</span>
+├── services/            <span class="cm"># Business logic</span>
+└── tests/</pre>
+<div class="tip-box">Keep route handlers thin — they should only validate input, call a service, and return the result. All logic lives in services/repositories.</div>`
+    },
+    {
+      q: "Explain Clean Architecture applied to a FastAPI service.",
+      tags: ["architecture","clean-code"],
+      a: `<p>Clean Architecture isolates domain logic from infrastructure concerns (HTTP, DB, external APIs). Dependency rule: inner layers never import outer layers.</p>
+<ul>
+<li><strong>Domain layer:</strong> pure Python — entities, value objects, domain services. No FastAPI or SQLAlchemy imports.</li>
+<li><strong>Application layer:</strong> use cases / services — orchestrates domain objects, defines repository interfaces</li>
+<li><strong>Infrastructure layer:</strong> SQLAlchemy repos, HTTP clients, email senders</li>
+<li><strong>Interface layer:</strong> FastAPI routes — thin adapters that translate HTTP → application layer calls</li>
+</ul>
+<p>FastAPI's DI system is the glue — inject infrastructure implementations into use cases at the route level.</p>`
+    },
+    {
+      q: "How do you design idempotent endpoints in FastAPI?",
+      tags: ["idempotency","api-design"],
+      a: `<p>Idempotent: calling the same request N times has the same effect as calling it once.</p>
+<ul>
+<li><strong>GET, HEAD, OPTIONS:</strong> inherently idempotent</li>
+<li><strong>PUT:</strong> design as full replacement — idempotent by definition</li>
+<li><strong>POST:</strong> not idempotent by default — add idempotency key header</li>
+<li><strong>DELETE:</strong> return 404 or 204 on repeat — both acceptable</li>
+</ul>
+<pre><span class="kw">@app</span>.post(<span class="str">"/payments"</span>)
+<span class="kw">async def</span> <span class="fn">create_payment</span>(
+    payment: PaymentCreate,
+    idempotency_key: str = Header(..., alias=<span class="str">"Idempotency-Key"</span>)
+):
+    <span class="cm"># Check cache → process → cache result</span>
+    ...</pre>
+<div class="tip-box">Stripe's idempotency key pattern is the gold standard. Key TTL should be at least 24 hours.</div>`
+    },
+    {
+      q: "How do you implement CQRS in FastAPI?",
+      tags: ["cqrs","patterns"],
+      a: `<p>CQRS separates read (Query) and write (Command) models. Benefits: independently optimize reads/writes, use different DB schemas for each.</p>
+<pre><span class="cm"># Command — write model</span>
+<span class="kw">class</span> <span class="fn">CreateOrderCommand</span>:
+    user_id: int; items: list[OrderItem]
+
+<span class="kw">async def</span> <span class="fn">handle_create_order</span>(cmd: CreateOrderCommand, db):
+    order = Order(**cmd.__dict__)
+    db.add(order); <span class="kw">await</span> db.commit()
+    <span class="kw">await</span> publish_event(OrderCreated(order.id))
+
+<span class="cm"># Query — read model (denormalized, fast)</span>
+<span class="kw">async def</span> <span class="fn">get_order_summary</span>(order_id: int, read_db):
+    <span class="kw">return await</span> read_db.fetchrow(
+        <span class="str">"SELECT * FROM order_summaries WHERE id=$1"</span>, order_id
+    )</pre>
+<p>In FastAPI: POST/PUT/DELETE endpoints → command handlers; GET endpoints → query handlers (can use separate read DB/Redis).</p>`
+    },
+    {
+      q: "Describe event-driven architecture with FastAPI as producer/consumer with Kafka.",
+      tags: ["events","messaging"],
+      a: `<pre><span class="kw">from</span> aiokafka <span class="kw">import</span> AIOKafkaProducer, AIOKafkaConsumer
+
+<span class="cm"># Producer in FastAPI route</span>
+<span class="kw">@app</span>.post(<span class="str">"/orders"</span>)
+<span class="kw">async def</span> <span class="fn">create_order</span>(order: OrderCreate):
+    result = <span class="kw">await</span> db.insert(order)
+    <span class="kw">await</span> producer.send(
+        <span class="str">"order.created"</span>,
+        value=OrderCreatedEvent(id=result.id).json().encode()
+    )
+    <span class="kw">return</span> result
+
+<span class="cm"># Consumer as background task in lifespan</span>
+<span class="kw">@asynccontextmanager</span>
+<span class="kw">async def</span> <span class="fn">lifespan</span>(app):
+    consumer = AIOKafkaConsumer(<span class="str">"payment.completed"</span>)
+    <span class="kw">await</span> consumer.start()
+    asyncio.create_task(consume_events(consumer))
+    <span class="kw">yield</span>
+    <span class="kw">await</span> consumer.stop()</pre>`
+    },
+    {
+      q: "How do you implement the outbox pattern in FastAPI + PostgreSQL?",
+      tags: ["events","patterns"],
+      a: `<p>The outbox pattern guarantees that DB writes and event publishing are atomic — no lost events if the app crashes between DB commit and Kafka publish.</p>
+<pre><span class="cm"># 1. Write to DB + outbox in same transaction</span>
+<span class="kw">async with</span> db.begin():
+    order = <span class="kw">await</span> db.insert(Order(**data))
+    <span class="kw">await</span> db.insert(OutboxEvent(
+        topic=<span class="str">"order.created"</span>,
+        payload=order.json(),
+        processed=<span class="kw">False</span>
+    ))
+
+<span class="cm"># 2. Separate publisher polls outbox</span>
+<span class="kw">async def</span> <span class="fn">outbox_publisher</span>():
+    <span class="kw">while True</span>:
+        events = <span class="kw">await</span> db.get_unprocessed_events(limit=100)
+        <span class="kw">for</span> e <span class="kw">in</span> events:
+            <span class="kw">await</span> kafka.send(e.topic, e.payload)
+            <span class="kw">await</span> db.mark_processed(e.id)
+        <span class="kw">await</span> asyncio.sleep(0.1)</pre>`
+    },
+    {
+      q: "What is your approach to versioning a FastAPI API?",
+      tags: ["versioning","api-design"],
+      a: `<p><strong>URL versioning</strong> (<code>/api/v1/</code>, <code>/api/v2/</code>): most common, explicit, easy to route with nginx, easy for clients to understand.</p>
+<p><strong>Header versioning</strong> (<code>API-Version: 2</code>): cleaner URLs but harder to test/bookmark, requires middleware to route.</p>
+<pre><span class="cm"># URL versioning with routers</span>
+v1_router = APIRouter(prefix=<span class="str">"/api/v1"</span>)
+v2_router = APIRouter(prefix=<span class="str">"/api/v2"</span>)
+
+app.include_router(v1_router)
+app.include_router(v2_router)</pre>
+<p>Maintain both versions concurrently with shared business logic in services. Deprecate old versions with a sunset header and documented timeline. Never break clients without notice.</p>`
+    },
+    {
+      q: "How do you implement health check and readiness endpoints for Kubernetes?",
+      tags: ["devops","k8s"],
+      a: `<pre><span class="kw">@app</span>.get(<span class="str">"/health/live"</span>, include_in_schema=<span class="kw">False</span>)
+<span class="kw">async def</span> <span class="fn">liveness</span>():
+    <span class="kw">return</span> {<span class="str">"status"</span>: <span class="str">"alive"</span>}  <span class="cm"># always 200 if process is up</span>
+
+<span class="kw">@app</span>.get(<span class="str">"/health/ready"</span>, include_in_schema=<span class="kw">False</span>)
+<span class="kw">async def</span> <span class="fn">readiness</span>():
+    checks = {}
+    <span class="kw">try</span>:
+        <span class="kw">await</span> db.execute(<span class="str">"SELECT 1"</span>)
+        checks[<span class="str">"db"</span>] = <span class="str">"ok"</span>
+    <span class="kw">except</span>:
+        checks[<span class="str">"db"</span>] = <span class="str">"error"</span>
+    healthy = <span class="kw">all</span>(v == <span class="str">"ok"</span> <span class="kw">for</span> v <span class="kw">in</span> checks.values())
+    <span class="kw">return</span> JSONResponse(checks, status_code=200 <span class="kw">if</span> healthy <span class="kw">else</span> 503)</pre>
+<p>Liveness = is the process alive? Readiness = is it ready to serve traffic? K8s restarts on liveness failure; removes from LB on readiness failure.</p>`
+    },
+    {
+      q: "How do you implement distributed tracing across FastAPI microservices?",
+      tags: ["observability","tracing"],
+      a: `<pre><span class="kw">from</span> opentelemetry.instrumentation.fastapi <span class="kw">import</span> FastAPIInstrumentor
+<span class="kw">from</span> opentelemetry.exporter.otlp.proto.grpc.trace_exporter <span class="kw">import</span> OTLPSpanExporter
+
+FastAPIInstrumentor.instrument_app(app)
+
+<span class="cm"># Custom spans</span>
+<span class="kw">from</span> opentelemetry <span class="kw">import</span> trace
+tracer = trace.get_tracer(__name__)
+
+<span class="kw">@app</span>.get(<span class="str">"/orders/{id}"</span>)
+<span class="kw">async def</span> <span class="fn">get_order</span>(id: int):
+    <span class="kw">with</span> tracer.start_as_current_span(<span class="str">"fetch-order-details"</span>) <span class="kw">as</span> span:
+        span.set_attribute(<span class="str">"order.id"</span>, id)
+        order = <span class="kw">await</span> db.get(id)
+    <span class="kw">return</span> order</pre>
+<p>Use OpenTelemetry with OTLP export to Jaeger, Grafana Tempo, or Honeycomb. Propagate trace context via <code>traceparent</code> header in inter-service calls.</p>`
+    },
+    {
+      q: "How do you handle schema evolution in a FastAPI API used by multiple consumers?",
+      tags: ["versioning","api-design"],
+      a: `<p>Key principles: <strong>additive changes are non-breaking</strong>; removals/renames are breaking.</p>
+<ul>
+<li><strong>Add new optional fields</strong> with defaults — safe for existing consumers</li>
+<li><strong>Never remove/rename fields</strong> without versioning</li>
+<li><strong>Use <code>deprecated</code> flag</strong> on old fields/endpoints, keep them for a deprecation period</li>
+<li><strong>Expand-then-contract:</strong> add new field, migrate consumers, remove old field</li>
+</ul>
+<pre><span class="kw">class</span> <span class="fn">UserV2</span>(BaseModel):
+    id: int
+    email: str
+    full_name: str           <span class="cm"># new field</span>
+    name: str | <span class="kw">None</span> = <span class="kw">None</span> <span class="cm"># kept for compat, deprecated</span></pre>`
+    },
+    {
+      q: "Explain the saga pattern for distributed transactions across FastAPI services.",
+      tags: ["saga","distributed"],
+      a: `<p>A saga is a sequence of local transactions, each publishing events to trigger the next step. On failure, compensating transactions roll back previous steps.</p>
+<p><strong>Choreography-based saga:</strong> services react to events, no central coordinator. Simple but hard to track.</p>
+<p><strong>Orchestration-based saga:</strong> a saga orchestrator (can be a FastAPI service) directs participants.</p>
+<pre><span class="cm"># Order saga steps</span>
+<span class="cm"># 1. Create order → 2. Reserve inventory → 3. Charge payment</span>
+<span class="cm"># On payment failure: compensate inventory → cancel order</span>
+
+<span class="kw">class</span> <span class="fn">OrderSaga</span>:
+    steps = [create_order, reserve_inventory, charge_payment]
+    compensations = [cancel_order, release_inventory, refund_payment]</pre>`
+    },
+    {
+      q: "What is the BFF (Backend for Frontend) pattern and how would you implement it with FastAPI?",
+      tags: ["architecture","api-design"],
+      a: `<p>BFF: a dedicated backend for each frontend type (mobile, web, admin). Each BFF aggregates/transforms microservice responses optimally for its consumer.</p>
+<pre><span class="cm"># BFF for mobile — single endpoint replaces 3 microservice calls</span>
+<span class="kw">@app</span>.get(<span class="str">"/mobile/dashboard/{user_id}"</span>)
+<span class="kw">async def</span> <span class="fn">mobile_dashboard</span>(user_id: int):
+    user, orders, recommendations = <span class="kw">await</span> asyncio.gather(
+        user_service.get(user_id),
+        order_service.recent(user_id, limit=5),
+        rec_service.get(user_id)
+    )
+    <span class="kw">return</span> MobileDashboard(user=user, orders=orders, recs=recs)</pre>
+<p>Each BFF is a FastAPI service — thin aggregation layer with no business logic. Business logic stays in domain microservices.</p>`
+    },
+    {
+      q: "How do you implement feature flags in a FastAPI application?",
+      tags: ["feature-flags","architecture"],
+      a: `<pre><span class="kw">from</span> unleash_client <span class="kw">import</span> UnleashClient  <span class="cm"># or LaunchDarkly SDK</span>
+
+unleash = UnleashClient(url=<span class="str">"http://unleash:4242/api"</span>,
+                        app_name=<span class="str">"my-api"</span>)
+
+<span class="kw">async def</span> <span class="fn">get_feature_flags</span>(user = Depends(get_current_user)):
+    <span class="kw">return</span> {
+        <span class="str">"new_checkout"</span>: unleash.is_enabled(
+            <span class="str">"new-checkout"</span>,
+            context={<span class="str">"userId"</span>: str(user.id)}
+        )
+    }
+
+<span class="kw">@app</span>.post(<span class="str">"/checkout"</span>)
+<span class="kw">async def</span> <span class="fn">checkout</span>(flags = Depends(get_feature_flags)):
+    <span class="kw">if</span> flags[<span class="str">"new_checkout"</span>]:
+        <span class="kw">return await</span> new_checkout_handler()
+    <span class="kw">return await</span> legacy_checkout_handler()</pre>
+<div class="tip-box">Use a DI dependency for flags so they can be easily mocked in tests.</div>`
+    },
+    {
+      q: "What is the strangler fig pattern and how would you use it to migrate from Flask to FastAPI?",
+      tags: ["migration","patterns"],
+      a: `<p>The strangler fig pattern: incrementally replace a legacy system by routing traffic to the new system for specific routes, while the old system handles the rest. The new system grows until it "strangles" the old one.</p>
+<pre><span class="cm"># nginx config: route new endpoints to FastAPI</span>
+location /api/v2/ { proxy_pass http://fastapi:8000; }
+location /        { proxy_pass http://flask:5000; }
+
+<span class="cm"># Or use a FastAPI ASGI middleware to proxy unknown routes</span>
+<span class="kw">@app</span>.middleware(<span class="str">"http"</span>)
+<span class="kw">async def</span> <span class="fn">proxy_to_flask</span>(request, call_next):
+    response = <span class="kw">await</span> call_next(request)
+    <span class="kw">if</span> response.status_code == 404:
+        <span class="kw">return await</span> forward_to_flask(request)
+    <span class="kw">return</span> response</pre>
+<p>Migrate route by route — start with new features, then tackle existing ones. No big-bang rewrite needed.</p>`
+    },
+    {
+      q: "How do you implement request tracing (correlation IDs) in FastAPI?",
+      tags: ["observability","tracing"],
+      a: `<pre><span class="kw">import</span> uuid
+<span class="kw">from</span> contextvars <span class="kw">import</span> ContextVar
+
+request_id_var: ContextVar[str] = ContextVar(<span class="str">"request_id"</span>, default=<span class="str">""</span>)
+
+<span class="kw">@app</span>.middleware(<span class="str">"http"</span>)
+<span class="kw">async def</span> <span class="fn">correlation_id_middleware</span>(request: Request, call_next):
+    req_id = request.headers.get(<span class="str">"X-Request-ID"</span>, str(uuid.uuid4()))
+    request_id_var.set(req_id)
+    response = <span class="kw">await</span> call_next(request)
+    response.headers[<span class="str">"X-Request-ID"</span>] = req_id
+    <span class="kw">return</span> response
+
+<span class="cm"># In logging — add to every log line</span>
+<span class="kw">class</span> <span class="fn">RequestIDFilter</span>(logging.Filter):
+    <span class="kw">def</span> <span class="fn">filter</span>(self, record):
+        record.request_id = request_id_var.get()
+        <span class="kw">return True</span></pre>`
+    },
+  ]},
+];
+
+// Build global lookup for checkboxes
+let allQuestions = [];
+CATEGORIES.forEach((cat, ci) => {
+  cat.qs.forEach((q, qi) => {
+    allQuestions.push({ ...q, catId: cat.id, catLabel: cat.label, color: cat.color, key: `${cat.id}-${qi}` });
+  });
+});
+
+// State
+let activeCategory = "basics";
+let completed = {};
+let searchQuery = "";
+
+function init() {
+  buildSidebar();
+  buildSections();
+  renderActive();
+  updateProgress();
+  window.addEventListener("scroll", () => {
+    document.getElementById("scrolltop").classList.toggle("show", window.scrollY > 300);
+  });
+}
+
+function buildSidebar() {
+  const nav = document.getElementById("sidebar");
+  CATEGORIES.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.className = "nav-item";
+    btn.dataset.id = cat.id;
+    btn.style.setProperty("--cat-color", cat.color);
+    btn.innerHTML = `<span class="nav-dot" style="background:${cat.color}"></span>
+      <span>${cat.label}</span>
+      <span class="nav-count">${cat.qs.length}</span>`;
+    btn.onclick = () => { activeCategory = cat.id; renderActive(); document.getElementById("searchInput").value = ""; searchQuery = ""; };
+    nav.appendChild(btn);
+  });
+}
+
+function buildSections() {
+  const main = document.getElementById("mainContent");
+  CATEGORIES.forEach(cat => {
+    const section = document.createElement("div");
+    section.className = "section";
+    section.id = `sec-${cat.id}`;
+    section.innerHTML = `<div class="section-header">
+      <div style="width:10px;height:10px;border-radius:50%;background:${cat.color};flex-shrink:0"></div>
+      <div class="section-title">${cat.label}</div>
+      <div class="section-count">${cat.qs.length} questions</div>
+    </div>
+    <div id="qlist-${cat.id}"></div>`;
+    main.appendChild(section);
+
+    const qlist = section.querySelector(`#qlist-${cat.id}`);
+    cat.qs.forEach((q, qi) => {
+      qlist.appendChild(buildCard(q, qi, cat));
+    });
+  });
+}
+
+function buildCard(q, qi, cat, globalIdx) {
+  const key = `${cat.id}-${qi}`;
+  const card = document.createElement("div");
+  card.className = "q-card";
+  card.id = `card-${key}`;
+  card.style.setProperty("--cat-color-alpha", cat.color + "30");
+  if (completed[key]) card.classList.add("done");
+
+  const tagHtml = q.tags.map(t =>
+    `<span class="tag" style="color:${cat.color};border-color:${cat.color}40;background:${cat.color}12" onclick="filterByTag('${t}');event.stopPropagation()">#${t}</span>`
+  ).join("");
+
+  card.innerHTML = `<div class="q-header" onclick="toggleCard('${key}')">
+    <div class="q-num">${String(qi + 1).padStart(2, "0")}</div>
+    <div class="q-check" onclick="toggleDone('${key}',event)" style="border-color:${completed[key] ? cat.color : ''};background:${completed[key] ? cat.color+'20':''}; color:${completed[key]?cat.color:'transparent'}">${completed[key]?'✓':''}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-chevron">▼</div>
+  </div>
+  <div class="q-answer">
+    <div class="answer-label">Answer</div>
+    <div class="answer-body">${q.a}</div>
+    <div class="q-tags" style="margin-top:12px">${tagHtml}</div>
+  </div>`;
+
+  return card;
+}
+
+function toggleCard(key) {
+  const card = document.getElementById(`card-${key}`);
+  if (!card) return;
+  card.classList.toggle("open");
+}
+
+function toggleDone(key, e) {
+  e.stopPropagation();
+  completed[key] = !completed[key];
+  const card = document.getElementById(`card-${key}`);
+  if (!card) return;
+  card.classList.toggle("done", completed[key]);
+  // Update check appearance
+  const check = card.querySelector(".q-check");
+  const qObj = allQuestions.find(q => q.key === key);
+  const color = qObj ? qObj.color : "#5eead4";
+  if (completed[key]) {
+    check.style.borderColor = color;
+    check.style.background = color + "20";
+    check.style.color = color;
+    check.textContent = "✓";
+  } else {
+    check.style.borderColor = "";
+    check.style.background = "";
+    check.style.color = "transparent";
+    check.textContent = "";
+  }
+  updateProgress();
+}
+
+function renderActive() {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+  const sec = document.getElementById(`sec-${activeCategory}`);
+  if (sec) sec.classList.add("active");
+  const navBtn = document.querySelector(`.nav-item[data-id="${activeCategory}"]`);
+  if (navBtn) navBtn.classList.add("active");
+  document.getElementById("filter-view").classList.remove("active");
+}
+
+function updateProgress() {
+  const total = allQuestions.length;
+  const done = Object.values(completed).filter(Boolean).length;
+  document.getElementById("progressLabel").textContent = `${done}/${total}`;
+  document.getElementById("progressFill").style.width = `${(done / total) * 100}%`;
+}
+
+function handleSearch(val) {
+  searchQuery = val.trim().toLowerCase();
+  if (!searchQuery) {
+    document.getElementById("filter-view").classList.remove("active");
+    renderActive();
+    return;
+  }
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  const fv = document.getElementById("filter-view");
+  fv.classList.add("active");
+  const results = allQuestions.filter(q =>
+    q.q.toLowerCase().includes(searchQuery) ||
+    q.tags.some(t => t.includes(searchQuery))
+  );
+  document.getElementById("filterInfo").textContent = `${results.length} result${results.length !== 1 ? "s" : ""} for "${val}"`;
+  const fr = document.getElementById("filterResults");
+  fr.innerHTML = "";
+  // Group by category
+  const grouped = {};
+  results.forEach(q => {
+    if (!grouped[q.catId]) grouped[q.catId] = { label: q.catLabel, color: q.color, questions: [] };
+    grouped[q.catId].questions.push(q);
+  });
+  Object.entries(grouped).forEach(([catId, group]) => {
+    const label = document.createElement("div");
+    label.className = "filter-cat-label";
+    label.style.color = group.color;
+    label.textContent = group.label;
+    fr.appendChild(label);
+    group.questions.forEach(q => {
+      const cat = CATEGORIES.find(c => c.id === catId);
+      const qi = cat.qs.indexOf(q);
+      fr.appendChild(buildCard(q, qi, cat));
+    });
+  });
+  if (results.length === 0) {
+    fr.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--text3)">No questions match your search.</div>`;
+  }
+}
+
+function filterByTag(tag) {
+  document.getElementById("searchInput").value = tag;
+  handleSearch(tag);
+}
+
+window.toggleCard = toggleCard;
+window.toggleDone = toggleDone;
+window.handleSearch = handleSearch;
+window.filterByTag = filterByTag;
+
+init();
+</script>
+</body>
+</html>
