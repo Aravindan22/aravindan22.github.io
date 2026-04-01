@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding LlamaIndex: Components vs. Tools</title>
+    <style>
+        :root {
+            --primary: #00A3FF;
+            --secondary: #121212;
+            --accent: #FF4B4B;
+            --bg: #f4f7f6;
+            --text: #333;
+            --code-bg: #2d2d2d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        h2 { color: var(--secondary); margin-top: 30px; display: flex; align-items: center; }
+        h2 span { font-size: 1.5rem; margin-right: 10px; }
+
+        .analogy-box {
+            background: #e7f3ff;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+
+        pre {
+            background: var(--code-bg);
+            color: #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        .comment { color: #75715e; }
+        .keyword { color: #66d9ef; }
+        .string { color: #e6db74; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table th { background-color: var(--primary); color: white; }
+        table tr:nth-child(even) { background-color: #f9f9f9; }
+
+        .summary {
+            background: var(--secondary);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Understanding LlamaIndex Architecture</h1>
+    
+    <div class="analogy-box">
+        "Think of LlamaIndex as building a worker (an Agent). To make this worker functional, you need to give them internal organs (Components) and external tools (Tools)."
+    </div>
+
+    <h2><span>🫀</span> 1. What is a Component?</h2>
+    <p>Components are the foundational building blocks of the LlamaIndex framework. They handle the "plumbing" of data. They are internal—the user doesn't usually talk to them directly; they work behind the scenes to process information.</p>
+    
+    <div class="grid">
+        <div class="card">
+            <strong>The Reader (The Eyes)</strong>
+            <p>Ingests data from various sources like PDFs, websites, or databases.</p>
+        </div>
+        <div class="card">
+            <strong>The Index (The Memory)</strong>
+            <p>Organizes the ingested data so it is structured and searchable.</p>
+        </div>
+        <div class="card">
+            <strong>The Query Engine (The Researcher)</strong>
+            <p>A pipeline that takes a question, searches the Index, and finds the answer.</p>
+        </div>
+    </div>
+
+    <h2><span>🛠️</span> 2. What is a Tool?</h2>
+    <p>A Tool is a <strong>wrapper</strong> around a component (or a function) that makes it "Agent-ready." An Agent cannot "see" a Query Engine directly; it can only see Tools. A Tool tells the Agent: <em>"Here is my name, here is what I do, and here is how you call me."</em></p>
+    
+    <ul>
+        <li><strong>FunctionTool:</strong> Turns any Python function into a tool.</li>
+        <li><strong>QueryEngineTool:</strong> Turns a Query Engine into a tool.</li>
+    </ul>
+
+    <h2><span>💰</span> 3. Detailed Sample: Financial Assistant</h2>
+    
+    <h3>Step A: Create the Components</h3>
+    <pre><code><span class="keyword">from</span> llama_index.core <span class="keyword">import</span> VectorStoreIndex, SimpleDirectoryReader
+
+<span class="comment"># 1. Component: Loader</span>
+documents = SimpleDirectoryReader(<span class="string">"./data"</span>).load_data()
+
+<span class="comment"># 2. Component: Index</span>
+index = VectorStoreIndex.from_documents(documents)
+
+<span class="comment"># 3. Component: Query Engine</span>
+finance_engine = index.as_query_engine()</code></pre>
+
+    <h3>Step B: Create the Tools</h3>
+    <pre><code><span class="keyword">from</span> llama_index.core.tools <span class="keyword">import</span> QueryEngineTool, ToolMetadata, FunctionTool
+
+<span class="comment"># Wrap the Query Engine into a Tool</span>
+finance_tool = QueryEngineTool(
+    query_engine=finance_engine,
+    metadata=ToolMetadata(
+        name=<span class="string">"company_report_lookup"</span>,
+        description=<span class="string">"Useful for finding financial figures from the 2023 report."</span>
+    )
+)
+
+<span class="comment"># Create a Calculator Tool</span>
+<span class="keyword">def</span> <span class="keyword">multiply</span>(a: float, b: float) -> float:
+    <span class="string">"""Multiplies two numbers."""</span>
+    <span class="keyword">return</span> a * b
+
+calc_tool = FunctionTool.from_defaults(fn=multiply)</code></pre>
+
+    <h3>Step C: The Agent (The Decision Maker)</h3>
+    <pre><code><span class="keyword">from</span> llama_index.core.agent <span class="keyword">import</span> ReActAgent
+<span class="keyword">from</span> llama_index.llms.openai <span class="keyword">import</span> OpenAI
+
+agent = ReActAgent.from_tools([finance_tool, calc_tool], llm=OpenAI())
+
+<span class="comment"># The Agent decides which tool to use and when</span>
+agent.chat(<span class="string">"What is the 15% tax on the total revenue mentioned in the report?"</span>)</code></pre>
+
+    <h2><span>📊</span> 4. Detailed Comparison</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Component</th>
+                <th>Tool</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Analogy</strong></td>
+                <td>Internal brain/memory.</td>
+                <td>A hammer or calculator.</td>
+            </tr>
+            <tr>
+                <td><strong>Purpose</strong></td>
+                <td>Process, store, and retrieve data.</td>
+                <td>Provide specific capability to Agent.</td>
+            </tr>
+            <tr>
+                <td><strong>Visibility</strong></td>
+                <td>Hidden. Part of the pipeline.</td>
+                <td>Visible. The Agent "chooses" it.</td>
+            </tr>
+            <tr>
+                <td><strong>Requirement</strong></td>
+                <td>Needs code logic to run.</td>
+                <td>Needs Name and Description.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="summary">
+        <h3>Summary</h3>
+        <ul>
+            <li><strong>Components</strong> do the heavy lifting of managing your data.</li>
+            <li><strong>Tools</strong> are API-like wrappers that give components a "Label" for the AI.</li>
+            <li><strong>Agents</strong> are the engineers that decide which tools to trigger.</li>
+        </ul>
+        <p><em>Build Components for knowledge; wrap them into Tools for action.</em></p>
+    </div>
+</div>
+
+</body>
+</html>
