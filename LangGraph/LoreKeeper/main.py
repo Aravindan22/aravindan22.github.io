@@ -96,12 +96,12 @@ graph_builder.add_edge("adjudicate_rules", "narrate_outcome")
 graph_builder.add_edge("narrate_outcome", END)
 
 #region memory and checkppintyer config
-# checkpointer = InMemorySaver()
-conn = sqlite3.connect("memory.db", check_same_thread=False)
-checkpointer = SqliteSaver(conn=conn)
+checkpointer = InMemorySaver()
+# conn = sqlite3.connect("memory.db", check_same_thread=False)
+# checkpointer = SqliteSaver(conn=conn)
 id_v7 = uuid7() # Generate a time-sortable UUIDv7
 thread_id = "thread_id__"+str(id_v7)
-thread_id = "thread_id__01a034a1-1405-7dc6-8bdd-e8257fced038"
+# thread_id = "thread_id__01a034a1-1405-7dc6-8bdd-e8257fced038"
 print(thread_id)
 configuration = {"configurable":{"thread_id":  thread_id}}
 #endregion
@@ -115,5 +115,11 @@ final_state = lorekeeper_graph.invoke(initial_state, config=configuration)
 state = lorekeeper_graph.get_state(configuration)
 print("\n===== State =====\n")
 print(state)
-print("\n===== end State =====")
-print(final_state["messages"])
+print("\n===== end State =====\n")
+print(final_state["messages"],end="\n======\n")
+
+state_after_recalling = lorekeeper_graph.invoke(final_state, config=configuration)
+
+print("\n==========")
+print(state_after_recalling)
+print("\n==========")
