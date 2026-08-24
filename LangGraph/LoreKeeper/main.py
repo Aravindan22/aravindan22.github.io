@@ -3,8 +3,11 @@ from langgraph.graph import StateGraph, START, END
 from langchain_core.messages import BaseMessage
 from langchain.messages import HumanMessage, AIMessage, SystemMessage
 from langgraph.graph import StateGraph, add_messages
+from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.checkpoint.sqlite import SqliteSaver
 from pydantic import BaseModel
-import os
+import os, sqlite3
+from uuid6 import uuid7
 from dotenv import load_dotenv
 load_dotenv()
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
@@ -92,9 +95,25 @@ graph_builder.add_conditional_edges("perceive_action", route_intent)
 graph_builder.add_edge("adjudicate_rules", "narrate_outcome")
 graph_builder.add_edge("narrate_outcome", END)
 
-# Compile
-lorekeeper_graph = graph_builder.compile()
-initial_state = {"messages": add_messages(MASTER_MESSAGE, HumanMessage(content="I opened the inventry room."))}
-final_state = lorekeeper_graph.invoke(initial_state)
+#region memory and checkppintyer config
+# checkpointer = InMemorySaver()
+conn = sqlite3.connect("memory.db", check_same_thread=False)
+checkpointer = SqliteSaver(conn=conn)
+id_v7 = uuid7() # Generate a time-sortable UUIDv7
+thread_id = "thread_id__"+str(id_v7)
+thread_id = "thread_id__01a034a1-1405-7dc6-8bdd-e8257fced038"
+print(thread_id)
+configuration = {"configurable":{"thread_id":  thread_id}}
+#endregion
 
+# Compile
+lorekeeper_graph = graph_builder.compile(checkpointer=checkpointer)
+initial_state = {"messages": add_messages(MASTER_MESSAGE, HumanMessage(content="I opened the inventry room."))}
+final_state = lorekeeper_graph.invoke(initial_state, config=configuration)
+
+
+state = lorekeeper_graph.get_state(configuration)
+print("\n===== State =====\n")
+print(state)
+print("\n===== end State =====")
 print(final_state["messages"])
