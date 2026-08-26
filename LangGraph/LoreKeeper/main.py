@@ -8,6 +8,9 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from pydantic import BaseModel
 import os, sqlite3
 from uuid6 import uuid7
+
+from utils.rich_print import print_rich_all_snapshots
+
 from dotenv import load_dotenv
 load_dotenv()
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
@@ -95,14 +98,19 @@ graph_builder.add_conditional_edges("perceive_action", route_intent)
 graph_builder.add_edge("adjudicate_rules", "narrate_outcome")
 graph_builder.add_edge("narrate_outcome", END)
 
+
 #region memory and checkppintyer config
 checkpointer = InMemorySaver()
-# conn = sqlite3.connect("memory.db", check_same_thread=False)
-# checkpointer = SqliteSaver(conn=conn)
 id_v7 = uuid7() # Generate a time-sortable UUIDv7
 thread_id = "thread_id__"+str(id_v7)
+
+# conn = sqlite3.connect("memory.db", check_same_thread=False)
+# checkpointer = SqliteSaver(conn=conn)
 # thread_id = "thread_id__01a034a1-1405-7dc6-8bdd-e8257fced038"
+# thread_id = "thread_id__01a039d2-8565-7698-970c-0c9c89c57f1c"
+
 print(thread_id)
+
 configuration = {"configurable":{"thread_id":  thread_id}}
 #endregion
 
@@ -112,14 +120,30 @@ initial_state = {"messages": add_messages(MASTER_MESSAGE, HumanMessage(content="
 final_state = lorekeeper_graph.invoke(initial_state, config=configuration)
 
 
-state = lorekeeper_graph.get_state(configuration)
-print("\n===== State =====\n")
-print(state)
-print("\n===== end State =====\n")
-print(final_state["messages"],end="\n======\n")
+# state = lorekeeper_graph.get_state(configuration)
+snapshots_history = lorekeeper_graph.get_state_history(configuration)
+snapshots = list(snapshots_history)
+# print(list(state))
+print_rich_all_snapshots(snapshots)
 
-state_after_recalling = lorekeeper_graph.invoke(final_state, config=configuration)
+# state_after_recalling = lorekeeper_graph.invoke(final_state, config=configuration)
+# print("\n==========")
+# print(state_after_recalling)
+# print("\n==========")
+"""
+Replaying
+"""
+replaying_snapshot = None
+for snapshot in snapshots:
+    if snapshot.metadata['step'] == 1:
+        replaying_snapshot = snapshot
+        break
 
+replayed_state = lorekeeper_graph.invoke(None, replaying_snapshot.config)
+print("\n========== replayed_state  ==========")
+print(replayed_state)
 print("\n==========")
-print(state_after_recalling)
-print("\n==========")
+snapshots_history = lorekeeper_graph.get_state_history(configuration)
+snapshots = list(snapshots_history)
+# print(list(state))
+print_rich_all_snapshots(snapshots)

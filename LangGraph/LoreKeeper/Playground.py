@@ -54,7 +54,6 @@ StateSnapshot(
 )
 
 
-
 StateSnapshot(
     values={
         "messages": [
@@ -135,5 +134,453 @@ StateSnapshot(
         }
     },
     tasks=(),
+    interrupts=(),
+)
+
+
+[
+    StateSnapshot(
+        values={
+            "messages": [
+                SystemMessage(
+                    content="You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked, available intents are: ['combat', 'dialogue']",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="7b342872-931a-425e-8864-fe469e2c7472",
+                ),
+                HumanMessage(
+                    content="I opened the inventry room.",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="8e045f82-bdc0-4031-ab38-441feb3eaa85",
+                ),
+                AIMessage(
+                    content="dialogue",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="24f2cf45-a5a3-4b8f-b5d5-dedd535013c7",
+                    tool_calls=[],
+                    invalid_tool_calls=[],
+                ),
+                AIMessage(
+                    content="You push open the heavy wooden door to the inventory room. The air inside is cool and smells of old parchment and oiled leather. Rows of shelves line the walls, stacked with various crates, bundles of dried herbs, and neatly folded traveling cloaks. A small desk sits in the corner, covered in ledgers and a flickering candle that casts long shadows across the floor.",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="6b2881a9-54ab-4cf4-960c-65df326ab1dc",
+                    tool_calls=[],
+                    invalid_tool_calls=[],
+                ),
+            ],
+            "player_intent": "dialogue",
+        },
+        next=(),
+        config={
+            "configurable": {
+                "thread_id": "thread_id__01a039d2-8565-7698-970c-0c9c89c57f1c",
+                "checkpoint_ns": "",
+                "checkpoint_id": "1f1a0a4f-229b-6f01-8002-19e08b8cbbe1",
+            }
+        },
+        metadata={"source": "loop", "step": 2, "parents": {}},
+        created_at="2026-08-25T16:49:32.309873+00:00",
+        parent_config={
+            "configurable": {
+                "thread_id": "thread_id__01a039d2-8565-7698-970c-0c9c89c57f1c",
+                "checkpoint_ns": "",
+                "checkpoint_id": "1f1a0a4c-a948-69e7-8001-a33ac3dfb8e6",
+            }
+        },
+        tasks=(),
+        interrupts=(),
+    ),
+    StateSnapshot(
+        values={
+            "messages": [
+                SystemMessage(
+                    content="You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked, available intents are: ['combat', 'dialogue']",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="7b342872-931a-425e-8864-fe469e2c7472",
+                ),
+                HumanMessage(
+                    content="I opened the inventry room.",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="8e045f82-bdc0-4031-ab38-441feb3eaa85",
+                ),
+                AIMessage(
+                    content="dialogue",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="24f2cf45-a5a3-4b8f-b5d5-dedd535013c7",
+                    tool_calls=[],
+                    invalid_tool_calls=[],
+                ),
+            ],
+            "player_intent": "dialogue",
+        },
+        next=("narrate_outcome",),
+        config={
+            "configurable": {
+                "thread_id": "thread_id__01a039d2-8565-7698-970c-0c9c89c57f1c",
+                "checkpoint_ns": "",
+                "checkpoint_id": "1f1a0a4c-a948-69e7-8001-a33ac3dfb8e6",
+            }
+        },
+        metadata={"source": "loop", "step": 1, "parents": {}},
+        created_at="2026-08-25T16:48:25.900886+00:00",
+        parent_config={
+            "configurable": {
+                "thread_id": "thread_id__01a039d2-8565-7698-970c-0c9c89c57f1c",
+                "checkpoint_ns": "",
+                "checkpoint_id": "1f1a0a4c-2fce-60eb-8000-3e0cc1b30a1d",
+            }
+        },
+        tasks=(
+            PregelTask(
+                id="584aa980-688d-a312-f7b8-ab9a8c2a5b45",
+                name="narrate_outcome",
+                path=("__pregel_pull", "narrate_outcome"),
+                error=None,
+                interrupts=(),
+                state=None,
+                result={
+                    "messages": [
+                        AIMessage(
+                            content="You push open the heavy wooden door to the inventory room. The air inside is cool and smells of old parchment and oiled leather. Rows of shelves line the walls, stacked with various crates, bundles of dried herbs, and neatly folded traveling cloaks. A small desk sits in the corner, covered in ledgers and a flickering candle that casts long shadows across the floor.",
+                            additional_kwargs={},
+                            response_metadata={},
+                            id="6b2881a9-54ab-4cf4-960c-65df326ab1dc",
+                            tool_calls=[],
+                            invalid_tool_calls=[],
+                        )
+                    ]
+                },
+            ),
+        ),
+        interrupts=(),
+    ),
+    StateSnapshot(
+        values={
+            "messages": [
+                SystemMessage(
+                    content="You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked, available intents are: ['combat', 'dialogue']",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="7b342872-931a-425e-8864-fe469e2c7472",
+                ),
+                HumanMessage(
+                    content="I opened the inventry room.",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="8e045f82-bdc0-4031-ab38-441feb3eaa85",
+                ),
+            ]
+        },
+        next=("perceive_action",),
+        config={
+            "configurable": {
+                "thread_id": "thread_id__01a039d2-8565-7698-970c-0c9c89c57f1c",
+                "checkpoint_ns": "",
+                "checkpoint_id": "1f1a0a4c-2fce-60eb-8000-3e0cc1b30a1d",
+            }
+        },
+        metadata={"source": "loop", "step": 0, "parents": {}},
+        created_at="2026-08-25T16:48:13.162915+00:00",
+        parent_config={
+            "configurable": {
+                "thread_id": "thread_id__01a039d2-8565-7698-970c-0c9c89c57f1c",
+                "checkpoint_ns": "",
+                "checkpoint_id": "1f1a0a4c-2fcb-6533-bfff-cc8ee37a8e92",
+            }
+        },
+        tasks=(
+            PregelTask(
+                id="e2dad332-1a43-577a-e0ac-e453dcbbda60",
+                name="perceive_action",
+                path=("__pregel_pull", "perceive_action"),
+                error=None,
+                interrupts=(),
+                state=None,
+                result={
+                    "messages": AIMessage(
+                        content="dialogue",
+                        additional_kwargs={},
+                        response_metadata={},
+                        id="24f2cf45-a5a3-4b8f-b5d5-dedd535013c7",
+                        tool_calls=[],
+                        invalid_tool_calls=[],
+                    ),
+                    "player_intent": "dialogue",
+                },
+            ),
+        ),
+        interrupts=(),
+    ),
+    StateSnapshot(
+        values={"messages": []},
+        next=("__start__",),
+        config={
+            "configurable": {
+                "thread_id": "thread_id__01a039d2-8565-7698-970c-0c9c89c57f1c",
+                "checkpoint_ns": "",
+                "checkpoint_id": "1f1a0a4c-2fcb-6533-bfff-cc8ee37a8e92",
+            }
+        },
+        metadata={"source": "input", "step": -1, "parents": {}},
+        created_at="2026-08-25T16:48:13.161801+00:00",
+        parent_config=None,
+        tasks=(
+            PregelTask(
+                id="58326c48-4b0c-9520-51c0-aa8439404e29",
+                name="__start__",
+                path=("__pregel_pull", "__start__"),
+                error=None,
+                interrupts=(),
+                state=None,
+                result={
+                    "messages": [
+                        SystemMessage(
+                            content="You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked, available intents are: ['combat', 'dialogue']",
+                            additional_kwargs={},
+                            response_metadata={},
+                            id="7b342872-931a-425e-8864-fe469e2c7472",
+                        ),
+                        HumanMessage(
+                            content="I opened the inventry room.",
+                            additional_kwargs={},
+                            response_metadata={},
+                            id="8e045f82-bdc0-4031-ab38-441feb3eaa85",
+                        ),
+                    ]
+                },
+            ),
+        ),
+        interrupts=(),
+    ),
+]
+
+
+
+# -=--=-=-=-=-=-=-=-=-=--=--
+
+
+StateSnapshot(
+    values={
+        "messages": [
+            SystemMessage(
+                content="You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked, available intents are: ['combat', 'dialogue']",
+                additional_kwargs={},
+                response_metadata={},
+                id="7b0bd36a-62fe-42b2-aac9-b528b9d7e5da",
+            ),
+            HumanMessage(
+                content="I opened the inventry room.",
+                additional_kwargs={},
+                response_metadata={},
+                id="efffd85e-187d-4b68-ad8f-fb54c7bf28cc",
+            ),
+            AIMessage(
+                content="dialogue",
+                additional_kwargs={},
+                response_metadata={},
+                id="03c61108-0988-41d2-87db-0da2d1320e04",
+                tool_calls=[],
+                invalid_tool_calls=[],
+            ),
+            AIMessage(
+                content="The heavy iron door creaks open to reveal a dimly lit chamber lined with wooden shelves and cubbyholes. Dust motes dance in the faint light streaming through a high window. The shelves are filled with various items - old maps, strange artifacts, and what appear to be magical components. In the center of the room sits a master list, and a small writing desk with quill and parchment sits ready. You sense the room has been undisturbed for some time, yet something feels slightly... off, as if eyes are watching you from the shadows.",
+                additional_kwargs={},
+                response_metadata={},
+                id="00adb12b-f736-4a4b-93f6-27b4a963790d",
+                tool_calls=[],
+                invalid_tool_calls=[],
+            ),
+        ],
+        "player_intent": "dialogue",
+    },
+    next=(),
+    config={
+        "configurable": {
+            "thread_id": "thread_id__01a03ce9-1a81-7507-a09d-42ff8a49a83e",
+            "checkpoint_ns": "",
+            "checkpoint_id": "1f1a11d7-d67b-6341-8002-d6ba642f685c",
+        }
+    },
+    metadata={"source": "loop", "step": 2, "parents": {}},
+    created_at="2026-08-26T07:12:25.526748+00:00",
+    parent_config={
+        "configurable": {
+            "thread_id": "thread_id__01a03ce9-1a81-7507-a09d-42ff8a49a83e",
+            "checkpoint_ns": "",
+            "checkpoint_id": "1f1a11d7-ace2-6717-8001-fd97619c8c08",
+        }
+    },
+    tasks=(),
+    interrupts=(),
+)
+StateSnapshot(
+    values={
+        "messages": [
+            SystemMessage(
+                content="You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked, available intents are: ['combat', 'dialogue']",
+                additional_kwargs={},
+                response_metadata={},
+                id="7b0bd36a-62fe-42b2-aac9-b528b9d7e5da",
+            ),
+            HumanMessage(
+                content="I opened the inventry room.",
+                additional_kwargs={},
+                response_metadata={},
+                id="efffd85e-187d-4b68-ad8f-fb54c7bf28cc",
+            ),
+            AIMessage(
+                content="dialogue",
+                additional_kwargs={},
+                response_metadata={},
+                id="03c61108-0988-41d2-87db-0da2d1320e04",
+                tool_calls=[],
+                invalid_tool_calls=[],
+            ),
+        ],
+        "player_intent": "dialogue",
+    },
+    next=("narrate_outcome",),
+    config={
+        "configurable": {
+            "thread_id": "thread_id__01a03ce9-1a81-7507-a09d-42ff8a49a83e",
+            "checkpoint_ns": "",
+            "checkpoint_id": "1f1a11d7-ace2-6717-8001-fd97619c8c08",
+        }
+    },
+    metadata={"source": "loop", "step": 1, "parents": {}},
+    created_at="2026-08-26T07:12:21.165015+00:00",
+    parent_config={
+        "configurable": {
+            "thread_id": "thread_id__01a03ce9-1a81-7507-a09d-42ff8a49a83e",
+            "checkpoint_ns": "",
+            "checkpoint_id": "1f1a11d6-51d7-6872-8000-156b7fe1984f",
+        }
+    },
+    tasks=(
+        PregelTask(
+            id="63ec4678-f587-64ba-3c60-77ba9c2a39e9",
+            name="narrate_outcome",
+            path=("__pregel_pull", "narrate_outcome"),
+            error=None,
+            interrupts=(),
+            state=None,
+            result={
+                "messages": [
+                    AIMessage(
+                        content="The heavy iron door creaks open to reveal a dimly lit chamber lined with wooden shelves and cubbyholes. Dust motes dance in the faint light streaming through a high window. The shelves are filled with various items - old maps, strange artifacts, and what appear to be magical components. In the center of the room sits a master list, and a small writing desk with quill and parchment sits ready. You sense the room has been undisturbed for some time, yet something feels slightly... off, as if eyes are watching you from the shadows.",
+                        additional_kwargs={},
+                        response_metadata={},
+                        id="00adb12b-f736-4a4b-93f6-27b4a963790d",
+                        tool_calls=[],
+                        invalid_tool_calls=[],
+                    )
+                ]
+            },
+        ),
+    ),
+    interrupts=(),
+)
+StateSnapshot(
+    values={
+        "messages": [
+            SystemMessage(
+                content="You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked, available intents are: ['combat', 'dialogue']",
+                additional_kwargs={},
+                response_metadata={},
+                id="7b0bd36a-62fe-42b2-aac9-b528b9d7e5da",
+            ),
+            HumanMessage(
+                content="I opened the inventry room.",
+                additional_kwargs={},
+                response_metadata={},
+                id="efffd85e-187d-4b68-ad8f-fb54c7bf28cc",
+            ),
+        ]
+    },
+    next=("perceive_action",),
+    config={
+        "configurable": {
+            "thread_id": "thread_id__01a03ce9-1a81-7507-a09d-42ff8a49a83e",
+            "checkpoint_ns": "",
+            "checkpoint_id": "1f1a11d6-51d7-6872-8000-156b7fe1984f",
+        }
+    },
+    metadata={"source": "loop", "step": 0, "parents": {}},
+    created_at="2026-08-26T07:11:44.774964+00:00",
+    parent_config={
+        "configurable": {
+            "thread_id": "thread_id__01a03ce9-1a81-7507-a09d-42ff8a49a83e",
+            "checkpoint_ns": "",
+            "checkpoint_id": "1f1a11d6-51d5-64fb-bfff-72b3d7c170ef",
+        }
+    },
+    tasks=(
+        PregelTask(
+            id="b0fccaad-154f-5bdb-b022-e78e6a5ad252",
+            name="perceive_action",
+            path=("__pregel_pull", "perceive_action"),
+            error=None,
+            interrupts=(),
+            state=None,
+            result={
+                "messages": AIMessage(
+                    content="dialogue",
+                    additional_kwargs={},
+                    response_metadata={},
+                    id="03c61108-0988-41d2-87db-0da2d1320e04",
+                    tool_calls=[],
+                    invalid_tool_calls=[],
+                ),
+                "player_intent": "dialogue",
+            },
+        ),
+    ),
+    interrupts=(),
+)
+StateSnapshot(
+    values={"messages": []},
+    next=("__start__",),
+    config={
+        "configurable": {
+            "thread_id": "thread_id__01a03ce9-1a81-7507-a09d-42ff8a49a83e",
+            "checkpoint_ns": "",
+            "checkpoint_id": "1f1a11d6-51d5-64fb-bfff-72b3d7c170ef",
+        }
+    },
+    metadata={"source": "input", "step": -1, "parents": {}},
+    created_at="2026-08-26T07:11:44.774056+00:00",
+    parent_config=None,
+    tasks=(
+        PregelTask(
+            id="99933b95-a4d1-d7e4-9f20-6d0945fe0027",
+            name="__start__",
+            path=("__pregel_pull", "__start__"),
+            error=None,
+            interrupts=(),
+            state=None,
+            result={
+                "messages": [
+                    SystemMessage(
+                        content="You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked, available intents are: ['combat', 'dialogue']",
+                        additional_kwargs={},
+                        response_metadata={},
+                        id="7b0bd36a-62fe-42b2-aac9-b528b9d7e5da",
+                    ),
+                    HumanMessage(
+                        content="I opened the inventry room.",
+                        additional_kwargs={},
+                        response_metadata={},
+                        id="efffd85e-187d-4b68-ad8f-fb54c7bf28cc",
+                    ),
+                ]
+            },
+        ),
+    ),
     interrupts=(),
 )
