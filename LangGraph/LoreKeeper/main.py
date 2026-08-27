@@ -8,6 +8,7 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from pydantic import BaseModel
 import os, sqlite3
 from uuid6 import uuid7
+from langgraph.types import interrupt, Command
 
 from utils.rich_print import print_rich_all_snapshots
 
@@ -32,6 +33,8 @@ class AdjudicateRulesOutputStructure(BaseModel):
     rule: str
 class NarrateOutcomeOutputStructure(BaseModel):
     narrative: str
+class SideLoadedOutputStructure(BaseModel):
+    resp_lore: str
 
 
 
@@ -75,6 +78,19 @@ def narrate_outcome(state: LoreKeeperState):
     print("Narrative Response: ", resp_text)
     return {"messages": [AIMessage(content=resp_text)]}
 
+def propose_lore_drop(state: LoreKeeperState):
+    print("\n-== ADDING JUICY LORE ==-\n")
+    sideLoading_lore_message = HumanMessage(content="Generate a lore after this...")
+    structured_model = model.with_structured_output(SideLoadedOutputStructure)
+    resp = structured_model.invoke([*state['messages'] ,sideLoading_lore_message])
+    resp_lore = resp.resp_lore
+    
+    print("Juicy lore: ", resp_lore)
+
+    user_action = interrupt("Pick a action combat or dialogue\n")
+    print("\nChosen Action : {}\n".format(user_action))
+    return {"messages": [AIMessage(content=resp_lore)],  'player_intent':user_action}
+
 # 3. Build Graph
 graph_builder = StateGraph(LoreKeeperState)
 
@@ -82,6 +98,7 @@ graph_builder = StateGraph(LoreKeeperState)
 graph_builder.add_node("perceive_action", perceive_action)
 graph_builder.add_node("adjudicate_rules", adjudicate_rules)
 graph_builder.add_node("narrate_outcome", narrate_outcome)
+graph_builder.add_node("propose_lore_drop", propose_lore_drop)
 
 # Add Edges
 graph_builder.add_edge(START, "perceive_action")
@@ -96,10 +113,14 @@ def route_intent(state: LoreKeeperState) -> str:
 
 graph_builder.add_conditional_edges("perceive_action", route_intent)
 graph_builder.add_edge("adjudicate_rules", "narrate_outcome")
+graph_builder.add_edge("narrate_outcome", "propose_lore_drop")
+graph_builder.add_conditional_edges("propose_lore_drop", route_intent)
+graph_builder.add_edge("adjudicate_rules", "narrate_outcome")
 graph_builder.add_edge("narrate_outcome", END)
 
 
-#region memory and checkppintyer config
+
+#region memory and checkpointer config
 checkpointer = InMemorySaver()
 id_v7 = uuid7() # Generate a time-sortable UUIDv7
 thread_id = "thread_id__"+str(id_v7)
@@ -115,24 +136,36 @@ configuration = {"configurable":{"thread_id":  thread_id}}
 #endregion
 
 # Compile
-lorekeeper_graph = graph_builder.compile(checkpointer=checkpointer)
+lorekeeper_graph = graph_builder.compile(checkpointer=checkpointer, interrupt_before=["adjudicate_rules"])
 initial_state = {"messages": add_messages(MASTER_MESSAGE, HumanMessage(content="I opened the inventry room."))}
 final_state = lorekeeper_graph.invoke(initial_state, config=configuration)
 
 
-# state = lorekeeper_graph.get_state(configuration)
+current_state = lorekeeper_graph.get_state(configuration)
+
+
+#region Interput HITL
+if current_state.next:
+    interrupt_info = current_state.tasks[0].interrupts[0].value
+    user_action = input(interrupt_info)
+    resumed_state = lorekeeper_graph.invoke(Command(resume=user_action), config=configuration) 
+#endregion
+
 snapshots_history = lorekeeper_graph.get_state_history(configuration)
 snapshots = list(snapshots_history)
 # print(list(state))
 print_rich_all_snapshots(snapshots)
+#region Replaying
+"""
+Replaying
+
 
 # state_after_recalling = lorekeeper_graph.invoke(final_state, config=configuration)
 # print("\n==========")
 # print(state_after_recalling)
 # print("\n==========")
-"""
-Replaying
-"""
+
+
 replaying_snapshot = None
 for snapshot in snapshots:
     if snapshot.metadata['step'] == 1:
@@ -147,3 +180,5 @@ snapshots_history = lorekeeper_graph.get_state_history(configuration)
 snapshots = list(snapshots_history)
 # print(list(state))
 print_rich_all_snapshots(snapshots)
+"""
+#endregion
