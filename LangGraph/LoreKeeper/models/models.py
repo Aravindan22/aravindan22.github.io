@@ -10,8 +10,10 @@ class GeminiModel:
             print("No ENV key")
         from langchain_google_genai import ChatGoogleGenerativeAI
         self.model_type = "gemini-3.6-flash"
-        self.model_type = "gemini-3.5-flash"
-        self.model_type = "gemini-3-flash-preview"
+        # self.model_type = "gemini-3.5-flash"
+        # self.model_type = "gemini-3-flash-preview"
+        # self.model_type = "gemini-2.5-flash"
+        # self.model_type = "gemini-2.5-flash-lite"
         # https://ai.google.dev/gemini-api/docs/models#all-gemini-3-models
         self.model = ChatGoogleGenerativeAI(
             model=self.model_type,

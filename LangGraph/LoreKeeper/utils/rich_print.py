@@ -4,7 +4,7 @@ from rich.table import Table
 from rich.text import Text
 from rich.tree import Tree
 
-console = Console()
+console = Console(no_color=True, force_terminal=False)
 
 def print_rich_snapshot(snapshot):
     # 1. Header Information (Step & Next Node)

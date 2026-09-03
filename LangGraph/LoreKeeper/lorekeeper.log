@@ -1,0 +1,461 @@
+Using Cloudflare Model
+thread_id__session__1
+
+-== perceive_action ==-
+
+2026-09-03 09:11:59,989 INFO Using hardcoded perceived intent: combat
+
+-== adjudicating ==-
+
+2026-09-03 09:11:59,991 INFO Using hardcoded adjudication: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before accessing items.
+Adjudication Response:  Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before accessing items.
+2026-09-03 09:11:59,992 INFO Inside manage_npc_memory ==-===
+2026-09-03 09:11:59,992 INFO Store has already NPC entry
+
+-== narrating ==-
+
+2026-09-03 09:11:59,998 INFO Using hardcoded narrative: The inventory room grows quiet as the hidden passage reveals itself.
+Narrative Response:  The inventory room grows quiet as the hidden passage reveals itself.
+
+-== ADDING JUICY LORE ==-
+
+2026-09-03 09:12:00,000 INFO Using hardcoded lore before action interrupt: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.
+Juicy lore:  A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.
+Pick a action combat or dialogue
+
+-== ADDING JUICY LORE ==-
+
+2026-09-03 09:12:05,507 INFO Using hardcoded lore before action interrupt: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.
+Juicy lore:  A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.
+
+Chosen Action : combat
+
+2026-09-03 09:12:05,508 INFO Action selected after interrupt: combat
+=== FETCHING GRAPH HISTORY ===
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 12  |  Next Node(s): END                                                                                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7778-8500-64c0-800c-614623f23611                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ ├── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│                      │ ├── AI: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.                                               │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ ├── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│                      │ └── AI: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.                                               │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 11  |  Next Node(s): propose_lore_drop                                                                                                                   │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7778-5075-6249-800b-2b1aa5213f20                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ ├── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│                      │ ├── AI: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.                                               │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ └── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 10  |  Next Node(s): narrate_outcome                                                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7778-506d-69f2-800a-3187071f2732                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ ├── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│                      │ ├── AI: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.                                               │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ └── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │     accessing items.                                                                                                                              │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 9  |  Next Node(s): manage_npc_memory                                                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7778-5062-61a8-8009-33c2d5543b9f                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ ├── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│                      │ ├── AI: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.                                               │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ └── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │     accessing items.                                                                                                                              │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 8  |  Next Node(s): adjudicate_rules                                                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7778-505f-679e-8008-e86514a3fbd7                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ ├── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│                      │ ├── AI: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.                                               │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ └── AI: combat                                                                                                                                    │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 7  |  Next Node(s): perceive_action                                                                                                                      │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7778-505a-69ec-8007-cbc35e7492c3                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ ├── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│                      │ ├── AI: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.                                               │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ └── HUMAN: I opened the inventry room.                                                                                                            │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 6  |  Next Node(s): __start__                                                                                                                            │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7778-5052-6e6a-8006-9bb78f94cbec                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ ├── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│                      │ └── AI: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.                                               │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 5  |  Next Node(s): END                                                                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7775-69da-69c2-8005-ed55bb2051ee                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ ├── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│                      │ └── AI: A cold draft slips through the inventory room, carrying a whisper from the forgotten halls.                                               │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 4  |  Next Node(s): propose_lore_drop                                                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7775-40f5-6b19-8004-90b7532c0a52                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ ├── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │ │   accessing items.                                                                                                                              │
+│                      │ └── AI: The inventory room grows quiet as the hidden passage reveals itself.                                                                      │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 3  |  Next Node(s): narrate_outcome                                                                                                                      │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7775-40f0-6d9d-8003-69516b5e145e                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ └── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │     accessing items.                                                                                                                              │
+│ player_intent        │ 'combat'                                                                                                                                          │
+│ npc_context          │ None                                                                                                                                              │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 2  |  Next Node(s): manage_npc_memory                                                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7775-40d3-6c99-8002-4eb5b3b73f80                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ ├── AI: combat                                                                                                                                    │
+│                      │ └── AI: Opening the inventory room triggers an immediate combat encounter with the room's guardian constructs. Combat must be resolved before     │
+│                      │     accessing items.                                                                                                                              │
+│ player_intent        │ 'combat'                                                                                                                                          │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 1  |  Next Node(s): adjudicate_rules                                                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7775-40cf-61fb-8001-3ffdb15fdca2                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ ├── HUMAN: I opened the inventry room.                                                                                                            │
+│                      │ └── AI: combat                                                                                                                                    │
+│ player_intent        │ 'combat'                                                                                                                                          │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: 0  |  Next Node(s): perceive_action                                                                                                                      │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7775-40c5-6be8-8000-e371209f1a8b                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value / Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages             │ Messages Stream                                                                                                                                   │
+│                      │ ├── SYSTEM: You are in lorekeeper game acting as Game Master agent, Pick out the intent if needed, Narrate or Adjudicate rule when asked,         │
+│                      │ │   available intents are: ['combat', 'dialogue']                                                                                                 │
+│                      │ └── HUMAN: I opened the inventry room.                                                                                                            │
+└──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────── LangGraph StateSnapshot ─────────────────────────────────────────────────────────────────────────╮
+│ Execution Step: -1  |  Next Node(s): __start__                                                                                                                           │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                             🔧 Snapshot Config                                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Config Key                                                   ┃ Value                                                                                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ thread_id                                                    │ thread_id__session__1                                                                                     │
+│ checkpoint_ns                                                │                                                                                                           │
+│ checkpoint_id                                                │ 1f1a7775-40be-603b-bfff-fc2747b7aa19                                                                      │
+└──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              📦 State Values                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                                                                                            ┃ Value / Content                                                         ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ messages                                                                                       │ Messages Stream                                                         │
+└────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────
+
